@@ -1,34 +1,26 @@
 <template>
-    <div class="page-content">
+    <div class="page-content book-detail-page video-detail-page">
         <section class="row">
-            <div class="col-12 col-lg-4 card-cover">
+            <div class="col-12 col-lg-4 card-cover detail-cover-column">
                 <div class="sticky-section h-100">
-                    <div class="card h-100">
+                    <div class="card h-100 detail-cover-card">
                         <div class="card-body">
                             <div class="card-content text-center mb-2">
                                 <img v-if="detail.image" :src="detail.image.replace('&amp;', '&')" class="img-fluid img-detail" :alt="detail.title" height="80%" width="80%" style="border-radius: 10px 10px 10px 10px !important;">
-                            </div>
-                            <div class="buttons mt-3" v-if="videoUrl == ''">
-                                <button class="btn btn-primary btn-md me-2" @click="bacaBuku"><i class="bi bi-book-fill"></i> Putar</button>
-                                <!-- <template v-if="isAuthenticated">
-                                    <template v-if="detail.rent=='Y'">
-                                        <button class="btn btn-warning text-white btn-md me-2" @click="kembaliBuku"><i class="bi bi-bookmarks"></i> Kembalikan</button>
-                                    </template>
-                                    <template v-else>
-                                        <button class="btn btn-warning text-white btn-md me-2" @click="pinjamBuku"><i class="bi bi-bookmarks"></i> Pinjam</button>
-                                    </template>
-                                </template> -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-8" v-if="videoUrl == ''">
+            <div class="col-12 col-lg-8 detail-information-column" v-if="videoUrl == ''">
                 <div class="card h-100">
-                    <div class="card-header">
+                    <header class="card-header detail-book-heading">
                         <p class="text-subtitle text-muted">{{ detail.writer }}</p>
-                        <h3 class="mt-1">{{ detail.title }}</h3>
-                    </div>
+                        <h1 class="mt-1">{{ detail.title }}</h1>
+                        <div class="buttons detail-actions">
+                            <button class="btn btn-primary btn-md me-2" @click="bacaBuku"><i class="bi bi-play-fill"></i> Putar</button>
+                        </div>
+                    </header>
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" :class="{ active: activeTab === 'sinopsis' }" @click="scrollTo('sinopsis')" id="sinopsis-tab" type="button" role="tab" aria-controls="sinopsis" :aria-selected="activeTab === 'sinopsis'" >
@@ -42,7 +34,7 @@
                         </li>
                     </ul>
                     <div class="card-body">
-                        <div class="divider divider-left">
+                        <div class="divider divider-left detail-section-heading">
                             <div class="divider-text">Deskripsi Buku</div>
                         </div>
                         <p class="my-2 tab-pane" id="sinopsis">
@@ -50,7 +42,7 @@
                             <span v-else>{{ detail.sinopsis }}</span>
                         </p>
                         <a v-if="needsReadMore" class="my-2 d-flex justify-content-end" role="button" id="toggleDescription" @click="toggleText"> {{ isExpanded ? 'Ringkas Deskripsi' : 'Baca Selengkapnya' }} </a>
-                        <div class="divider divider-left">
+                        <div class="divider divider-left detail-section-heading">
                             <div class="divider-text">Detail</div>
                         </div>
                         <div class="row tab-pane details" id="details">
@@ -127,7 +119,7 @@
                                     @slideChange="onSlideChange"
                                     :autoplay= "{ delay: 3000 }"
                                     class="swiper-container"
-                                    loop
+                                    :loop="buku_populer.length > 12"
                                 >
                                     <swiper-slide v-for="(item, index) in buku_populer" :key="index" class="col-md-3 col-6">
                                         <router-link :to="{ name: 'detail-buku', params: { idb: item.isbn } }">
@@ -485,6 +477,84 @@ export default {
 </script>
 
 <style scoped>
+    .book-detail-page > section:first-child {
+        --bs-gutter-x: 1.25rem;
+        align-items: stretch;
+    }
+
+    .detail-cover-card {
+        position: sticky;
+        top: 1.25rem;
+        display: flex;
+        align-items: center;
+        min-height: 420px;
+        background: var(--member-soft, #edf4ef) !important;
+        border-color: var(--member-line, #e4e8e2) !important;
+        box-shadow: none !important;
+    }
+    .detail-cover-card .card-body { width: 100%; }
+    .detail-cover-card .img-detail {
+        width: auto !important;
+        max-width: min(100%, 330px);
+        max-height: 430px;
+        object-fit: contain;
+        filter: drop-shadow(0 12px 16px rgba(20, 34, 27, .18));
+    }
+    .detail-book-heading {
+        padding: clamp(1.25rem, 3vw, 2.3rem) !important;
+        border: 0 !important;
+        background: var(--member-soft, #edf4ef) !important;
+    }
+    .detail-book-heading .text-subtitle {
+        margin-bottom: .45rem;
+        color: var(--member-accent, #236b58) !important;
+        font-size: .86rem;
+        font-weight: 800;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+    .detail-book-heading h1 {
+        max-width: 24ch;
+        margin: 0 !important;
+        font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+    }
+    .detail-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .55rem;
+        margin-top: 1.25rem;
+        font-size: clamp(1.5rem, 3vw, 2.4rem);
+        line-height: 1.18;
+    }
+    .book-detail-page .nav-tabs { margin-top: 1rem; }
+    .book-detail-page .card-body > #sinopsis {
+        max-width: 72ch;
+        color: var(--member-muted, #64716c);
+        font-size: 1.04rem;
+        line-height: 1.8;
+    }
+    .book-detail-page #toggleDescription {
+        color: var(--member-accent, #236b58);
+        font-weight: 800;
+        text-decoration: none;
+    }
+    .detail-section-heading { margin: 1.5rem 0 .5rem; }
+    .book-detail-page .details { padding: 0 .25rem .5rem; }
+    .book-detail-page > section:nth-child(2) > .col-12 > .card { padding: .75rem 1rem; }
+    .book-detail-page > section:nth-child(2) .product-image {
+        min-height: 195px;
+        background: #f1f3ef;
+    }
+    .book-detail-page > section:nth-child(2) .product-image img { max-height: 175px; }
+    @media (max-width: 991px) {
+        .detail-cover-card { position: static; min-height: auto; }
+        .detail-cover-card .img-detail { max-height: 340px; }
+    }
+    @media (max-width: 575px) {
+        .detail-cover-card { padding: .25rem; }
+        .detail-book-heading { padding: 1.15rem !important; }
+    }
+
     .sticky-section {
         position: sticky;
         text-align: -webkit-center;

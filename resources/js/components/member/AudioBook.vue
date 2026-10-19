@@ -1,14 +1,18 @@
 <template>
-    <div class="page-content">
+    <div class="page-content catalog-page catalog-audio">
         <section class="row">
-            <div class="divider divider-left-center">
-                <h2>KOLEKSI AUDIO BUKU</h2>
+            <div class="catalog-heading">
+                <div class="catalog-heading-copy">
+                    <span class="catalog-eyebrow">DENGARKAN KOLEKSI</span>
+                    <h1>Koleksi Audio Buku</h1>
+                    <p>Jelajahi buku yang tersedia dalam format audio.</p>
+                </div>
                 <div v-if="seeks">
-                    <p>hasil pencarian buku dengan kata kunci <b>"{{ seeks }}"</b></p>
+                    <p class="catalog-search-summary">Hasil pencarian untuk <b>"{{ seeks }}"</b></p>
                 </div>
             </div>
             <!-- Dropdown button to toggle filter options -->
-			<div class="col-12 text-start mb-3">
+			<div class="col-12 catalog-toolbar mb-3">
 				<div class="btn-group">
 					<button type="button" class="btn btn-primary dropdown-toggle px-5 py-2" data-bs-toggle="dropdown" aria-expanded="false" data-bs-offset="0,15">
 						Kategori
@@ -28,22 +32,20 @@
 			</div>
             <div class="col-12">
                 <template v-if="paginatedBuku.length > 0">
-                    <div class="row row-cols-2 row-cols-md-6">
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-6 catalog-grid">
                         <template v-for="(group, groupIndex) in paginatedBuku" :key="groupIndex">
-                            <div v-for="buku in group" :key="buku.id" class="col mb-4">
+                            <div v-for="buku in group" :key="buku.id" class="col mb-4 catalog-item">
                                 <router-link :to="{ name: 'detail-buku', params: { idb: buku.isbn } }">
-                                    <div class="card h-100">
+                                    <div class="card h-100 catalog-card">
                                         <div class="card-content">
-                                            <div class="product-image">
+                                            <div class="product-image catalog-cover">
                                                 <img :src="buku.image.replace('&amp;', '&')" :alt="buku.alt" class="img-fluid" style="width: 150px; height: 220px;">
                                             </div>
-                                            <div class="card-body pt-0">
+                                            <div class="card-body pt-0 catalog-book-copy">
                                                 <p class="card-title mb-0">
                                                     <div data-bs-toggle="tooltip" data-bs-placement="bottom" style="display: -webkit-box; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;" :title="buku.writer">{{ buku.writer }}</div>
                                                 </p>
-                                                <a href="#">
-                                                    <h6 class="card-title mt-2" data-bs-toggle="tooltip" data-bs-placement="bottom" style="display: -webkit-box; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;" :title="buku.title">{{ buku.title }}</h6>
-                                                </a>
+                                                <h6 class="card-title mt-2" data-bs-toggle="tooltip" data-bs-placement="bottom" style="display: -webkit-box; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;" :title="buku.title">{{ buku.title }}</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -95,8 +97,10 @@
                     </div>
                 </template>
                 <template v-else>
-                    <div class="row text-center">
-                        <h6>Buku Tidak tersedia</h6>
+                    <div class="catalog-empty">
+                        <span class="catalog-empty-mark"><i class="bi bi-headphones"></i></span>
+                        <h2>{{ seeks ? 'Buku audio tidak ditemukan' : 'Koleksi audio belum tersedia' }}</h2>
+                        <p>{{ seeks ? 'Coba kata kunci atau kategori yang berbeda.' : 'Belum ada buku audio yang dapat ditampilkan saat ini.' }}</p>
                     </div>
                 </template>
             </div>
@@ -232,6 +236,110 @@ export default {
 </script>
 
 <style scoped>
+    .catalog-page .catalog-heading {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: 0 0 1.5rem;
+        padding: clamp(1.25rem, 3vw, 2.25rem);
+        border-left: 4px solid var(--member-accent, #236b58);
+        background: var(--member-soft, #edf4ef);
+    }
+
+    .catalog-heading-copy { min-width: 0; }
+    .catalog-eyebrow {
+        display: block;
+        margin-bottom: .45rem;
+        color: var(--member-accent, #236b58);
+        font-size: .72rem;
+        font-weight: 800;
+        letter-spacing: .14em;
+    }
+    .catalog-page .catalog-heading h1 {
+        margin: 0;
+        font-size: clamp(1.6rem, 4vw, 2.5rem);
+    }
+    .catalog-heading p {
+        margin: .5rem 0 0;
+        color: var(--member-muted, #64716c);
+    }
+    .catalog-search-summary {
+        max-width: 320px;
+        margin: 0 !important;
+        padding: .7rem .9rem;
+        border: 1px solid var(--member-line, #e4e8e2);
+        background: var(--member-surface, #fff);
+        color: var(--member-muted, #64716c);
+        font-size: .9rem;
+    }
+    .catalog-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+    .catalog-page .catalog-grid {
+        --bs-gutter-x: 1.1rem;
+        --bs-gutter-y: .35rem;
+    }
+    .catalog-page .catalog-card {
+        overflow: hidden;
+        border-radius: 9px;
+        transition: transform .18s ease, border-color .18s ease;
+    }
+    .catalog-page .catalog-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--member-accent, #236b58);
+    }
+    .catalog-page .catalog-cover {
+        min-height: 244px;
+        margin: .65rem .65rem 0;
+        background: linear-gradient(135deg, #f2f2ed, #e9eee8);
+    }
+    .catalog-page .catalog-cover img { max-height: 216px; }
+    .catalog-page .catalog-book-copy { padding: .85rem .8rem 1rem; }
+    .catalog-page .catalog-book-copy p {
+        color: var(--member-muted, #64716c);
+        font-size: .82rem;
+        line-height: 1.4;
+    }
+    .catalog-page .catalog-book-copy h6 {
+        min-height: 2.8em;
+        margin: .45rem 0 0;
+        font-size: .94rem;
+        line-height: 1.4;
+    }
+    .catalog-empty {
+        display: grid;
+        justify-items: center;
+        gap: .65rem;
+        min-height: 280px;
+        align-content: center;
+        padding: 2rem;
+        border: 1px dashed var(--member-line, #e4e8e2);
+        background: var(--member-surface, #fff);
+        text-align: center;
+    }
+    .catalog-empty-mark {
+        display: grid;
+        width: 56px;
+        height: 56px;
+        place-items: center;
+        color: var(--member-accent, #236b58);
+        background: var(--member-soft, #edf4ef);
+        border-radius: 50%;
+        font-size: 1.4rem;
+    }
+    .catalog-empty h2 { margin: .25rem 0 0; font-size: 1.25rem; }
+    .catalog-empty p { margin: 0; color: var(--member-muted, #64716c); }
+
+    @media (max-width: 575px) {
+        .catalog-page .catalog-heading { align-items: flex-start; flex-direction: column; padding: 1.1rem; }
+        .catalog-page .catalog-cover { min-height: 170px; margin: .45rem .45rem 0; }
+        .catalog-page .catalog-cover img { max-height: 155px; }
+        .catalog-page .catalog-book-copy { padding: .65rem; }
+    }
+
     .product-card {
         width: 220px;
         border-radius: 10px;

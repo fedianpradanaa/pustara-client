@@ -1,5 +1,5 @@
 <template>
-    <div id="game-content">
+    <div id="game-content" class="math-game-stage">
       <!-- Modal -->
       <div id="modal">
         <div id="modalContent">
@@ -359,6 +359,15 @@
   </script>
   
   <style scoped>
+    .math-game-stage {
+        position: relative;
+        min-height: min(78vh, 720px);
+        overflow: hidden;
+        background: var(--member-soft, #edf4ef);
+        border: 1px solid var(--member-line, #dce4dc);
+        border-radius: 10px;
+    }
+
     #modal {
         display: none; 
         position: fixed; 
@@ -373,12 +382,20 @@
     }
     #modalContent {
         background: white; 
-        padding: 20px; 
-        border-radius: 10px; 
+        width: min(92vw, 440px);
+        padding: clamp(1.25rem, 4vw, 2rem);
+        border-radius: 8px;
         text-align: center; 
+        box-shadow: 0 16px 48px rgba(20, 43, 34, .2);
     }
     #modalContent button {
-        margin: 10px; 
+        min-width: 92px;
+        margin: 10px;
+        padding: .6rem 1rem;
+        border: 1px solid var(--member-accent, #236b58);
+        border-radius: 5px;
+        color: #fff;
+        background: var(--member-accent, #236b58);
     }
   </style>
   

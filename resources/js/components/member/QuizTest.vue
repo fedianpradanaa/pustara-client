@@ -1,7 +1,7 @@
 <template>
-    <div class="page-content">
+    <div class="page-content quiz-test-page">
 		<div class="row">
-			<div class="card">
+			<div class="card quiz-test-card">
 				<div class="card-content d-flex flex-column">
 					<div class="card-header">
 						<h4 class="card-title"><strong>{{ header.title }}</strong></h4>
@@ -16,9 +16,9 @@
 					</div>
 					<div class="card-body">
 						<template v-if="finished">
-							<div v-for="(data, i) in question" :key="i" class="row">
-								<div class="col-12 mb-2 mt-2">
-									{{ i + 1 }}. {{ data.description }}
+							<article v-for="(data, i) in question" :key="i" class="quiz-question-row">
+								<div class="quiz-question">
+									<h3 class="quiz-question-title"><span class="quiz-question-number">{{ i + 1 }}</span>{{ data.description }}</h3>
 									<div v-if="data.type === 'checklist'">
 										<div v-for="(ans, ii) in data.answer" :key="ans.id" class="mx-3">
 											<div class="form-check">
@@ -49,12 +49,12 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</article>
 						</template>
 						<template v-else>
-							<div v-for="(data, i) in question" :key="i" class="row">
-								<div class="col-12 mb-2 mt-2">
-									{{ i + 1 }}. {{ data.description }}
+							<article v-for="(data, i) in question" :key="i" class="quiz-question-row">
+								<div class="quiz-question">
+									<h3 class="quiz-question-title"><span class="quiz-question-number">{{ i + 1 }}</span>{{ data.description }}</h3>
 									<div v-if="data.type === 'checklist'">
 										<div v-for="(ans, ii) in data.answer" :key="ans.id" class="mx-3">
 											<div class="form-check">
@@ -83,7 +83,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</article>
 						</template>
                     </div>
 					<template v-if="!finished">
@@ -362,6 +362,126 @@ export default {
 };
 </script>
 <style scoped>
+.quiz-test-card {
+	overflow: hidden;
+	border-top: 4px solid var(--member-accent, #236b58);
+}
+
+.quiz-test-card > .card-content > .card-header {
+	padding: clamp(1.15rem, 3vw, 2rem);
+	background: var(--member-soft, #edf4ef);
+}
+
+.quiz-test-card .card-header .card-title:first-child {
+	font-size: clamp(1.35rem, 3vw, 2rem);
+}
+
+.quiz-test-card .card-header .card-title:nth-child(2) {
+	max-width: 72ch;
+	font-size: 1rem;
+	font-weight: 500;
+	line-height: 1.65;
+}
+
+.quiz-test-card .team {
+	width: max-content;
+	min-width: 190px;
+	height: 48px;
+	padding: 0 .8rem;
+	background: var(--member-accent, #236b58);
+	border-radius: 7px;
+	box-shadow: none;
+}
+
+.quiz-test-card .name {
+	width: auto;
+	margin: 0;
+	font-size: .9rem;
+}
+
+.quiz-test-card .score {
+	width: auto;
+	margin: 0 0 0 auto;
+	font-weight: 800;
+}
+
+.quiz-test-card .card-body {
+	padding: clamp(1rem, 3vw, 2rem);
+}
+
+.quiz-question-row {
+	margin: 0 0 1.1rem;
+	padding: 1.1rem;
+	background: var(--member-surface, #fff);
+	border: 1px solid var(--member-line, #e4e8e2);
+	border-left: 3px solid var(--member-accent, #236b58);
+}
+
+.quiz-question {
+	font-weight: 700;
+	line-height: 1.6;
+}
+
+.quiz-question-title {
+	display: grid;
+	grid-template-columns: 2rem minmax(0, 1fr);
+	align-items: start;
+	gap: .7rem;
+	margin: 0 0 1rem;
+	font-size: 1.05rem;
+	line-height: 1.5;
+}
+
+.quiz-question-number {
+	display: grid;
+	width: 2rem;
+	height: 2rem;
+	place-items: center;
+	color: var(--member-accent, #236b58);
+	background: var(--member-soft, #edf4ef);
+	border-radius: 50%;
+	font-size: .9rem;
+}
+
+.quiz-question .form-check {
+	margin-top: .7rem;
+	padding: .65rem .75rem .65rem 2.25rem;
+	background: var(--member-soft, #edf4ef);
+	border-radius: 6px;
+	font-weight: 500;
+}
+
+.quiz-question .form-check-input {
+	margin-top: .28rem;
+}
+
+.quiz-question .form-group.with-title {
+	margin-top: .8rem;
+}
+
+.quiz-test-card .card-footer {
+	padding: 1rem clamp(1rem, 3vw, 2rem);
+}
+
+.quiz-test-card .card-footer .form-group {
+	margin: 0 !important;
+}
+
+.quiz-test-card .card-footer .btn {
+	min-width: 165px;
+	padding: .7rem 1rem;
+}
+
+@media (max-width: 575px) {
+	.quiz-question-row {
+		padding: .85rem;
+	}
+
+	.quiz-test-card .team {
+		min-width: 0;
+	}
+}
+
 .team {
     width: 20%;
     height: 50px;

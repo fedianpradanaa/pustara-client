@@ -1,5 +1,5 @@
 <template>
-    <div class="page-heading">
+    <div class="page-heading profile-page">
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
@@ -8,9 +8,9 @@
             </div>
         </div>
         <section class="section">
-            <div class="row">
-                <div class="col-12 col-lg-4">
-                    <div class="card">
+            <div class="row profile-layout">
+                <div class="col-12 col-lg-4 profile-summary-column">
+                    <div class="card profile-summary-card">
                         <div class="card-body">
                             <div class="d-flex justify-content-center align-items-center flex-column">
                                 <div id="AvatarFileUpload">
@@ -31,11 +31,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-lg-8">
-                    <div class="card">
+                <div class="col-12 col-lg-8 profile-form-column">
+                    <div class="card profile-form-card">
                         <div class="card-body">
+                            <header class="profile-form-header">
+                                <span class="profile-section-eyebrow">PENGATURAN AKUN</span>
+                                <h2>Informasi profil</h2>
+                            </header>
                             <form class="form" @submit.prevent="handleUpdateProfile">
-                                <div class="row">
+                                <section class="profile-form-section">
+                                    <header class="profile-section-heading">
+                                        <h3>Data pribadi</h3>
+                                    </header>
+                                    <div class="row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="name-column">Nama Lengkap</label>
@@ -103,6 +111,13 @@
                                             </div>
                                         </div>
                                     </div>
+                                    </div>
+                                </section>
+                                <section class="profile-form-section">
+                                    <header class="profile-section-heading">
+                                        <h3>Keamanan akun</h3>
+                                    </header>
+                                    <div class="row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="password-column">Kata Sandi</label>
@@ -128,11 +143,12 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                     </div>
-                                </div>  
+
+                                    <footer class="profile-form-actions">
+                                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                    </footer>
+                                </section>
                             </form>
                         </div>
                     </div>
@@ -386,7 +402,7 @@ export default {
     }
 };
 </script>
-<style>
+<style scoped>
 div#AvatarFileUpload {
     position: relative;
     width: 150px;
@@ -438,5 +454,153 @@ div#AvatarFileUpload > .avatar-selector > .avatar-selector-btn>img{
     object-fit: scale-down;
     object-position: center center;
     z-index: 2;
+}
+
+.profile-page .profile-layout {
+    align-items: flex-start;
+    --bs-gutter-x: 1.25rem;
+    --bs-gutter-y: 1.25rem;
+}
+
+.profile-summary-card {
+    position: sticky;
+    top: 1.25rem;
+    min-height: 330px;
+    border-top: 3px solid var(--member-accent, #236b58) !important;
+}
+
+.profile-summary-card .card-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+    padding: 2rem;
+    background: var(--member-soft, #edf4ef);
+}
+
+.profile-form-header {
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--member-line, #e4e8e2);
+}
+
+.profile-form-header h2 {
+    margin: .25rem 0 0;
+    font-size: 1.5rem;
+}
+
+.profile-section-eyebrow {
+    color: var(--member-accent, #236b58);
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+}
+
+.profile-form-section + .profile-form-section {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--member-line, #e4e8e2);
+}
+
+.profile-section-heading {
+    margin-bottom: 1rem;
+}
+
+.profile-section-heading h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.profile-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: .5rem;
+}
+
+div#AvatarFileUpload {
+    width: 136px;
+    height: 136px;
+    border: 4px solid var(--member-surface, #fff);
+    box-shadow: 0 0 0 1px var(--member-line, #e4e8e2);
+}
+
+div#AvatarFileUpload > .avatar-selector {
+    right: 11%;
+    bottom: 8px;
+    width: 34px;
+    height: 34px;
+}
+
+div#AvatarFileUpload > .avatar-selector > .avatar-selector-btn {
+    display: grid;
+    place-items: center;
+    padding: 0;
+    color: #fff;
+    background: var(--member-accent, #236b58);
+    border: 2px solid var(--member-surface, #fff);
+}
+
+.profile-summary-card h3 {
+    margin: 1rem 0;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.profile-summary-card .btn {
+    max-width: 100%;
+    white-space: normal;
+}
+
+.profile-form-card {
+    border-color: var(--member-line, #e4e8e2) !important;
+}
+
+.profile-form-card .card-body {
+    padding: clamp(1.1rem, 3vw, 2rem);
+}
+
+.profile-form-card .form > .row {
+    --bs-gutter-x: 1.1rem;
+    --bs-gutter-y: .25rem;
+}
+
+.profile-form-card .form-group {
+    margin-bottom: .85rem;
+}
+
+.profile-form-card label {
+    display: block;
+    margin-bottom: .4rem;
+    font-size: .88rem;
+}
+
+.profile-form-card .form-group.position-relative {
+    margin-bottom: .65rem;
+}
+
+.profile-form-card .form-control-icon {
+    color: var(--member-muted, #64716c);
+}
+
+.profile-form-card .text-subtitle {
+    margin-top: .55rem;
+    font-size: .82rem;
+}
+
+.profile-form-card button[type="submit"] {
+    min-width: 170px;
+    padding: .7rem 1.25rem;
+}
+
+@media (max-width: 991px) {
+    .profile-summary-card {
+        position: static;
+        min-height: 0;
+    }
+
+    .profile-summary-card .card-body {
+        min-height: 0;
+        padding: 1.5rem;
+    }
 }
 </style>

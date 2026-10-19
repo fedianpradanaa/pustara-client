@@ -1,21 +1,28 @@
 <template>
-	<section class="row">
-		<nav class="navbar py-2 d-flex justify-content-end" style="background-color: #435ebe; color: white;">
-			<button class="btn btn-danger" @click="SelesaiBaca">Selesai Baca</button>
-		</nav>
-	</section>
-    <section class="section" id="pdf-container">
-        <div class="d-flex justify-content-center align-items-center position-relative overflow-auto">
-            <!-- Floating Pagination -->
-            <nav aria-label="Page navigation example" class="pagination-float">
+	<div class="reader-experience">
+		<header class="reader-header">
+			<div class="reader-heading">
+				<span class="reader-eyebrow">RUANG BACA</span>
+				<h1>Pembaca Buku</h1>
+			</div>
+			<button class="btn btn-danger reader-finish" @click="SelesaiBaca">Selesai Baca</button>
+		</header>
+		<section class="section reader-document" id="pdf-container">
+			<div class="reader-stage">
+				<canvas ref="pdfCanvas"></canvas>
+				<div v-if="showTooltip" class="tooltip" :style="{ top: tooltipY + 'px', left: tooltipX + 'px' }">
+					<p>Click to copy</p>
+				</div>
+			</div>
+			<nav aria-label="Kontrol halaman dokumen" class="pagination-float reader-controls">
                 <ul class="pagination pagination-primary justify-content-center">
-                    <li class="page-item"><a style="background-color: #435ebe; color: white;" class="page-link" href="javascript:void(0);" @click="prevPage">Prev</a></li>
-                    <li class="page-item"><a style="background-color: #435ebe; color: white;" class="page-link disabled" href="javascript:void(0);">{{ currentPage }}</a></li>
-                    <li class="page-item"><a style="background-color: #435ebe; color: white;" class="page-link disabled" href="javascript:void(0);">/</a></li>
-                    <li class="page-item"><a style="background-color: #435ebe; color: white;" class="page-link disabled" href="javascript:void(0);">{{ totalPages }}</a></li>
-                    <li class="page-item"><a style="background-color: #435ebe; color: white;" class="page-link" href="javascript:void(0);" @click="nextPage">Next</a></li>
+                    <li class="page-item"><a class="page-link" href="javascript:void(0);" @click="prevPage">Prev</a></li>
+                    <li class="page-item"><a class="page-link disabled" href="javascript:void(0);">{{ currentPage }}</a></li>
+                    <li class="page-item"><a class="page-link disabled" href="javascript:void(0);">/</a></li>
+                    <li class="page-item"><a class="page-link disabled" href="javascript:void(0);">{{ totalPages }}</a></li>
+                    <li class="page-item"><a class="page-link" href="javascript:void(0);" @click="nextPage">Next</a></li>
                     <li class="page-item">
-                        <select id="zoom" v-model="zoom" @change="renderPage" class="page-link h-100" style="background-color: #435ebe; color: white;">
+                        <select id="zoom" v-model="zoom" @change="renderPage" class="page-link h-100">
                             <option value="0.25">25%</option>
                             <option value="0.5">50%</option>
                             <option value="0.75">75%</option>
@@ -25,34 +32,25 @@
                         </select></li>
                 </ul>
             </nav>
-            
-            <!-- PDF Viewer -->
-            <canvas ref="pdfCanvas"></canvas>
-            
-            <!-- Tooltip -->
-            <div v-if="showTooltip" class="tooltip" :style="{ top: tooltipY + 'px', left: tooltipX + 'px' }">
-                <p>Click to copy</p>
-            </div>
-        </div>
-
-        <loading
-            :active="isLoading" 
-            :can-cancel="false"
-            :is-full-page="true"
-            :duration="0"
-            :overlay="true"
-            :spinner="true"
-            :color="'#8080ff'"
-            :background-color="'#111111'"
-            :width="110"
-            :height="110"
-            :opacity="0.4"
-            :z-index="1999"
-            text="'Mohon Tunggu'"
-        />
-    </section>
-    <div class="no-print">
-        <p class="text-center">This content Cannot printing.</p>
+			<loading
+				:active="isLoading"
+				:can-cancel="false"
+				:is-full-page="true"
+				:duration="0"
+				:overlay="true"
+				:spinner="true"
+				:color="'#8080ff'"
+				:background-color="'#111111'"
+				:width="110"
+				:height="110"
+				:opacity="0.4"
+				:z-index="1999"
+				text="'Mohon Tunggu'"
+			/>
+		</section>
+		<footer class="no-print reader-note">
+			<p>This content Cannot printing.</p>
+		</footer>
     </div>
 </template>
 
@@ -409,31 +407,130 @@ onUnmounted(() => {
 
 <style scoped>
 
+.reader-experience {
+  min-height: calc(100vh - 80px);
+  background: #f4f5f1;
+}
+
+.reader-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .8rem clamp(1rem, 4vw, 3rem);
+  color: #fff;
+  background: #202a27;
+}
+
+.reader-heading h1 {
+  margin: .15rem 0 0;
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+}
+
+.reader-eyebrow {
+  color: #b9d8c7;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+}
+
+.reader-finish {
+  padding: .55rem 1rem;
+  color: #fff;
+  background: #236b58;
+  border-color: #236b58;
+  border-radius: 7px;
+  font-weight: 700;
+}
+
+.reader-finish:hover {
+  background: #174b3d;
+  border-color: #174b3d;
+}
+
 #pdf-container {
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: 90%;
-  min-height: 90vh;
+  min-height: calc(100vh - 150px);
+  padding: 1rem;
+  background: #f4f5f1;
 }
+
+.reader-stage {
+  display: grid;
+  min-height: calc(100vh - 190px);
+  place-items: center;
+  overflow: auto;
+}
+
+.reader-stage canvas {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #dfe4de;
+  box-shadow: 0 5px 20px rgba(31, 48, 38, .1);
+}
+
+.reader-note {
+  padding: .5rem 1rem 1rem;
+  color: #64716c;
+  text-align: center;
+}
+
+.reader-note p {
+  margin: 0;
+}
+
 .pagination-float {
-    position: fixed; /* Use fixed to make it always visible at the bottom */
+    position: fixed;
     z-index: 10;
-    bottom: 0px; /* Space it a bit from the bottom */
+    bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
-    opacity: 0.3; /* Makes the pagination transparent */
-    transition: opacity 0.3s ease;
+    max-width: calc(100vw - 20px);
+    padding: .3rem;
+    background: rgba(255, 255, 255, .96);
+    border: 1px solid #e1e5df;
+    border-radius: 10px;
+    box-shadow: 0 6px 24px rgba(31, 48, 38, .14);
+    opacity: .94;
+    transition: opacity .2s ease;
 }
 .pagination-float:hover {
-    opacity: 0.7; /* Fully visible on hover */
+    opacity: 1;
+}
+
+.pagination-float .pagination {
+    flex-wrap: nowrap;
+    margin: 0;
+}
+
+.pagination-float .page-link {
+    min-width: 40px;
+    color: #202a27 !important;
+    background: #fff !important;
+    border-color: #e1e5df !important;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.pagination-float .page-link:not(.disabled):hover {
+    color: #174b3d !important;
+    background: #edf4ef !important;
+}
+
+.pagination-float select.page-link {
+    min-width: 68px;
+    padding-right: 1rem;
 }
 .tooltip {
     position: absolute;
-    background-color: #ff0000;
-    border: 1px solid #ccc;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    background-color: #202a27;
+    border: 1px solid #35423b;
+    border-radius: 6px;
+    padding: 8px 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
     cursor: pointer;
 }
 .zoom-selector {
@@ -481,11 +578,32 @@ onUnmounted(() => {
 
 @media (max-width: 1200px) {
     .pagination-float {
-        position: fixed; /* Use fixed to make it always visible at the bottom */
+        position: fixed;
 		z-index: 10;
-		bottom: 0px; /* Space it a bit from the bottom */
+		bottom: 12px;
         left: 50%;
-        opacity: 0.7;
+        opacity: .96;
+    }
+}
+
+@media (max-width: 420px) {
+    .pagination-float {
+        width: calc(100vw - 16px);
+        overflow-x: auto;
+    }
+
+    .pagination-float .page-link {
+        min-width: 34px;
+        padding: .35rem .45rem;
+        font-size: .85rem;
+    }
+
+    #pdf-container {
+        padding: .5rem;
+    }
+
+    .reader-header {
+        align-items: flex-start;
     }
 }
 </style>

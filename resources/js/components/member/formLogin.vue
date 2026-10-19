@@ -1,8 +1,12 @@
 <template>
-    <div class="page-heading">
-            <div class="col-md-5 col-12">
+    <div class="page-heading member-auth member-login-page">
+            <div class="col-md-5 col-12 login-column">
             <div id="auth-left">
-                <h1 class="auth-title">Masuk</h1>
+                    <router-link to="/" class="login-home-link">
+                        <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                        <span>Kembali ke beranda</span>
+                    </router-link>
+                    <h1 class="auth-title">Masuk</h1>
                 <p class="auth-subtitle mb-4">Masuk dengan email yang di daftarkan</p>
 
                 <form @submit.prevent="handleLogin">
@@ -109,3 +113,79 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.member-login-page {
+    display: grid;
+    min-height: min(68vh, 700px);
+    align-items: center;
+    justify-items: center;
+    padding: clamp(1rem, 4vw, 3rem) 0;
+}
+
+.member-login-page .login-column {
+    width: min(100%, 520px);
+    max-width: 520px;
+}
+
+.member-login-page #auth-left {
+    position: relative;
+    padding: clamp(1.4rem, 5vw, 3rem) !important;
+    border-top: 4px solid var(--member-accent, #236b58);
+    background: var(--member-surface, #fff);
+}
+
+.login-home-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    margin-bottom: 1.4rem;
+    color: var(--member-accent, #236b58);
+    font-size: .9rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.login-home-link:hover {
+    color: var(--member-ink, #1d2b29);
+    text-decoration: underline;
+}
+
+.login-home-link:focus-visible {
+    border-radius: 3px;
+    outline: 2px solid var(--member-accent, #236b58);
+    outline-offset: 4px;
+}
+
+.member-login-page .auth-title {
+    margin-bottom: .4rem;
+    font-size: clamp(2rem, 5vw, 2.8rem) !important;
+}
+
+.member-login-page .auth-subtitle {
+    margin-bottom: 2rem !important;
+}
+
+.member-login-page form .form-group {
+    margin-bottom: 1rem !important;
+}
+
+.member-login-page form .form-control {
+    min-height: 50px;
+    padding-left: 3rem;
+}
+
+.member-login-page .form-control-icon {
+    color: var(--member-muted, #64716c);
+}
+
+.member-login-page button[type="submit"] {
+    min-height: 48px;
+    margin-top: .5rem !important;
+    box-shadow: none !important;
+}
+
+.member-login-page .text-center {
+    margin-top: 1.25rem;
+}
+</style>

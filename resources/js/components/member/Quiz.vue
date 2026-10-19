@@ -1,33 +1,33 @@
 <template>
-    <div class="page-content">
-		<div class="col-12">
-			<div v-if="quizs <= 0" class="row">
-				<div class="card" style="height: 400px;">
-					<p></p>
+    <div class="page-content quiz-list-page">
+		<header class="quiz-library-heading">
+			<span class="quiz-eyebrow">AKTIVITAS BELAJAR</span>
+			<h1>Kuis</h1>
+		</header>
+		<section v-if="quizs <= 0" class="quiz-empty-state">
+				<div class="card">
 					<div class="card-content d-flex flex-column text-center">
 						<h1>Tidak Ada Quiz</h1>
 					</div>
 				</div>
-			</div>
-			<div v-else class="row">
-				<div v-for="(data, i) in quizs" :key="i" class="col-12 col-lg-4 mb-2 mt-2">
-					<div class="card hover-shadow">
+		</section>
+		<section v-else class="row quiz-grid" aria-label="Daftar kuis">
+				<article v-for="(data, i) in quizs" :key="i" class="col-12 col-lg-4 mb-2 mt-2">
+					<div class="card hover-shadow quiz-card">
 						<div class="card-content d-flex flex-column">
-							<div class="d-flex justify-content-center align-items-center flex-column mt-3 mb-0 mx-4 mb-0 py-1" style="height: 55px; max-height: 55px;" :title="data.title">
-								<h6 class="mb-0">{{ data.title }}</h6>
-							</div>
+							<header class="d-flex justify-content-center align-items-center flex-column mt-3 mb-0 mx-4 py-1 quiz-card-heading" :title="data.title">
+								<h2 class="mb-0">{{ data.title }}</h2>
+							</header>
 							<hr>
 							<div class="card-body-quiz" style="height: 125px;">
-								<div class="card-description-quiz mx-4 mb-0 h-100" style="display: -webkit-box; line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;" :title="data.description">
+								<p class="card-description-quiz mx-4 mb-0 h-100" style="display: -webkit-box; line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;" :title="data.description">
 									{{ data.description }}
-								</div>
+								</p>
 							</div>
-							<div class="row mx-2">
-								<div class="col-12 text-center mb-2">
-									<small class="text-muted"><i class="bi bi-calendar-check"></i> Tenggat Waktu : {{ data.start_date }} s/d {{ data.start_date }}</small>
-								</div>
+							<div class="quiz-date mx-2">
+								<small class="text-muted"><i class="bi bi-calendar-check"></i> Tenggat Waktu : {{ data.start_date }} s/d {{ data.start_date }}</small>
 							</div>
-							<div class="card-footer-quiz mb-1">
+							<footer class="card-footer-quiz mb-1">
 								<div class="row mx-2">
 									<div class="card-date-quiz mb-1">
 										<button :class="data.finished ? 'btn btn-success btn-block' : 'btn btn-primary btn-block'" @click="goToQuiz(data.id, data.finished)">{{ data.finished ? 'Lihat Nilai' : 'Lihat Quiz' }}</button>
@@ -36,12 +36,11 @@
 										<small class="text-muted"><i class="bi bi-person-circle"></i> <strong>{{ data.name }}</strong></small>
 									</div>
 								</div>
-							</div>
+							</footer>
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
+				</article>
+		</section>
     </div>
 </template>
 
@@ -170,6 +169,112 @@ export default {
 </script>
 
 <style scoped>
+	.quiz-list-page {
+		padding-top: .5rem;
+	}
+
+	.quiz-library-heading {
+		margin-bottom: 1.5rem;
+		padding-bottom: 1rem;
+		border-bottom: 1px solid var(--member-line, #e4e8e2);
+	}
+
+	.quiz-library-heading h1 {
+		margin: .25rem 0 0;
+		font-size: clamp(1.8rem, 4vw, 2.8rem);
+	}
+
+	.quiz-eyebrow {
+		color: var(--member-accent, #236b58);
+		font-size: .72rem;
+		font-weight: 800;
+		letter-spacing: .12em;
+	}
+
+	.quiz-grid {
+		--bs-gutter-x: 1.25rem;
+		--bs-gutter-y: 1.25rem;
+	}
+
+	.quiz-card {
+		height: 100%;
+		overflow: hidden;
+		border-top: 3px solid var(--member-accent, #236b58);
+	}
+
+	.quiz-card .card-content {
+		height: 100%;
+	}
+
+	.quiz-card .card-content > .d-flex:first-child {
+		min-height: 84px !important;
+		height: auto !important;
+		max-height: none !important;
+		padding: 1.1rem 1rem .75rem !important;
+		align-items: flex-start !important;
+	}
+
+	.quiz-card-heading h2 {
+		font-size: 1.15rem;
+		font-weight: 750;
+	}
+
+	.quiz-date {
+		margin-bottom: .75rem;
+		text-align: center;
+	}
+
+	.quiz-card .card-content > .d-flex:first-child h6 {
+		font-size: 1.15rem;
+		line-height: 1.35;
+	}
+
+	.quiz-card hr {
+		margin: 0 1.25rem;
+		border-color: var(--member-line, #e4e8e2);
+	}
+
+	.quiz-card .card-body-quiz {
+		height: auto !important;
+		min-height: 100px;
+		padding: 1rem 1.25rem;
+		text-align: left;
+	}
+
+	.quiz-card .card-description-quiz {
+		margin: 0 !important;
+		line-height: 1.6;
+	}
+
+	.quiz-card .card-footer-quiz {
+		margin-top: auto;
+		padding: .9rem 1rem .5rem;
+		background: var(--member-soft, #edf4ef);
+	}
+
+	.quiz-card .card-footer-quiz .row {
+		margin: 0 !important;
+	}
+
+	.quiz-card .card-author-quiz {
+		margin: .55rem 0 .25rem;
+	}
+
+	.quiz-empty-state .card {
+		display: grid;
+		min-height: 300px;
+		place-items: center;
+		background: var(--member-soft, #edf4ef);
+		border-style: dashed;
+		box-shadow: none;
+	}
+
+	@media (max-width: 575px) {
+		.quiz-card .card-body-quiz {
+			min-height: 80px;
+		}
+	}
+
 	.card-header-quiz {
 		font-weight: bold;
 		text-align: center;

@@ -1,5 +1,5 @@
 <template>
-	<div id="game-content" class="game-container-wrapper">
+	<div id="game-content" class="game-container-wrapper flying-bird-game">
 	  <!-- The PixiJS canvas will be inserted here -->
 	  
 	  <!-- Game Over Screen -->
@@ -291,6 +291,21 @@
   </script>
   
   <style scoped>
+  .flying-bird-game {
+	min-height: min(78vh, 720px);
+	overflow: hidden;
+	background: var(--member-soft, #edf4ef);
+	border: 1px solid var(--member-line, #dce4dc);
+	border-radius: 10px;
+  }
+
+  .flying-bird-game :deep(canvas) {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	margin: 0 auto;
+  }
+
   #game-content {
 	width: 100%;
 	position: relative;
@@ -301,11 +316,14 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background-color: rgba(0, 0, 0, 0.7);
-	padding: 20px;
-	border-radius: 10px;
+	width: min(90%, 420px);
+	padding: clamp(1.2rem, 4vw, 2rem);
+	background-color: var(--member-accent, #236b58);
+	border: 1px solid rgba(255, 255, 255, .25);
+	border-radius: 8px;
 	color: white;
 	text-align: center;
+	box-shadow: 0 16px 48px rgba(20, 43, 34, .25);
   }
   
   .score {
@@ -313,7 +331,10 @@
 	top: 20px;
 	left: 20px;
 	font-size: 20px;
+	padding: .65rem 1rem;
 	color: white;
+	background: var(--member-accent, #236b58);
+	border-radius: 6px;
   }
   
   @media (max-width: 600px) {

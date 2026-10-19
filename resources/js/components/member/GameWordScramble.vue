@@ -1,6 +1,5 @@
 <template>
-	<div id="game-content" class="card w-100 full-screen-card">
-	  <!-- Modal -->
+	<div id="game-content" class="card w-100 full-screen-card word-scramble-game">
 	  <div id="modal">
 		<div id="modalContent">
 		  <h4 :class="(currentScore >= 8 ? 'text-success' : (currentScore <= 7 && currentScore >= 5 ? 'text-warning' : 'text-danger'))">Skor Anda : {{ currentScore }}</h4>
@@ -10,16 +9,18 @@
 		</div>
 	  </div>
   
-	  <!-- Game UI -->
-	  <div v-if="!gameOver">
-		<h2>Susun huruf untuk membentuk kata dalam Bahasa Indonesia!</h2>
-		<p class="d-flex justify-content-center">
+	  <section v-if="!gameOver" class="word-scramble-content" aria-label="Permainan susun kata">
+		<header class="word-scramble-header">
+			<div>
+				<span class="word-scramble-eyebrow">PERMAINAN KATA</span>
+				<h1>Susun huruf untuk membentuk kata dalam Bahasa Indonesia!</h1>
+			</div>
 			<div class="team">
 				<span class="name mx-2">Skor</span>
 				<span class="score mx-2">{{ currentScore }}</span>
 			</div>
-		</p>
-		<div class="d-flex justify-content-center mb-2">
+		</header>
+		<section class="word-scramble-puzzle" aria-label="Huruf acak">
 			<div id="scrambled-word" class="captcha-container">
 				<h2 class="captcha">
 					<span v-for="(char, index) in scrambledWord" :key="index" :style="generateStyle(index)">
@@ -27,21 +28,22 @@
 					</span>
 				</h2>
 			</div>
-		</div>
-		<div v-if="feedback" class="feedback">
+		</section>
+		<div v-if="feedback" class="feedback word-scramble-feedback" aria-live="polite">
 			<h4 :class="[isCorrectAnswer ? 'text-success' : 'text-danger', 'animated-feedback']">
 			{{ feedback }}
 			</h4>
 		</div>
-		<input 
-		  type="text" 
-		  v-model="userGuess" 
-		  placeholder="Masukkan jawaban" 
-		  @keyup.enter="checkAnswer"
-		/>
-		<button @click="checkAnswer">Periksa Jawaban</button>
-
-		<div v-if="feedback" class="feedback">
+		<div class="word-scramble-answer">
+			<input
+			  type="text"
+			  v-model="userGuess"
+			  placeholder="Masukkan jawaban"
+			  @keyup.enter="checkAnswer"
+			/>
+			<button type="button" @click="checkAnswer">Periksa Jawaban</button>
+		</div>
+		<div v-if="feedback" class="feedback word-scramble-illustration">
 			<img 
 				v-if="isCorrectAnswer" 
 				src="game/scramble/correct.webp" 
@@ -55,7 +57,7 @@
 				class="feedback-image"
 			/>
 		</div>
-	  </div>
+		</section>
 	</div>
   </template>
   
@@ -267,6 +269,133 @@ export default {
   </script>
   
   <style scoped>
+	.word-scramble-game {
+		width: min(100%, 860px) !important;
+		height: auto;
+		min-height: min(78vh, 720px);
+		margin: 0 auto;
+		padding: clamp(1.1rem, 4vw, 2.5rem);
+		overflow: visible;
+		border-top: 4px solid var(--member-accent, #236b58);
+		text-align: center;
+	}
+
+	.word-scramble-content {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		justify-content: center;
+		gap: 1.25rem;
+		width: min(100%, 720px);
+		margin: 0 auto;
+	}
+
+	.word-scramble-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		text-align: left;
+	}
+
+	.word-scramble-header h1 {
+		max-width: 34ch;
+		margin: .3rem 0 0;
+		font-size: clamp(1.2rem, 3vw, 1.8rem);
+		line-height: 1.35;
+	}
+
+	.word-scramble-eyebrow {
+		color: var(--member-accent, #236b58);
+		font-size: .68rem;
+		font-weight: 800;
+		letter-spacing: .12em;
+	}
+
+	.word-scramble-puzzle {
+		display: grid;
+		min-height: 180px;
+		place-items: center;
+		padding: 1rem;
+		background: var(--member-soft, #edf4ef);
+		border: 1px solid var(--member-line, #dce4dc);
+		border-radius: 8px;
+	}
+
+	.word-scramble-game .team {
+		width: max-content;
+		min-width: 120px;
+		background: var(--member-accent, #236b58);
+		border-radius: 7px;
+		box-shadow: none;
+	}
+
+	.word-scramble-answer {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: center;
+		gap: .75rem;
+	}
+
+	.word-scramble-game input {
+		max-width: 520px;
+		min-height: 48px;
+		margin: 0;
+		border: 1px solid var(--member-line, #dce4dc);
+		border-radius: 6px;
+	}
+
+	.word-scramble-answer button {
+		padding: .7rem 1.2rem;
+		background: var(--member-accent, #236b58);
+		border-radius: 5px;
+	}
+
+	.word-scramble-feedback,
+	.word-scramble-illustration {
+		min-height: 32px;
+		margin: 0;
+	}
+
+	.word-scramble-feedback h4 {
+		margin: 0;
+	}
+
+	.word-scramble-game .captcha-container {
+		max-width: 100%;
+		min-height: 90px;
+		padding: .8rem;
+		background: var(--member-soft, #edf4ef);
+		border-color: var(--member-line, #dce4dc);
+	}
+
+	.word-scramble-game #scrambled-word h2.captcha {
+		flex-wrap: wrap;
+	}
+
+	.word-scramble-game #scrambled-word h2.captcha span {
+		margin: 0 .18rem;
+		font-size: clamp(1.4rem, 7vw, 2.5rem);
+	}
+
+	.word-scramble-game .feedback-image {
+		width: min(180px, 45vw);
+		height: min(180px, 45vw);
+	}
+
+	.word-scramble-game #modalContent {
+		width: min(92vw, 440px);
+		padding: clamp(1.25rem, 4vw, 2rem);
+		border-radius: 8px;
+		box-shadow: 0 16px 48px rgba(20, 43, 34, .2);
+	}
+
+	.word-scramble-game #modalContent button {
+		min-width: 92px;
+		background: var(--member-accent, #236b58);
+		border-radius: 5px;
+	}
+
   .full-screen-card {
 	height: 85vh; /* Adjust the 100px as needed for additional height */
 	overflow-y: auto;
@@ -276,6 +405,21 @@ export default {
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
+	}
+
+	@media (max-width: 575px) {
+		.word-scramble-header {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+
+		.word-scramble-answer {
+			grid-template-columns: 1fr;
+		}
+
+		.word-scramble-answer button {
+			min-height: 46px;
+		}
 	}
 
 	.card {

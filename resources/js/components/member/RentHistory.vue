@@ -1,21 +1,26 @@
 <template>
-    <section class="section">
-        <div class="card overflow-auto">
-            <div class="card-header text-center">
-                <h2>Riwayat Peminjaman</h2>
+    <section class="section rent-history-page">
+        <div class="card overflow-auto rent-history-card">
+            <div class="card-header rent-history-header">
+                <div>
+                    <span class="rent-history-eyebrow">AKTIVITAS AKUN</span>
+                    <h2>Riwayat Peminjaman</h2>
+                </div>
             </div>
-            <div class="card-body">
-                <table class="table table-striped responsive-table" id="data_rst">
-                    <thead>
-                        <tr>
-                            <th>Judul Buku</th>
-                            <th>Cover</th>
-                            <th>Tanggal Pinjam</th>
-                            <th>Tanggal Kembali</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                </table>
+            <div class="card-body rent-history-body">
+                <div class="table-responsive rent-table-wrap">
+                    <table class="table table-striped responsive-table" id="data_rst">
+                        <thead>
+                            <tr>
+                                <th>Judul Buku</th>
+                                <th>Cover</th>
+                                <th>Tanggal Pinjam</th>
+                                <th>Tanggal Kembali</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </section>
@@ -169,3 +174,99 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.rent-history-card {
+    overflow: hidden !important;
+    border-top: 3px solid var(--member-accent, #236b58);
+}
+
+.rent-history-header {
+    padding: 1.5rem clamp(1rem, 3vw, 2rem);
+    text-align: left;
+    background: var(--member-soft, #edf4ef);
+    border-bottom: 1px solid var(--member-line, #e4e8e2);
+}
+
+.rent-history-header h2 {
+    margin: 0;
+    font-size: clamp(1.35rem, 3vw, 1.8rem);
+}
+
+.rent-history-eyebrow {
+    display: block;
+    margin-bottom: .3rem;
+    color: var(--member-accent, #236b58);
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+}
+
+.rent-history-body {
+    padding: clamp(.8rem, 2.5vw, 1.5rem);
+}
+
+.rent-history-body :deep(.dataTables_wrapper) {
+    overflow-x: auto;
+}
+
+.rent-history-body :deep(.dataTables_length),
+.rent-history-body :deep(.dataTables_filter) {
+    margin-bottom: 1rem;
+}
+
+.rent-history-body :deep(.dataTables_filter input),
+.rent-history-body :deep(.dataTables_length select) {
+    min-height: 40px;
+    padding: .45rem .7rem;
+    border: 1px solid var(--member-line, #dce4dc);
+    border-radius: 6px;
+    background: var(--member-surface, #fff);
+}
+
+.rent-history-body :deep(table) {
+    min-width: 620px;
+    margin: 0;
+    vertical-align: middle;
+}
+
+.rent-history-body :deep(th) {
+    padding: .9rem .75rem;
+    color: var(--member-muted, #64716c);
+    font-size: .75rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    background: var(--member-soft, #edf4ef);
+}
+
+.rent-history-body :deep(td) {
+    padding: .8rem .75rem;
+}
+
+.rent-history-body :deep(.dataTables_info),
+.rent-history-body :deep(.dataTables_paginate) {
+    margin-top: 1rem;
+}
+
+.rent-history-page :deep(.modal-content) {
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.rent-history-page :deep(#modalImage) {
+    max-height: 70vh;
+    object-fit: contain;
+}
+
+@media (max-width: 575px) {
+    .rent-history-body :deep(.dataTables_filter),
+    .rent-history-body :deep(.dataTables_length) {
+        float: none;
+        text-align: left;
+    }
+
+    .rent-history-body :deep(.dataTables_filter input) {
+        max-width: 100%;
+    }
+}
+</style>

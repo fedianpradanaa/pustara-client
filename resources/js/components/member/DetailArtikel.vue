@@ -1,24 +1,24 @@
 <template>
-    <div class="page-content">
-        <div class="col-12">
-            <div class="card h-100">
-                <div v-if="article.length != 0" class="card-content d-flex flex-column">
-                    <div class="text-center">
+    <div class="page-content article-detail-page">
+        <div class="col-12 article-detail-shell">
+            <article class="card h-100 article-detail-card">
+                <div v-if="article.length != 0" class="card-content article-content-layout">
+                    <figure class="article-detail-cover">
                         <img :src="article[0].image" class="img-fluid">
-                    </div>
-                    <div class="card-body">
-                        <div class="card-title mb-3">
-                            <h5>
+                    </figure>
+                    <div class="card-body article-detail-copy">
+                        <header class="article-prose-header">
+                            <h1>
                                 {{ article[0].title }}
-                            </h5>
-                            <div v-if="idart=='TU' || idart=='RB'">
-                                <small class="text-muted mt-0">Oleh <strong>{{ article[0].author }}</strong> | {{ article[0].published_at }}</small>
-                            </div>
-                        </div>
-                        <span v-html="article[0].content"></span>
+                            </h1>
+                            <p v-if="idart=='TU' || idart=='RB'" class="article-byline">
+                                Oleh <strong>{{ article[0].author }}</strong><span aria-hidden="true"> · </span>{{ article[0].published_at }}
+                            </p>
+                        </header>
+                        <div class="article-prose" v-html="article[0].content"></div>
                     </div>
                 </div>
-            </div>
+            </article>
         </div>
     </div>
 </template>
@@ -109,3 +109,91 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.article-detail-shell {
+    max-width: 1040px;
+    margin: 0 auto;
+}
+
+.article-detail-card {
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.article-detail-cover {
+    display: grid;
+    min-height: 220px;
+    max-height: 540px;
+    place-items: center;
+    overflow: hidden;
+    background: var(--member-soft, #edf4ef);
+}
+
+.article-detail-cover img {
+    display: block;
+    width: 100%;
+    max-height: 540px;
+    object-fit: cover;
+}
+
+.article-detail-cover {
+    margin: 0;
+}
+
+.article-prose-header {
+    max-width: 72ch;
+    margin: 0 auto 2rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--member-line, #e4e8e2);
+}
+
+.article-prose-header h1 {
+    margin: 0;
+    font-size: clamp(1.7rem, 4vw, 2.8rem);
+    line-height: 1.15;
+    letter-spacing: -.03em;
+}
+
+.article-byline {
+    margin: .8rem 0 0;
+    color: var(--member-muted, #64716c);
+}
+
+.article-prose {
+    max-width: 72ch;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+.article-detail-copy {
+    width: min(100%, 820px);
+    margin: 0 auto;
+    padding: clamp(1.25rem, 4vw, 3rem);
+    font-size: 1rem;
+    line-height: 1.85;
+}
+
+.article-detail-copy .card-title {
+    margin-bottom: 1.5rem !important;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--member-line, #e4e8e2);
+}
+
+.article-detail-copy .card-title h5 {
+    margin-bottom: .75rem;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    line-height: 1.2;
+}
+
+.article-detail-copy :deep(img) {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 575px) {
+    .article-detail-cover {
+        min-height: 160px;
+    }
+}
+</style>

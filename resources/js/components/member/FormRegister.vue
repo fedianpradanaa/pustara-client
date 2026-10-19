@@ -1,9 +1,15 @@
 <template>
-    <div class="page-heading">
-        <div class="row">
-            <h1 class="auth-title">Daftar Member</h1>
-            <p class="auth-subtitle mb-4">Masukkan data untuk jadi member perpustakaan</p>
-            <form class="form" @submit.prevent="handleRegister">
+    <div class="page-heading member-auth member-register-page">
+        <div class="row register-layout">
+            <div class="register-intro">
+                <router-link to="/" class="register-home-link">
+                    <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                    <span>Kembali ke beranda</span>
+                </router-link>
+                <h1 class="auth-title">Daftar Member</h1>
+                <p class="auth-subtitle mb-4">Masukkan data untuk jadi member perpustakaan</p>
+            </div>
+            <form class="form register-form" @submit.prevent="handleRegister">
                 <div class="row">
                     <div class="col-md-6 col-12">
                         <div class="form-group">
@@ -225,3 +231,104 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.member-register-page {
+    padding: clamp(.5rem, 2vw, 1.5rem) 0 2rem;
+}
+
+.register-layout {
+    max-width: 920px;
+    margin: 0 auto;
+}
+
+.register-intro {
+    padding: clamp(1.25rem, 4vw, 2rem) clamp(1.25rem, 4vw, 2rem) 1rem;
+    border-top: 4px solid var(--member-accent, #236b58);
+    background: var(--member-soft, #edf4ef);
+}
+
+.register-home-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    margin-bottom: 1.2rem;
+    color: var(--member-accent, #236b58);
+    font-size: .9rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.register-home-link:hover {
+    color: var(--member-ink, #1d2b29);
+    text-decoration: underline;
+}
+
+.register-home-link:focus-visible {
+    border-radius: 3px;
+    outline: 2px solid var(--member-accent, #236b58);
+    outline-offset: 4px;
+}
+
+.register-intro .auth-title {
+    margin-bottom: .35rem;
+    font-size: clamp(1.9rem, 4vw, 2.6rem) !important;
+}
+
+.register-intro .auth-subtitle {
+    margin: 0 !important;
+}
+
+.register-form {
+    padding: clamp(1rem, 4vw, 2rem);
+    background: var(--member-surface, #fff);
+    border: 1px solid var(--member-line, #e4e8e2);
+    border-top: 0;
+}
+
+.register-form > .row {
+    --bs-gutter-x: 1.2rem;
+    --bs-gutter-y: .2rem;
+}
+
+.register-form .form-group {
+    margin-bottom: .75rem;
+}
+
+.register-form .form-group label {
+    display: block;
+    margin-bottom: .4rem;
+    font-size: .88rem;
+    font-weight: 700;
+}
+
+.register-form .form-control,
+.register-form .form-select {
+    min-height: 48px;
+}
+
+.register-form .form-control-icon {
+    color: var(--member-muted, #64716c);
+}
+
+.register-form button[type="submit"] {
+    min-width: 170px;
+    min-height: 46px;
+    box-shadow: none !important;
+}
+
+.register-form .col-12.d-flex {
+    align-items: center;
+}
+
+@media (max-width: 575px) {
+    .register-layout {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .register-form {
+        padding: 1rem;
+    }
+}
+</style>

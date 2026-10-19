@@ -1,3 +1,4 @@
+if (!document.querySelector('.member-layout')) {
 document.querySelector('.burger-btn').addEventListener('click', (e) => {
     e.preventDefault()
     e.stopPropagation()
@@ -106,4 +107,5 @@ function listenerLg(){
             });
         }
     });
+}
 }
