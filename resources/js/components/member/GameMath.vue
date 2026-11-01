@@ -395,7 +395,7 @@
         border: 1px solid var(--member-accent, #236b58);
         border-radius: 5px;
         color: #fff;
-        background: var(--member-accent, #236b58);
+        background: var(--member-button, #236b58);
     }
   </style>
   

@@ -325,7 +325,7 @@ export default {
 	.word-scramble-game .team {
 		width: max-content;
 		min-width: 120px;
-		background: var(--member-accent, #236b58);
+		background: var(--member-button, #236b58);
 		border-radius: 7px;
 		box-shadow: none;
 	}
@@ -347,7 +347,7 @@ export default {
 
 	.word-scramble-answer button {
 		padding: .7rem 1.2rem;
-		background: var(--member-accent, #236b58);
+		background: var(--member-button, #236b58);
 		border-radius: 5px;
 	}
 
@@ -392,7 +392,7 @@ export default {
 
 	.word-scramble-game #modalContent button {
 		min-width: 92px;
-		background: var(--member-accent, #236b58);
+		background: var(--member-button, #236b58);
 		border-radius: 5px;
 	}
 

@@ -388,7 +388,7 @@ export default {
 	min-width: 190px;
 	height: 48px;
 	padding: 0 .8rem;
-	background: var(--member-accent, #236b58);
+	background: var(--member-button, #236b58);
 	border-radius: 7px;
 	box-shadow: none;
 }

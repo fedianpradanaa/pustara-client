@@ -105,7 +105,7 @@
                                                                                 <input type="file" ref="wawasan_files" id="file" name="file" @change="onChangeIcon" accept=".png,.jpg,.jpeg" />
                                                                             </Field>
                                                                             <ErrorMessage name="file" class="invalid-feedback animated fadeIn mt-0 mb-1" style="display:block;" />
-                                                                            <br><small class="text-muted">Max. size: 1500 kb (700x350 pixels)<br>File types: png, jpg, jpeg</small>
+                                                                            <br><small class="text-muted">Ukuran maks. 1500 KB. Disarankan: 1200 x 600 px (lanskap, rasio 2:1). Gambar ditampilkan utuh di desktop dan mobile.<br>Format: PNG, JPG, JPEG</small>
                                                                         </div>
                                                                     </div>
                                                                 </div>

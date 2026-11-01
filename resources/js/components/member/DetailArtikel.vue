@@ -4,7 +4,7 @@
             <article class="card h-100 article-detail-card">
                 <div v-if="article.length != 0" class="card-content article-content-layout">
                     <figure class="article-detail-cover">
-                        <img :src="article[0].image" class="img-fluid">
+                        <img :src="article[0].image" :alt="article[0].title" class="img-fluid">
                     </figure>
                     <div class="card-body article-detail-copy">
                         <header class="article-prose-header">
@@ -124,7 +124,6 @@ export default {
 .article-detail-cover {
     display: grid;
     min-height: 220px;
-    max-height: 540px;
     place-items: center;
     overflow: hidden;
     background: var(--member-soft, #edf4ef);
@@ -133,8 +132,8 @@ export default {
 .article-detail-cover img {
     display: block;
     width: 100%;
-    max-height: 540px;
-    object-fit: cover;
+    max-height: min(72vh, 680px);
+    object-fit: contain;
 }
 
 .article-detail-cover {

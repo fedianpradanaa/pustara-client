@@ -96,7 +96,7 @@ export default {
                 return new bootstrap.Tooltip(tooltipTriggerEl)
             })
         }, false);
-        console.log(sessionStorage.getItem("fromOffline"));
+        // console.log(sessionStorage.getItem("fromOffline"));
     },
 
     methods: {
@@ -193,8 +193,29 @@ export default {
         --member-line: #e4e8e2;
         --member-accent: #236b58;
         --member-accent-dark: #174b3d;
+        --member-button: #236b58;
+        --member-button-hover: #174b3d;
         --member-soft: #edf4ef;
+        --member-panel: #174b3d;
+        --member-editorial-orange: #e7a348;
+        --member-quote-bg: #e5eee6;
+        --member-quote-card: rgba(255, 255, 255, .64);
+        --member-review-bg: #f2f4ef;
+        --member-review-line: #d4ddd5;
+        --member-cover-bg: #e4e9e1;
+        --member-humoria-bg: #fff4e8;
+        --member-humoria-line: #ecd8c0;
+        --member-humoria-card-line: #f1dfca;
+        --member-humoria-ink: #372b20;
+        --member-humoria-muted: #756453;
+        --member-humoria-link: #81501f;
+        --member-humoria-number: #cf7730;
+        --member-humoria-image: #f6e2ca;
+        --member-humoria-sticker: #ffe09b;
+        --member-humoria-sticker-ink: #8a4a19;
+        --member-humoria-sticker-line: #fff;
         min-height: 100vh;
+        min-height: 100dvh;
         color: var(--member-ink);
         background: var(--member-paper);
         font-family: 'Nunito', sans-serif;
@@ -209,16 +230,152 @@ export default {
         --member-line: #35423b;
         --member-accent: #83c8aa;
         --member-accent-dark: #a0dbc1;
+        --member-button: #236b58;
+        --member-button-hover: #174b3d;
         --member-soft: #293a32;
+        --member-panel: #26372e;
+        --member-editorial-orange: #f2ba6e;
+        --member-quote-bg: #24352c;
+        --member-quote-card: rgba(13, 20, 16, .55);
+        --member-review-bg: #202824;
+        --member-review-line: #3c4942;
+        --member-cover-bg: #293a32;
+        --member-humoria-bg: #2e281f;
+        --member-humoria-line: #57432f;
+        --member-humoria-card-line: #57432f;
+        --member-humoria-ink: #eddfd0;
+        --member-humoria-muted: #c4b29e;
+        --member-humoria-link: #e5b983;
+        --member-humoria-number: #81501f;
+        --member-humoria-image: #24231f;
+        --member-humoria-sticker: #574329;
+        --member-humoria-sticker-ink: #f0c77e;
+        --member-humoria-sticker-line: #2e281f;
+        color-scheme: dark;
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .bg-white),
+    :global(html[data-bs-theme="dark"] #app-usr .bg-light),
+    :global(html[data-bs-theme="dark"] #app-usr .bg-body) {
+        color: var(--member-ink);
+        background-color: var(--member-surface) !important;
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .bg-white .text-white),
+    :global(html[data-bs-theme="dark"] #app-usr .bg-light .text-white),
+    :global(html[data-bs-theme="dark"] #app-usr .card .text-white) {
+        color: var(--member-ink) !important;
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .text-dark),
+    :global(html[data-bs-theme="dark"] #app-usr .card .text-dark) {
+        color: var(--member-ink) !important;
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .text-secondary),
+    :global(html[data-bs-theme="dark"] #app-usr .text-body-secondary) {
+        color: var(--member-muted) !important;
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .text-primary),
+    :global(html[data-bs-theme="dark"] #app-usr .link-primary) {
+        color: var(--member-accent) !important;
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .form-control),
+    :global(html[data-bs-theme="dark"] #app-usr .form-select),
+    :global(html[data-bs-theme="dark"] #app-usr .input-group-text) {
+        color: var(--member-ink);
+        background-color: var(--member-surface);
+        border-color: var(--member-line);
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .form-control:disabled),
+    :global(html[data-bs-theme="dark"] #app-usr .form-select:disabled) {
+        color: var(--member-muted);
+        background-color: var(--member-soft);
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .form-control::placeholder) {
+        color: var(--member-muted);
+        opacity: 1;
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .table-light) {
+        --bs-table-color: var(--member-ink);
+        --bs-table-bg: var(--member-surface);
+        --bs-table-border-color: var(--member-line);
+        --bs-table-striped-bg: var(--member-soft);
+        --bs-table-striped-color: var(--member-ink);
+        --bs-table-active-bg: var(--member-soft);
+        --bs-table-active-color: var(--member-ink);
+        --bs-table-hover-bg: var(--member-soft);
+        --bs-table-hover-color: var(--member-ink);
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .list-group-item),
+    :global(html[data-bs-theme="dark"] #app-usr .accordion-item),
+    :global(html[data-bs-theme="dark"] #app-usr .accordion-button) {
+        color: var(--member-ink);
+        background-color: var(--member-surface);
+        border-color: var(--member-line);
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .accordion-button:not(.collapsed)) {
+        color: var(--member-accent);
+        background-color: var(--member-soft);
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .modal-content),
+    :global(html[data-bs-theme="dark"] #app-usr .popover) {
+        color: var(--member-ink);
+        background-color: var(--member-surface);
+        border-color: var(--member-line);
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .modal-header),
+    :global(html[data-bs-theme="dark"] #app-usr .modal-footer),
+    :global(html[data-bs-theme="dark"] #app-usr .popover-header) {
+        color: var(--member-ink);
+        background-color: var(--member-surface);
+        border-color: var(--member-line);
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .product-card),
+    :global(html[data-bs-theme="dark"] #app-usr #modalContent),
+    :global(html[data-bs-theme="dark"] #app-usr .captcha-container) {
+        color: var(--member-ink);
+        background-color: var(--member-surface);
+        border-color: var(--member-line);
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .team) {
+        background-color: #1f4b65;
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .button-quiz) {
+        color: #fff;
+        background-color: var(--member-button);
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .page-content .product-image) {
+        background-color: var(--member-paper);
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr #AvatarFileUpload) {
+        background-color: var(--member-paper);
+        border-color: var(--member-line);
     }
 
     .member-layout {
         min-height: 100vh;
+        min-height: 100dvh;
         overflow-x: clip;
     }
 
     #main.member-layout {
-        display: block;
+        display: flex;
+        flex-direction: column;
         margin-left: 0;
         padding: 0;
     }
@@ -226,13 +383,29 @@ export default {
     #app-usr :deep(.content-wrapper) {
         width: auto;
         max-width: 1500px;
-        min-height: calc(100vh - 76px);
+        min-height: 0;
+        flex: 1 0 auto;
         margin: 76px 0 0 256px;
         padding: 2rem clamp(1.25rem, 3vw, 3rem) 4rem;
     }
 
+    #app-usr :deep(.bottom-mobile) {
+        flex: 0 0 auto;
+        margin-left: 256px;
+        padding: 0 clamp(1.25rem, 3vw, 3rem) max(1rem, env(safe-area-inset-bottom));
+    }
+
+    #app-usr :deep(.bottom-mobile .container) {
+        width: 100%;
+        max-width: 1500px;
+    }
+
     #main.auth-layout :deep(.member-sidebar) {
         display: none !important;
+    }
+
+    #main.auth-layout :deep(.bottom-mobile) {
+        margin-left: 0;
     }
 
     #main.auth-layout :deep(.member-topbar) {
@@ -334,14 +507,14 @@ export default {
     }
 
     #app-usr :deep(.btn-primary) {
-        --bs-btn-bg: var(--member-accent);
-        --bs-btn-border-color: var(--member-accent);
-        --bs-btn-hover-bg: var(--member-accent-dark);
-        --bs-btn-hover-border-color: var(--member-accent-dark);
-        --bs-btn-active-bg: var(--member-accent-dark);
-        --bs-btn-active-border-color: var(--member-accent-dark);
-        --bs-btn-disabled-bg: var(--member-accent);
-        --bs-btn-disabled-border-color: var(--member-accent);
+        --bs-btn-bg: var(--member-button);
+        --bs-btn-border-color: var(--member-button);
+        --bs-btn-hover-bg: var(--member-button-hover);
+        --bs-btn-hover-border-color: var(--member-button-hover);
+        --bs-btn-active-bg: var(--member-button-hover);
+        --bs-btn-active-border-color: var(--member-button-hover);
+        --bs-btn-disabled-bg: var(--member-button);
+        --bs-btn-disabled-border-color: var(--member-button);
         color: #fff;
         border-radius: 7px;
         box-shadow: none;
@@ -382,8 +555,8 @@ export default {
     }
 
     #app-usr :deep(.form-check-input:checked) {
-        background-color: var(--member-accent);
-        border-color: var(--member-accent);
+        background-color: var(--member-button);
+        border-color: var(--member-button);
     }
 
     #app-usr :deep(.nav-tabs) {
@@ -453,8 +626,8 @@ export default {
 
     #app-usr :deep(.page-content .page-item.active .page-link) {
         color: #fff;
-        background: var(--member-accent);
-        border-color: var(--member-accent);
+        background: var(--member-button);
+        border-color: var(--member-button);
     }
 
     #app-usr :deep(.dropdown-menu) {
@@ -594,6 +767,41 @@ export default {
         padding: .75rem 0;
     }
 
+    :global(html[data-bs-theme="dark"] #app-usr .reader-experience),
+    :global(html[data-bs-theme="dark"] #app-usr .reader-stage),
+    :global(html[data-bs-theme="dark"] #app-usr #pdf-container) {
+        color: var(--member-ink);
+        background: var(--member-paper);
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .reader-note) {
+        color: var(--member-muted);
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .reader-stage canvas) {
+        border-color: var(--member-line);
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .pagination-float) {
+        background: rgba(32, 40, 36, .97);
+        border-color: var(--member-line);
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .pagination-float .page-link) {
+        color: var(--member-ink) !important;
+        background: var(--member-surface) !important;
+        border-color: var(--member-line) !important;
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .pagination-float .page-link:not(.disabled):hover) {
+        color: var(--member-accent) !important;
+        background: var(--member-soft) !important;
+    }
+
+    #main.member-layout:has(.pagination-float) :deep(.bottom-mobile) {
+        padding-bottom: max(4.5rem, calc(env(safe-area-inset-bottom) + 3.5rem));
+    }
+
     .menu-item {
         color: var(--member-muted);
         text-decoration: none;
@@ -622,7 +830,7 @@ export default {
         position: fixed;
         bottom: 20px;
         right: 20px;
-        background-color: var(--member-accent);
+        background-color: var(--member-button);
         color: white;
         border: none;
         border-radius: 50%;
@@ -636,20 +844,25 @@ export default {
     }
 
     .floating-btn:hover {
-        background-color: var(--member-accent-dark);
+        background-color: var(--member-button-hover);
     }
 
     @media (max-width: 1199.98px) {
         #app-usr :deep(.content-wrapper) {
-            min-height: calc(100vh - 68px);
+            min-height: 0;
             margin: 68px 0 0;
             padding: 1.5rem clamp(1rem, 4vw, 2rem) 3rem;
+        }
+
+        #app-usr :deep(.bottom-mobile) {
+            margin-left: 0;
+            padding-inline: clamp(1rem, 4vw, 2rem);
         }
     }
 
     @media (max-width: 575px) {
         #app-usr :deep(.content-wrapper) {
-            padding: 1rem .875rem 2rem;
+            padding: 1rem .875rem max(3rem, calc(env(safe-area-inset-bottom) + 2rem));
         }
 
         #app-usr :deep(.page-content > section),

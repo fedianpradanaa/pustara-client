@@ -923,6 +923,11 @@ export default {
     color: #e9eee9;
 }
 
+:global(html[data-bs-theme="dark"] .topbar-kicker),
+:global(html[data-bs-theme="dark"] .sidebar-group-label i) {
+    color: #aab6af;
+}
+
 :global(html[data-bs-theme="dark"] .sidebar-link),
 :global(html[data-bs-theme="dark"] .sidebar-sublink),
 :global(html[data-bs-theme="dark"] .theme-control),
@@ -945,6 +950,27 @@ export default {
 
 :global(html[data-bs-theme="dark"] .topbar-search input) {
     color: #e9eee9;
+}
+
+:global(html[data-bs-theme="dark"] .topbar-search input::placeholder) {
+    color: #aab6af;
+    opacity: 1;
+}
+
+:global(html[data-bs-theme="dark"] .topbar-search button),
+:global(html[data-bs-theme="dark"] .mobile-search-trigger),
+:global(html[data-bs-theme="dark"] .sidebar-toggle) {
+    color: #c3cec6;
+}
+
+:global(html[data-bs-theme="dark"] .topbar-signin:hover) {
+    color: #a0dbc1;
+}
+
+:global(html[data-bs-theme="dark"] .sidebar-auth .sidebar-register) {
+    color: #fff;
+    background: #236b58;
+    border-color: #236b58;
 }
 
 @media (max-width: 1199.98px) {

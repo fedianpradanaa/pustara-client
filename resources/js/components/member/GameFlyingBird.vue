@@ -318,7 +318,7 @@
 	transform: translate(-50%, -50%);
 	width: min(90%, 420px);
 	padding: clamp(1.2rem, 4vw, 2rem);
-	background-color: var(--member-accent, #236b58);
+	background-color: var(--member-button, #236b58);
 	border: 1px solid rgba(255, 255, 255, .25);
 	border-radius: 8px;
 	color: white;
@@ -333,7 +333,7 @@
 	font-size: 20px;
 	padding: .65rem 1rem;
 	color: white;
-	background: var(--member-accent, #236b58);
+	background: var(--member-button, #236b58);
 	border-radius: 6px;
   }
   

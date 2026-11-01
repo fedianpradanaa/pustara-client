@@ -110,7 +110,7 @@
             </div>
         </section>
 
-        <section class="row mt-4 collection-section">
+        <!-- <section class="row mt-4 collection-section">
             <div class="col-12 col-lg-12">
                 <div class="section-header editorial-header">
                     <div>
@@ -210,7 +210,8 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
+
 		<section v-if="quiz.length>0" class="row">
             <div class="col-12 col-lg-12">
                 <div class="testimonial-slider hover-shadow">
@@ -1352,7 +1353,7 @@ export default {
         display: block;
         width: 100%;
         max-height: min(500px, 42vw) !important;
-        object-fit: cover;
+        object-fit: contain;
     }
 
     .member-home-content > section {
@@ -1716,13 +1717,31 @@ export default {
     }
 
     .member-home-content {
-        --editorial-ink: #202a27;
-        --editorial-muted: #68756e;
-        --editorial-line: #dfe6df;
-        --editorial-paper: #f5f6f1;
-        --editorial-green: #236b58;
-        --editorial-green-dark: #174b3d;
-        --editorial-orange: #e7a348;
+        --editorial-ink: var(--member-ink, #202a27);
+        --editorial-muted: var(--member-muted, #68756e);
+        --editorial-line: var(--member-line, #dfe6df);
+        --editorial-paper: var(--member-paper, #f5f6f1);
+        --editorial-surface: var(--member-surface, #fff);
+        --editorial-green: var(--member-accent, #236b58);
+        --editorial-green-dark: var(--member-accent-dark, #174b3d);
+        --editorial-panel: var(--member-panel, #174b3d);
+        --editorial-orange: var(--member-editorial-orange, #e7a348);
+        --editorial-quote-bg: var(--member-quote-bg, #e5eee6);
+        --editorial-quote-card: var(--member-quote-card, rgba(255, 255, 255, .64));
+        --editorial-review-bg: var(--member-review-bg, #f2f4ef);
+        --editorial-review-line: var(--member-review-line, #d4ddd5);
+        --editorial-cover-bg: var(--member-cover-bg, #e4e9e1);
+        --editorial-humoria-bg: var(--member-humoria-bg, #fff4e8);
+        --editorial-humoria-line: var(--member-humoria-line, #ecd8c0);
+        --editorial-humoria-card-line: var(--member-humoria-card-line, #f1dfca);
+        --editorial-humoria-ink: var(--member-humoria-ink, #372b20);
+        --editorial-humoria-muted: var(--member-humoria-muted, #756453);
+        --editorial-humoria-link: var(--member-humoria-link, #81501f);
+        --editorial-humoria-number: var(--member-humoria-number, #cf7730);
+        --editorial-humoria-image: var(--member-humoria-image, #f6e2ca);
+        --editorial-humoria-sticker: var(--member-humoria-sticker, #ffe09b);
+        --editorial-humoria-sticker-ink: var(--member-humoria-sticker-ink, #8a4a19);
+        --editorial-humoria-sticker-line: var(--member-humoria-sticker-line, #fff);
         min-width: 0;
     }
 
@@ -1809,7 +1828,7 @@ export default {
         min-height: 330px;
         flex-direction: column;
         overflow: hidden;
-        background: #fff;
+        background: var(--editorial-surface);
         border: 1px solid var(--editorial-line);
         border-radius: 12px;
         transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
@@ -2062,8 +2081,7 @@ export default {
     .headline-supporting-image img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        transition: transform .35s ease;
+        object-fit: contain;
     }
 
     .headline-image-label {
@@ -2072,7 +2090,7 @@ export default {
         left: 1rem;
         padding: .35rem .65rem;
         color: #fff;
-        background: var(--editorial-green-dark);
+        background: var(--editorial-panel);
         font-size: .68rem;
         font-weight: 800;
         letter-spacing: .08em;
@@ -2140,10 +2158,10 @@ export default {
 
     .headline-supporting-item {
         display: grid;
-        grid-template-columns: 92px minmax(0, 1fr) 16px;
+        grid-template-columns: minmax(112px, 36%) minmax(0, 1fr) 16px;
         align-items: center;
         gap: .85rem;
-        min-height: 105px;
+        min-height: 124px;
         padding: .85rem 0;
         color: inherit;
         border-top: 1px solid var(--editorial-line);
@@ -2152,7 +2170,7 @@ export default {
 
     .headline-supporting-image {
         overflow: hidden;
-        aspect-ratio: 1;
+        aspect-ratio: 4 / 3;
         background: var(--editorial-paper);
     }
 
@@ -2168,17 +2186,12 @@ export default {
         color: var(--editorial-green);
     }
 
-    .headline-feature:hover img,
-    .headline-supporting-item:hover img {
-        transform: scale(1.04);
-    }
-
     .quote-showcase-section {
         position: relative;
         overflow: hidden;
         padding: clamp(1.2rem, 4vw, 3rem);
         color: #fff;
-        background: #e5eee6;
+        background: var(--editorial-quote-bg);
         border-radius: 2px 56px 2px 56px;
     }
 
@@ -2212,7 +2225,7 @@ export default {
         width: 38px;
         height: 38px;
         color: var(--editorial-green-dark);
-        background: rgba(255, 255, 255, .78);
+        background: var(--editorial-quote-card);
         border: 0;
         border-radius: 50%;
         place-items: center;
@@ -2224,6 +2237,11 @@ export default {
         grid-template-columns: 90px minmax(0, 1fr);
         align-items: center;
         gap: .5rem;
+    }
+
+    .quote-showcase-body .swiper-frasa {
+        min-width: 0;
+        width: 100%;
     }
 
     .quote-mark {
@@ -2241,7 +2259,7 @@ export default {
         justify-content: center;
         padding: 1.4rem clamp(1rem, 3vw, 2.5rem);
         color: var(--editorial-green-dark);
-        background: rgba(255, 255, 255, .64);
+        background: var(--editorial-quote-card);
         border-radius: 2px 30px 2px 30px;
     }
 
@@ -2267,8 +2285,9 @@ export default {
     .quote-attribution img {
         width: 38px;
         height: 38px;
-        border-radius: 50%;
-        object-fit: cover;
+        border-radius: 4px;
+        object-fit: contain;
+        background: var(--editorial-quote-card);
     }
 
     .quote-attribution cite {
@@ -2302,28 +2321,28 @@ export default {
     .insight-card {
         display: flex;
         height: 100%;
-        min-height: 270px;
-        flex-direction: row;
+        min-height: 0;
+        flex-direction: column;
         overflow: hidden;
         color: inherit;
-        background: #fff;
+        background: var(--editorial-surface);
         border: 1px solid var(--editorial-line);
         text-decoration: none;
     }
 
     .insight-image {
         position: relative;
-        flex: 0 0 38%;
-        min-height: 270px;
+        flex: initial;
+        min-height: 0;
         overflow: hidden;
+        aspect-ratio: 2 / 1;
         background: var(--editorial-paper);
     }
 
     .insight-image img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        transition: transform .3s ease;
+        object-fit: contain;
     }
 
     .insight-number {
@@ -2371,19 +2390,12 @@ export default {
         -webkit-line-clamp: 3;
     }
 
-    .insight-card:hover .insight-image img {
-        transform: scale(1.04);
-    }
-
     .insight-featured {
-        min-height: 340px;
-        flex-direction: column;
+        min-height: 0;
     }
 
     .insight-featured .insight-image {
-        flex: 1;
-        min-height: 180px;
-        max-height: 205px;
+        aspect-ratio: 2 / 1;
     }
 
     .insight-featured .insight-copy {
@@ -2396,39 +2408,39 @@ export default {
 
     .book-review-section {
         padding: clamp(1rem, 3vw, 2rem);
-        background: #f2f4ef;
+        background: var(--editorial-review-bg);
         border-left: 4px solid var(--editorial-green);
     }
 
     .review-section-heading {
-        border-color: #d4ddd5;
+        border-color: var(--editorial-review-line);
     }
 
     .book-review-card {
-        display: grid;
-        grid-template-columns: minmax(110px, 28%) minmax(0, 1fr);
+        display: flex;
         height: 100%;
-        min-height: 255px;
+        min-height: 0;
+        flex-direction: column;
         overflow: hidden;
         color: inherit;
-        background: #fff;
-        border: 1px solid #e0e6df;
+        background: var(--editorial-surface);
+        border: 1px solid var(--editorial-line);
         text-decoration: none;
         transition: transform .2s ease, box-shadow .2s ease;
     }
 
     .review-book-cover {
         display: grid;
-        min-height: 255px;
-        padding: 1rem;
+        min-height: 0;
+        overflow: hidden;
         place-items: center;
-        background: #e4e9e1;
+        aspect-ratio: 2 / 1;
+        background: var(--editorial-cover-bg);
     }
 
     .review-book-cover img {
         width: 100%;
         height: 100%;
-        max-height: 225px;
         object-fit: contain;
         filter: drop-shadow(0 8px 8px rgba(20, 34, 25, .18));
     }
@@ -2480,7 +2492,7 @@ export default {
     .author-spotlight-section {
         padding: clamp(1rem, 3vw, 2rem);
         color: #fff;
-        background: var(--editorial-green-dark);
+        background: var(--editorial-panel);
     }
 
     .author-section-heading {
@@ -2519,8 +2531,8 @@ export default {
     .author-portrait img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        object-position: center 35%;
+        object-fit: contain;
+        background: rgba(255, 255, 255, .08);
     }
 
     .author-portrait-mark {
@@ -2619,7 +2631,7 @@ export default {
 
     .focus-story-heading h2 {
         margin: 0;
-        color: #fff;
+        color: #fff !important;
         font-size: clamp(1.35rem, 2.6vw, 2rem);
         font-weight: 800;
     }
@@ -2646,8 +2658,7 @@ export default {
         inset: 0;
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        transition: transform .5s ease;
+        object-fit: contain;
     }
 
     .focus-story-shade {
@@ -2703,22 +2714,18 @@ export default {
         font-weight: 800;
     }
 
-    .focus-story-card:hover > img {
-        transform: scale(1.035);
-    }
-
     .humoria-section {
         padding: clamp(1rem, 3vw, 2rem);
-        background: #fff4e8;
+        background: var(--editorial-humoria-bg);
         border-radius: 28px 4px 28px 4px;
     }
 
     .humoria-heading {
-        border-color: #ecd8c0;
+        border-color: var(--editorial-humoria-line);
     }
 
     .humoria-eyebrow {
-        color: #9b5d24;
+        color: var(--editorial-humoria-link);
         font-size: .68rem;
         font-weight: 900;
         letter-spacing: .12em;
@@ -2726,7 +2733,7 @@ export default {
     }
 
     .humoria-all {
-        color: #81501f;
+        color: var(--editorial-humoria-link);
         font-size: .8rem;
         font-weight: 800;
         text-decoration: none;
@@ -2736,12 +2743,12 @@ export default {
         position: relative;
         display: flex;
         height: 100%;
-        min-height: 255px;
-        flex-direction: row;
+        min-height: 0;
+        flex-direction: column;
         overflow: hidden;
         color: inherit;
-        background: #fff;
-        border: 1px solid #f1dfca;
+        background: var(--editorial-surface);
+        border: 1px solid var(--editorial-humoria-card-line);
         border-radius: 18px 4px 18px 4px;
         text-decoration: none;
         transition: transform .2s ease, box-shadow .2s ease;
@@ -2756,7 +2763,7 @@ export default {
         width: 34px;
         height: 34px;
         color: #fff;
-        background: #cf7730;
+        background: var(--editorial-humoria-number);
         border-radius: 50%;
         font-size: .73rem;
         font-weight: 900;
@@ -2765,17 +2772,17 @@ export default {
 
     .humoria-image {
         position: relative;
-        flex: 0 0 42%;
-        min-height: 255px;
+        flex: initial;
+        min-height: 0;
         overflow: hidden;
-        background: #f6e2ca;
+        aspect-ratio: 2 / 1;
+        background: var(--editorial-humoria-image);
     }
 
     .humoria-image img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        transition: transform .3s ease;
+        object-fit: contain;
     }
 
     .humoria-image-sticker {
@@ -2785,9 +2792,9 @@ export default {
         display: grid;
         width: 38px;
         height: 38px;
-        color: #8a4a19;
-        background: #ffe09b;
-        border: 2px solid #fff;
+        color: var(--editorial-humoria-sticker-ink);
+        background: var(--editorial-humoria-sticker);
+        border: 2px solid var(--editorial-humoria-sticker-line);
         border-radius: 50%;
         font-size: 1.15rem;
         place-items: center;
@@ -2807,7 +2814,7 @@ export default {
         display: -webkit-box;
         overflow: hidden;
         margin: .2rem 0 .6rem;
-        color: #372b20;
+        color: var(--editorial-humoria-ink);
         font-size: clamp(1.05rem, 1.7vw, 1.45rem);
         font-weight: 900;
         line-height: 1.25;
@@ -2816,7 +2823,7 @@ export default {
     }
 
     .humoria-copy p {
-        color: #756453;
+        color: var(--editorial-humoria-muted);
         -webkit-line-clamp: 4;
     }
 
@@ -2826,30 +2833,23 @@ export default {
         gap: .4rem;
         margin-top: auto;
         padding-top: .85rem;
-        color: #a65b22;
+        color: var(--editorial-humoria-link);
         font-size: .8rem;
         font-weight: 900;
     }
 
     .humoria-featured {
-        min-height: 330px;
-        flex-direction: column;
+        min-height: 0;
         border-radius: 4px 24px 4px 24px;
     }
 
     .humoria-featured .humoria-image {
-        flex: 1;
-        min-height: 170px;
-        max-height: 200px;
+        aspect-ratio: 2 / 1;
     }
 
     .humoria-card:hover {
         box-shadow: 0 12px 24px rgba(111, 73, 35, .12);
         transform: translateY(-4px) rotate(-.3deg);
-    }
-
-    .humoria-card:hover .humoria-image img {
-        transform: scale(1.04);
     }
 
     @media (max-width: 991px) {
@@ -2863,7 +2863,7 @@ export default {
         }
 
         .headline-supporting-item {
-            grid-template-columns: 72px minmax(0, 1fr) 14px;
+            grid-template-columns: 104px minmax(0, 1fr) 14px;
             gap: .6rem;
         }
 
@@ -2950,8 +2950,8 @@ export default {
         }
 
         .headline-supporting-item {
-            grid-template-columns: 76px minmax(0, 1fr) 16px;
-            min-height: 88px;
+            grid-template-columns: 108px minmax(0, 1fr) 16px;
+            min-height: 116px;
         }
 
         .headline-supporting-image {
@@ -2989,7 +2989,7 @@ export default {
             flex: initial;
             min-height: 0;
             max-height: none;
-            aspect-ratio: 16 / 10;
+            aspect-ratio: 2 / 1;
         }
 
         .insight-copy {
@@ -2998,16 +2998,6 @@ export default {
 
         .book-review-section {
             padding: 1rem;
-        }
-
-        .book-review-card {
-            grid-template-columns: minmax(90px, 30%) minmax(0, 1fr);
-            min-height: 245px;
-        }
-
-        .review-book-cover {
-            min-height: 245px;
-            padding: .65rem;
         }
 
         .review-copy {
@@ -3067,7 +3057,7 @@ export default {
             flex: initial;
             min-height: 0;
             max-height: none;
-            aspect-ratio: 16 / 10;
+            aspect-ratio: 2 / 1;
         }
 
         .humoria-copy {
@@ -3082,14 +3072,6 @@ export default {
         .review-section-heading,
         .author-section-heading {
             flex-wrap: wrap;
-        }
-
-        .book-review-card {
-            grid-template-columns: 84px minmax(0, 1fr);
-        }
-
-        .review-book-cover {
-            padding: .4rem;
         }
 
         .author-featured {

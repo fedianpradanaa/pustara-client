@@ -536,7 +536,7 @@ div#AvatarFileUpload > .avatar-selector > .avatar-selector-btn {
     place-items: center;
     padding: 0;
     color: #fff;
-    background: var(--member-accent, #236b58);
+    background: var(--member-button, #236b58);
     border: 2px solid var(--member-surface, #fff);
 }
 

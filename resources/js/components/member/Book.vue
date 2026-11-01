@@ -521,8 +521,8 @@ export default {
 }
 
 .catalog-pagination-wrap .page-item.active .page-link {
-    background: var(--member-accent, #236b58);
-    border-color: var(--member-accent, #236b58);
+    background: var(--member-button, #236b58);
+    border-color: var(--member-button, #236b58);
     color: #fff;
 }
 
