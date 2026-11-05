@@ -84,7 +84,7 @@
                 <img :src="'/storage/images/logo/logo_small.png?' + Math.floor(Math.random() * (999 - 100 + 1)) + 100" alt="">
             </router-link>
             <div class="topbar-context">
-                <span class="topbar-kicker">GIA e-Library</span>
+                <span class="topbar-kicker">PERPUSTAKAAN DIGITAL</span>
                 <strong>{{ appname }}</strong>
             </div>
         </div>
