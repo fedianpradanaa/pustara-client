@@ -6,15 +6,16 @@
 
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}" />
-        <meta property="og:site_name" content="{{ env('APP_NAME') }}">
-        <meta property="og:title" content="{{ env('APP_NAME') }}" />
+        <meta property="og:site_name" content="{{ config('app.name') }}">
+        <meta property="og:title" content="{{ config('app.name') }}" />
         <meta property="og:description" content="Aplikasi Perpustakaan Digital Berbasis Website" />
-        <meta property="og:image" itemprop="image" content="{{ env('APP_URL') }}/storage/images/logo/favicon.png" />
+        <meta property="og:image" itemprop="image" content="{{ asset('storage/images/logo/favicon.png') }}" />
+        <meta property="og:image:secure_url" content="{{ asset('storage/images/logo/favicon.png') }}" />
+        <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="200">
         <meta property="og:image:height" content="200">
         <meta property="og:type" content="website" />
-        <meta property="og:updated_time" content="1440432930" />
-        <meta property="og:url" content="{{ env('APP_URL') }}" />
+        <meta property="og:url" content="{{ url('/') }}" />
         <link rel="manifest" href="/manifest.json">
         <link rel="icon" type="image/png" sizes="192x192" href="/storage/images/logo/favicon.png">
         <link rel="apple-touch-icon" href="/storage/images/logo/favicon.png">

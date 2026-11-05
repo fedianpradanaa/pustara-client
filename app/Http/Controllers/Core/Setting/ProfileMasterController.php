@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -103,65 +104,6 @@ class ProfileMasterController extends Controller
         try {
             DB::enableQueryLog();
 
-            $change_logo = 'N';
-            if ($request->hasFile('logo')) {
-                try {
-                    $extension = $request->file('logo')->getClientOriginalExtension();
-                    $logo_name = 'logo.' . $extension;
-                    $change_logo = 'Y';
-
-                    $request->file('logo')->move(public_path('images/logo'), $logo_name);
-                } catch (Throwable $th) {
-                    $logs->write("ERROR", $th->getMessage());
-                }
-            }
-            
-            if ($request->hasFile('logo_small')) {
-                try {
-                    $extension          = $request->file('logo_small')->getClientOriginalExtension();
-                    $logo_small_name    = 'logo_small.' . $extension;
-                    $favicon_name       = 'favicon.' . $extension;
-                    $change_logo        = 'Y';
-
-                    $logoSmallPath		= $request->file('logo_small')->move(public_path('images/logo'), $logo_small_name);
-                    
-					// Resize the favicon image
-					list($width, $height) = getimagesize($logoSmallPath);
-					$newWidth = 200;
-					$newHeight = 200;
-			
-					// Create a new blank image with the new dimensions
-					$resizedImage = imagecreatetruecolor($newWidth, $newHeight);
-			
-					// Load the original image based on its type
-					switch (strtolower($extension)) {
-						case 'png':
-							$source = imagecreatefrompng(public_path('images/logo/' . $logo_small_name));
-							imagealphablending($resizedImage, false);
-							imagesavealpha($resizedImage, true);
-							break;
-						default:
-							throw new Exception('Unsupported image format.');
-					}
-			
-					// Resize and save the favicon image
-					imagecopyresampled($resizedImage, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-					$faviconPath = public_path('storage/images/logo/' . $favicon_name);
-			
-					switch (strtolower($extension)) {
-						case 'png':
-							imagepng($resizedImage, $faviconPath);
-							break;
-					}
-			
-					// Free memory
-					imagedestroy($resizedImage);
-					imagedestroy($source);
-                } catch (Throwable $th) {
-                    $logs->write("ERROR", $th->getMessage());
-                }
-            }
-
             $data = (object)$validated;
 
             $insertedData = [
@@ -204,6 +146,9 @@ class ProfileMasterController extends Controller
                 ->first();
 
             if ($existingData) {
+                $insertedData['logo'] = $existingData->logo;
+                $insertedData['logo_small'] = $existingData->logo_small;
+
                 $existingDataArray = (array) $existingData;
                 $compareData = $insertedData;
                 unset($compareData['created_at'], $compareData['flag_appr']);
@@ -227,17 +172,10 @@ class ProfileMasterController extends Controller
                         $result['message'] = "Permohonan perubahan data berhasil.";
                     }
                 }else{
-                    if($change_logo == 'Y'){
-                        $logs->write("INFO", "Successfully Change Logo");
-    
-                        $result['status'] = 201;
-                        $result['message'] = "Perubahan logo berhasil.";
-                    }else{
-                        $logs->write("INFO", "No changes detected.");
-    
-                        $result['status'] = 201;
-                        $result['message'] = "Tidak ada perubahan data.";
-                    }
+                    $logs->write("INFO", "No changes detected.");
+
+                    $result['status'] = 201;
+                    $result['message'] = "Tidak ada perubahan data.";
                 }
 
             }
@@ -255,6 +193,44 @@ class ProfileMasterController extends Controller
         $logs->write(__FUNCTION__, "STOP\r\n");
 
         return response()->json($result['message'], $result['status']);
+    }
+
+    public function uploadLogo(Request $request): JsonResponse
+    {
+        if (auth()->user()->role !== 'admin') {
+            return response()->json('Hanya admin yang dapat mengubah logo.', 403);
+        }
+
+        $request->validate([
+            'logo' => 'nullable|image|mimes:png|dimensions:max_width=1500,max_height=510|max:5120',
+            'logo_small' => 'nullable|image|mimes:png|dimensions:max_width=510,max_height=510|max:5120',
+        ]);
+
+        if (!$request->hasFile('logo') && !$request->hasFile('logo_small')) {
+            return response()->json('Pilih minimal satu logo untuk diunggah.', 422);
+        }
+
+        $logoDirectory = public_path('storage/images/logo');
+        File::ensureDirectoryExists($logoDirectory);
+
+        if ($request->hasFile('logo')) {
+            $request->file('logo')->move($logoDirectory, 'logo.png');
+        }
+
+        if ($request->hasFile('logo_small')) {
+            $smallLogo = $request->file('logo_small')->move($logoDirectory, 'logo_small.png');
+            [$width, $height] = getimagesize($smallLogo->getPathname());
+            $resizedImage = imagecreatetruecolor(200, 200);
+            imagealphablending($resizedImage, false);
+            imagesavealpha($resizedImage, true);
+            $source = imagecreatefrompng($smallLogo->getPathname());
+            imagecopyresampled($resizedImage, $source, 0, 0, 0, 0, 200, 200, $width, $height);
+            imagepng($resizedImage, $logoDirectory . DIRECTORY_SEPARATOR . 'favicon.png');
+            imagedestroy($resizedImage);
+            imagedestroy($source);
+        }
+
+        return response()->json('Logo berhasil diperbarui.', 201);
     }
 
     /**

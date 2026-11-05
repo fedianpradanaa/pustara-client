@@ -100,9 +100,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
                         Route::apiResource('quiz-mst', QuizMasterController::class);
                         Route::apiResource('video-mst', VideoMasterController::class);
 
-                        Route::apiResource('profile', ProfileMasterController::class);
+                        Route::post('profile/logo', [\App\Http\Controllers\Core\Setting\ProfileMasterController::class, 'uploadLogo']);
+                        Route::apiResource('profile', \App\Http\Controllers\Core\Setting\ProfileMasterController::class);
                         Route::apiResource('appparam', ParameterController::class);
-                        Route::apiResource('profile-teacher', ProfileTeacherMasterController::class);
+                        Route::apiResource('profile-teacher', \App\Http\Controllers\Core\Setting\ProfileTeacherMasterController::class);
                     });
                     
                     Route::prefix('report')->namespace('Report')->group(function() {

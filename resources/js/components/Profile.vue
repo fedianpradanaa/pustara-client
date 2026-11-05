@@ -54,6 +54,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="d-flex justify-content-end">
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                :disabled="!form.field.logo.newsmall && !form.field.logo.newbig"
+                                @click="handleUpdateLogo"
+                            >Simpan Logo</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -434,13 +442,6 @@ export default {
                 form_data.append(value, this.form.field.info[value]);
             });
 
-            if (this.form.field.logo.newsmall) {
-                form_data.append('logo_small', this.form.field.logo.newsmall);
-            }
-            if (this.form.field.logo.newbig) {
-                form_data.append('logo', this.form.field.logo.newbig);
-            }
-
             let loader = this.$loading.show();
             await axios.post('/setting/profile', form_data)
             .then((response) => {
@@ -482,6 +483,36 @@ export default {
                     });
                 }
             });
+        },
+
+        async handleUpdateLogo() {
+            let form_data = new FormData();
+            if (this.form.field.logo.newsmall) {
+                form_data.append('logo_small', this.form.field.logo.newsmall);
+            }
+            if (this.form.field.logo.newbig) {
+                form_data.append('logo', this.form.field.logo.newbig);
+            }
+
+            let loader = this.$loading.show();
+            await axios.post('/setting/profile/logo', form_data)
+                .then((response) => {
+                    loader.hide();
+                    this.$swal({
+                        title: 'Update Logo',
+                        text: response.data,
+                        icon: 'success',
+                    }).then(() => location.reload());
+                })
+                .catch((error) => {
+                    loader.hide();
+                    const message = error.response?.data?.message || error.response?.data || 'Gagal memperbarui logo.';
+                    this.$swal({
+                        icon: 'error',
+                        title: 'Kesalahan',
+                        text: typeof message === 'string' ? message : 'Periksa format dan ukuran file logo.',
+                    });
+                });
         },
 
         printModalContent() {
