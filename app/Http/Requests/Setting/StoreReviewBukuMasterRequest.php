@@ -32,7 +32,7 @@ class StoreReviewBukuMasterRequest extends FormRequest
             'flag_aktif' => 'required|max:5',
             'file' => [
                 'required',
-                'mimes:jpeg,png,jpg',
+                'mimes:jpeg,png,jpg,webp',
                 'max:1500',
                 Rule::dimensions()->maxWidth(700)->maxHeight(350),
             ],
@@ -68,7 +68,7 @@ class StoreReviewBukuMasterRequest extends FormRequest
 
         return [
             'file.required' => 'The file is required.',
-            'file.mimes' => 'The file must be a valid image type (jpeg, png, jpg).',
+            'file.mimes' => 'The file must be a valid image type (jpeg, png, jpg, webp).',
             'file.max' => 'The file size cannot be larger than 1500 KB.',
             'file.dimensions' => $dimensionMessage,
         ];

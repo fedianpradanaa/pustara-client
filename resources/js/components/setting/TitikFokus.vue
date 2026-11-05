@@ -102,7 +102,7 @@
                                                                         </div>
                                                                         <div class="col-md-10 form-group">
                                                                             <Field name="file">
-                                                                                <input type="file" ref="titikfokus_files" id="file" name="file" @change="onChangeIcon" accept=".png,.jpg,.jpeg" />
+                                                                                <input type="file" ref="titikfokus_files" id="file" name="file" @change="onChangeIcon" accept=".png,.jpg,.jpeg,.webp" />
                                                                             </Field>
                                                                             <ErrorMessage name="file" class="invalid-feedback animated fadeIn mt-0 mb-1" style="display:block;" />
                                                                             <br><small class="text-muted">Ukuran maks. 1500 KB. Disarankan: 1200 x 800 px (lanskap). Gambar ditampilkan utuh di desktop dan mobile; ruang kosong dapat muncul jika rasionya berbeda.<br>Format: PNG, JPG, JPEG</small>

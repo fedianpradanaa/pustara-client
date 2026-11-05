@@ -48,7 +48,7 @@ class StoreFormRegisterRequest extends FormRequest
             'kuasa' => 'nullable',
             'kategori' => 'nullable',
             'rekening' => 'nullable',
-            'file' => 'nullable|mimes:jpeg,png,jpg|dimensions:max_width=1980,max_height=750|max:1000',
+            'file' => 'nullable|mimes:jpeg,png,jpg,webp|dimensions:max_width=1980,max_height=750|max:1000',
             'current_file' => 'nullable',
         ];
     }

@@ -320,7 +320,7 @@
                                             <div class="form-body">
                                                 <div class="row">
                                                     <div class="col-md-12 form-group">
-                                                        <input type="file" ref="banner_files" id="file" name="file" @change="onChangeBanner" accept=".png,.jpg,.jpeg"/>
+                                                        <input type="file" ref="banner_files" id="file" name="file" @change="onChangeBanner" accept=".png,.jpg,.jpeg,.webp"/>
                                                         <ErrorMessage name="file" class="invalid-feedback animated fadeIn mt-0 mb-1" style="display:block;" />
                                                         <br><small class="text-muted">Max. size: 1 MB (1980x750 pixels) File types: png, jpg, jpeg</small>
                                                     </div>

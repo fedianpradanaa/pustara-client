@@ -22,7 +22,7 @@
                                         <a href="#" class="avatar-selector-btn">
                                             <i class="bi bi-camera-fill"></i>
                                         </a>
-                                        <input type="file" accept=".jpg" name="avatar">
+                                        <input type="file" accept=".jpg,.jpeg,.png,.webp" name="avatar">
                                     </div>
                                 </div>
                                 <h3 class="mt-3">{{ user.name }}</h3>

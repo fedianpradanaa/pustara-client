@@ -202,8 +202,8 @@ class ProfileMasterController extends Controller
         }
 
         $request->validate([
-            'logo' => 'nullable|image|mimes:png|dimensions:max_width=1500,max_height=510|max:5120',
-            'logo_small' => 'nullable|image|mimes:png|dimensions:max_width=510,max_height=510|max:5120',
+            'logo' => 'nullable|image|mimes:png,webp|dimensions:max_width=1500,max_height=510|max:5120',
+            'logo_small' => 'nullable|image|mimes:png,webp|dimensions:max_width=510,max_height=510|max:5120',
         ]);
 
         if (!$request->hasFile('logo') && !$request->hasFile('logo_small')) {
@@ -214,16 +214,32 @@ class ProfileMasterController extends Controller
         File::ensureDirectoryExists($logoDirectory);
 
         if ($request->hasFile('logo')) {
-            $request->file('logo')->move($logoDirectory, 'logo.png');
+            $logo = $request->file('logo');
+            if ($logo->getMimeType() === 'image/webp') {
+                $image = imagecreatefromwebp($logo->getPathname());
+                imagepng($image, $logoDirectory . DIRECTORY_SEPARATOR . 'logo.png');
+                imagedestroy($image);
+            } else {
+                $logo->move($logoDirectory, 'logo.png');
+            }
         }
 
         if ($request->hasFile('logo_small')) {
-            $smallLogo = $request->file('logo_small')->move($logoDirectory, 'logo_small.png');
-            [$width, $height] = getimagesize($smallLogo->getPathname());
+            $smallLogo = $request->file('logo_small');
+            $smallLogoPath = $logoDirectory . DIRECTORY_SEPARATOR . 'logo_small.png';
+            if ($smallLogo->getMimeType() === 'image/webp') {
+                $image = imagecreatefromwebp($smallLogo->getPathname());
+                imagepng($image, $smallLogoPath);
+                imagedestroy($image);
+            } else {
+                $smallLogo->move($logoDirectory, 'logo_small.png');
+            }
+
+            [$width, $height] = getimagesize($smallLogoPath);
             $resizedImage = imagecreatetruecolor(200, 200);
             imagealphablending($resizedImage, false);
             imagesavealpha($resizedImage, true);
-            $source = imagecreatefrompng($smallLogo->getPathname());
+            $source = imagecreatefrompng($smallLogoPath);
             imagecopyresampled($resizedImage, $source, 0, 0, 0, 0, 200, 200, $width, $height);
             imagepng($resizedImage, $logoDirectory . DIRECTORY_SEPARATOR . 'favicon.png');
             imagedestroy($resizedImage);

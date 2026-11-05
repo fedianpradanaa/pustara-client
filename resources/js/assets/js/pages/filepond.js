@@ -27,7 +27,7 @@ FilePond.create(document.querySelector('.with-validation-filepond'), {
     allowMultiple: true,
     allowFileEncode: false,
     required: true,
-    acceptedFileTypes: ['image/png'],
+    acceptedFileTypes: ['image/png', 'image/webp'],
     fileValidateTypeDetectType: (source, type) =>
         new Promise((resolve, reject) => {
             // Do custom type detection here and return with promise
@@ -102,7 +102,7 @@ FilePond.create(document.querySelector('.image-preview-filepond'), {
     allowImageFilter: false,
     allowImageExifOrientation: false,
     allowImageCrop: false,
-    acceptedFileTypes: ['image/png', 'image/jpg', 'image/jpeg'],
+    acceptedFileTypes: ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'],
     fileValidateTypeDetectType: (source, type) =>
         new Promise((resolve, reject) => {
             // Do custom type detection here and return with promise
@@ -118,7 +118,7 @@ FilePond.create(document.querySelector('.image-crop-filepond'), {
     allowImageFilter: false,
     allowImageExifOrientation: false,
     allowImageCrop: true,
-    acceptedFileTypes: ['image/png', 'image/jpg', 'image/jpeg'],
+    acceptedFileTypes: ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'],
     fileValidateTypeDetectType: (source, type) =>
         new Promise((resolve, reject) => {
             // Do custom type detection here and return with promise
@@ -134,7 +134,7 @@ FilePond.create(document.querySelector('.image-exif-filepond'), {
     allowImageFilter: false,
     allowImageExifOrientation: true,
     allowImageCrop: false,
-    acceptedFileTypes: ['image/png', 'image/jpg', 'image/jpeg'],
+    acceptedFileTypes: ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'],
     fileValidateTypeDetectType: (source, type) =>
         new Promise((resolve, reject) => {
             // Do custom type detection here and return with promise
@@ -151,7 +151,7 @@ FilePond.create(document.querySelector('.image-filter-filepond'), {
     allowImageExifOrientation: false,
     allowImageCrop: false,
     imageFilterColorMatrix: [0.299, 0.587, 0.114, 0, 0, 0.299, 0.587, 0.114, 0, 0, 0.299, 0.587, 0.114, 0, 0, 0.0, 0.0, 0.0, 1, 0],
-    acceptedFileTypes: ['image/png', 'image/jpg', 'image/jpeg'],
+    acceptedFileTypes: ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'],
     fileValidateTypeDetectType: (source, type) =>
         new Promise((resolve, reject) => {
             // Do custom type detection here and return with promise
@@ -172,7 +172,7 @@ FilePond.create(document.querySelector('.image-resize-filepond'), {
     imageResizeTargetHeight: 200,
     imageResizeMode: 'cover',
     imageResizeUpscale: true,
-    acceptedFileTypes: ['image/png', 'image/jpg', 'image/jpeg'],
+    acceptedFileTypes: ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'],
     fileValidateTypeDetectType: (source, type) =>
         new Promise((resolve, reject) => {
             // Do custom type detection here and return with promise
