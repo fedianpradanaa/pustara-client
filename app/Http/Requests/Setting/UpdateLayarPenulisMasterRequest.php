@@ -35,10 +35,10 @@ class UpdateLayarPenulisMasterRequest extends FormRequest
             'description' => 'required',
             'flag_aktif' => 'required|max:5',
             'file' => [
-                'required',
+                'nullable',
                 'mimes:jpeg,png,jpg,webp',
                 'max:1500',
-                Rule::dimensions()->maxWidth(700)->maxHeight(350),
+                Rule::dimensions()->maxWidth(1600)->maxHeight(2000),
             ],
             'current_file' => 'nullable',
         ];
@@ -67,14 +67,10 @@ class UpdateLayarPenulisMasterRequest extends FormRequest
      */
     public function messages(): array
     {
-        $dimensionMessage = 'The file dimensions are invalid.';
-        $dimensionMessage = 'The file dimensions can\'t be larger than 700 x 350 pixels.';
-
         return [
-            'file.required' => 'The file is required.',
             'file.mimes' => 'The file must be a valid image type (jpeg, png, jpg, webp).',
             'file.max' => 'The file size cannot be larger than 1500 KB.',
-            'file.dimensions' => $dimensionMessage,
+            'file.dimensions' => 'The file dimensions can\'t be larger than 1600 x 2000 pixels.',
         ];
     }
 }

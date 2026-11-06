@@ -84,11 +84,11 @@ class MainController extends Controller
             ->orderBy('total_seconds', 'desc')
             ->limit(8);
 
-        $dibacaBooks    = $dibacaBooksQuery->get();
-        $results        = $dibacaBooksQuery;
+        $dibacaBooks = $dibacaBooksQuery->get();
+        $results = $dibacaBooks;
 
         if ($dibacaBooks->count() < 8) {
-            $readIsbns = $dibacaBooks->pluck('book_id')->toArray();
+            $readBookIds = $dibacaBooks->pluck('book_id')->toArray();
 
             $remainingBooks = DB::table('tmapping_book as a')
                 ->select([
@@ -105,14 +105,14 @@ class MainController extends Controller
                     $join->on('a.book_id', '=', 'b.book_id');
                 })
                 ->where('a.client_id', '=', $this->client_id)
-                ->whereNotIn('b.book_id', $readIsbns)
+                ->whereNotIn('b.book_id', $readBookIds)
+                ->orderBy('b.createdate', 'desc')
                 ->limit(8 - $dibacaBooks->count());
 
-            $results = $results->unionAll($remainingBooks);
+            $results = $results->concat($remainingBooks->get());
         }
 
         $finalResults = $results
-            ->get()
             ->map(function ($value) {
                 return [
                     'isbn'     => $value->isbn,
@@ -214,7 +214,7 @@ class MainController extends Controller
             })
             ->where('a.client_id', '=', $this->client_id)
             ->limit(10)
-            ->orderBy('a.created_at', 'asc')
+            ->orderBy('a.created_at', 'desc')
             ->get()
             ->map(function ($value) {
                 return [
