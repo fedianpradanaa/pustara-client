@@ -1,10 +1,20 @@
 <template>
     <div id="app-usr">
         <div id="main" class="member-layout" :class="{ 'auth-layout': ['mlogin', 'mregister'].includes($route.name) }">
-            <headerItems :isAuthenticated="isAuthenticated" :name="user.name" :avatar="user.avatar" :appname="appname" :register="param.register" :additional_features="param.additional_features"></headerItems>
+            <headerItems
+                :isAuthenticated="isAuthenticated"
+                :name="user.name"
+                :avatar="user.avatar"
+                :appname="siteInfo.app_name"
+                :tagline="siteInfo.tagline"
+                :logoUrl="siteInfo.logo_url"
+                :smallLogoUrl="siteInfo.small_logo_url"
+                :register="param.register"
+                :additional_features="param.additional_features"
+            ></headerItems>
         
             <main class="content-wrapper">
-                <router-view :isAuthenticated="isAuthenticated" :register="param.register"  :additional_features="param.additional_features"></router-view>
+                <router-view :isAuthenticated="isAuthenticated" :register="param.register" :emailVerificationRequired="param.emailVerificationRequired" :approvalRequired="param.approvalRequired" :additional_features="param.additional_features"></router-view>
             </main>
 
             <template v-if="param.fromOffline">
@@ -14,7 +24,7 @@
             </template>
 
             <footer class="bottom-mobile">
-                <footerItems></footerItems>
+                <footerItems :site-info="siteInfo"></footerItems>
             </footer>
         </div>
 
@@ -69,9 +79,22 @@ export default {
             param: {
                 register: true,
 				additional_features: 0,
+                emailVerificationRequired: true,
+                approvalRequired: false,
                 fromOffline: false
             },
-            appname: '',
+            siteInfo: {
+                app_name: '',
+                tagline: '',
+                logo_url: '',
+                small_logo_url: '',
+                institution_name: '',
+                address: '',
+                phone: '',
+                phone_url: '',
+                website: '',
+                social_links: [],
+            },
             searchQuery: '',
             isAuthenticated: false,
         }
@@ -120,11 +143,9 @@ export default {
         },
 
         getAppInfo() {
-            this.appname = '';
-
             axios.get('/getAppInfo')
             .then((response) => {
-                this.appname = response.data[0].application_name;
+                this.siteInfo = response.data;
             })
             .catch((e) => {
                 console.error(e)
@@ -132,12 +153,12 @@ export default {
         },
 
         getParam() {
-            this.param.register = '';
-
             axios.get('/getParam')
             .then((response) => {
                 this.param.register = (response.data.reg_member==1) ? true : false;
-                this.param.additional_features = parseInt(response.data.additional_features);
+                this.param.additional_features = parseInt(response.data.additional_features) || 0;
+                this.param.emailVerificationRequired = parseInt(response.data.verify_email_member ?? 1) === 1;
+                this.param.approvalRequired = parseInt(response.data.app_reg_member ?? 0) === 1;
             })
             .catch((e) => {
                 console.error(e)
@@ -186,34 +207,35 @@ export default {
 
 <style scoped>
     #app-usr {
-        --member-ink: #202a27;
-        --member-muted: #64716c;
-        --member-paper: #f7f7f3;
-        --member-surface: #ffffff;
-        --member-line: #e4e8e2;
-        --member-accent: #236b58;
-        --member-accent-dark: #174b3d;
-        --member-button: #236b58;
-        --member-button-hover: #174b3d;
-        --member-soft: #edf4ef;
-        --member-panel: #174b3d;
-        --member-editorial-orange: #e7a348;
-        --member-quote-bg: #e5eee6;
+        --member-ink: var(--pustara-text);
+        --member-muted: var(--pustara-muted);
+        --member-paper: var(--pustara-background);
+        --member-surface: var(--pustara-surface);
+        --member-line: var(--pustara-border);
+        --member-accent: var(--pustara-primary);
+        --member-accent-dark: var(--pustara-primary-hover);
+        --member-button: var(--pustara-button);
+        --member-button-hover: var(--pustara-button-hover);
+        --member-button-text: var(--pustara-button-text);
+        --member-soft: var(--pustara-ice);
+        --member-panel: var(--pustara-mint);
+        --member-editorial-orange: var(--pustara-turquoise);
+        --member-quote-bg: var(--pustara-ice);
         --member-quote-card: rgba(255, 255, 255, .64);
-        --member-review-bg: #f2f4ef;
-        --member-review-line: #d4ddd5;
-        --member-cover-bg: #e4e9e1;
-        --member-humoria-bg: #fff4e8;
-        --member-humoria-line: #ecd8c0;
-        --member-humoria-card-line: #f1dfca;
-        --member-humoria-ink: #372b20;
-        --member-humoria-muted: #756453;
-        --member-humoria-link: #81501f;
-        --member-humoria-number: #cf7730;
-        --member-humoria-image: #f6e2ca;
-        --member-humoria-sticker: #ffe09b;
-        --member-humoria-sticker-ink: #8a4a19;
-        --member-humoria-sticker-line: #fff;
+        --member-review-bg: var(--pustara-cloud);
+        --member-review-line: var(--pustara-border);
+        --member-cover-bg: var(--pustara-ice);
+        --member-humoria-bg: var(--pustara-mint);
+        --member-humoria-line: var(--pustara-turquoise-soft);
+        --member-humoria-card-line: var(--pustara-turquoise-soft);
+        --member-humoria-ink: var(--pustara-text);
+        --member-humoria-muted: var(--pustara-muted);
+        --member-humoria-link: var(--pustara-primary);
+        --member-humoria-number: var(--pustara-primary);
+        --member-humoria-image: var(--pustara-mint);
+        --member-humoria-sticker: var(--pustara-ice);
+        --member-humoria-sticker-ink: var(--pustara-primary);
+        --member-humoria-sticker-line: var(--pustara-surface);
         min-height: 100vh;
         min-height: 100dvh;
         color: var(--member-ink);
@@ -223,34 +245,35 @@ export default {
     }
 
     :global(html[data-bs-theme="dark"] #app-usr) {
-        --member-ink: #e9eee9;
-        --member-muted: #aab6af;
-        --member-paper: #171d1a;
-        --member-surface: #202824;
-        --member-line: #35423b;
-        --member-accent: #83c8aa;
-        --member-accent-dark: #a0dbc1;
-        --member-button: #236b58;
-        --member-button-hover: #174b3d;
-        --member-soft: #293a32;
-        --member-panel: #26372e;
-        --member-editorial-orange: #f2ba6e;
-        --member-quote-bg: #24352c;
+        --member-ink: var(--pustara-text);
+        --member-muted: var(--pustara-muted);
+        --member-paper: var(--pustara-background);
+        --member-surface: var(--pustara-surface);
+        --member-line: var(--pustara-border);
+        --member-accent: var(--pustara-turquoise);
+        --member-accent-dark: var(--pustara-turquoise-strong);
+        --member-button: var(--pustara-button);
+        --member-button-hover: var(--pustara-button-hover);
+        --member-button-text: var(--pustara-button-text);
+        --member-soft: var(--pustara-surface-raised);
+        --member-panel: var(--pustara-surface-raised);
+        --member-editorial-orange: var(--pustara-turquoise);
+        --member-quote-bg: var(--pustara-surface-raised);
         --member-quote-card: rgba(13, 20, 16, .55);
-        --member-review-bg: #202824;
-        --member-review-line: #3c4942;
-        --member-cover-bg: #293a32;
-        --member-humoria-bg: #2e281f;
-        --member-humoria-line: #57432f;
-        --member-humoria-card-line: #57432f;
-        --member-humoria-ink: #eddfd0;
-        --member-humoria-muted: #c4b29e;
-        --member-humoria-link: #e5b983;
-        --member-humoria-number: #81501f;
-        --member-humoria-image: #24231f;
-        --member-humoria-sticker: #574329;
-        --member-humoria-sticker-ink: #f0c77e;
-        --member-humoria-sticker-line: #2e281f;
+        --member-review-bg: var(--pustara-surface);
+        --member-review-line: var(--pustara-border);
+        --member-cover-bg: var(--pustara-surface-raised);
+        --member-humoria-bg: var(--pustara-surface-raised);
+        --member-humoria-line: var(--pustara-border);
+        --member-humoria-card-line: var(--pustara-border);
+        --member-humoria-ink: var(--pustara-text);
+        --member-humoria-muted: var(--pustara-muted);
+        --member-humoria-link: var(--pustara-turquoise);
+        --member-humoria-number: var(--pustara-turquoise);
+        --member-humoria-image: var(--pustara-surface);
+        --member-humoria-sticker: var(--pustara-surface-raised);
+        --member-humoria-sticker-ink: var(--pustara-turquoise);
+        --member-humoria-sticker-line: var(--pustara-border);
         color-scheme: dark;
     }
 
@@ -452,6 +475,23 @@ export default {
         letter-spacing: -0.025em;
     }
 
+    #app-usr :deep(.reader-header h1) {
+        color: #fff;
+    }
+
+    #app-usr :deep(.testimonial-slider h2),
+    #app-usr :deep(.video-showcase-section h2) {
+        color: var(--member-ink);
+    }
+
+    #app-usr :deep(.video-showcase-section .editorial-kicker) {
+        color: var(--member-accent);
+    }
+
+    #app-usr :deep(.reader-header .reader-eyebrow) {
+        color: var(--pustara-turquoise);
+    }
+
     #app-usr :deep(.page-heading h3),
     #app-usr :deep(.page-title h3) {
         font-size: clamp(1.65rem, 3vw, 2.3rem);
@@ -515,9 +555,11 @@ export default {
         --bs-btn-active-border-color: var(--member-button-hover);
         --bs-btn-disabled-bg: var(--member-button);
         --bs-btn-disabled-border-color: var(--member-button);
-        color: #fff;
-        border-radius: 7px;
-        box-shadow: none;
+        --bs-btn-color: var(--member-button-text);
+        --bs-btn-hover-color: var(--member-button-text);
+        --bs-btn-active-color: var(--member-button-text);
+        --bs-btn-disabled-color: var(--member-button-text);
+        color: var(--member-button-text);
         font-weight: 700;
     }
 
@@ -783,7 +825,7 @@ export default {
     }
 
     :global(html[data-bs-theme="dark"] #app-usr .pagination-float) {
-        background: rgba(32, 40, 36, .97);
+        background: rgba(24, 43, 56, .97);
         border-color: var(--member-line);
     }
 

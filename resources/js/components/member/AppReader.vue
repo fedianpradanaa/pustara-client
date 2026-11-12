@@ -5,7 +5,7 @@
 				<span class="reader-eyebrow">RUANG BACA</span>
 				<h1>Pembaca Buku</h1>
 			</div>
-			<button class="btn btn-danger reader-finish" @click="SelesaiBaca">Selesai Baca</button>
+			<button class="btn btn-primary reader-finish" @click="SelesaiBaca">Selesai Baca</button>
 		</header>
 		<section class="section reader-document" id="pdf-container">
 			<div class="reader-stage">
@@ -409,7 +409,8 @@ onUnmounted(() => {
 
 .reader-experience {
   min-height: calc(100vh - 80px);
-  background: #f4f5f1;
+  color: var(--pustara-text);
+  background: var(--pustara-background);
 }
 
 .reader-header {
@@ -419,7 +420,7 @@ onUnmounted(() => {
   gap: 1rem;
   padding: .8rem clamp(1rem, 4vw, 3rem);
   color: #fff;
-  background: #202a27;
+  background: #145783;
 }
 
 .reader-heading h1 {
@@ -428,7 +429,7 @@ onUnmounted(() => {
 }
 
 .reader-eyebrow {
-  color: #b9d8c7;
+  color: #b6e8e1;
   font-size: .68rem;
   font-weight: 800;
   letter-spacing: .12em;
@@ -437,15 +438,15 @@ onUnmounted(() => {
 .reader-finish {
   padding: .55rem 1rem;
   color: #fff;
-  background: #236b58;
-  border-color: #236b58;
+  background: #145783;
+  border-color: #145783;
   border-radius: 7px;
   font-weight: 700;
 }
 
 .reader-finish:hover {
-  background: #174b3d;
-  border-color: #174b3d;
+  background: #104765;
+  border-color: #104765;
 }
 
 #pdf-container {
@@ -454,7 +455,7 @@ onUnmounted(() => {
   width: 100%;
   min-height: calc(100vh - 150px);
   padding: 1rem;
-  background: #f4f5f1;
+  background: var(--pustara-background);
 }
 
 .reader-stage {
@@ -467,13 +468,13 @@ onUnmounted(() => {
 .reader-stage canvas {
   max-width: 100%;
   height: auto;
-  border: 1px solid #dfe4de;
-  box-shadow: 0 5px 20px rgba(31, 48, 38, .1);
+  border: 1px solid var(--pustara-border);
+  box-shadow: 0 5px 20px rgba(20, 87, 131, .1);
 }
 
 .reader-note {
   padding: .5rem 1rem 1rem;
-  color: #64716c;
+  color: var(--pustara-muted);
   text-align: center;
 }
 
@@ -490,9 +491,9 @@ onUnmounted(() => {
     max-width: calc(100vw - 20px);
     padding: .3rem;
     background: rgba(255, 255, 255, .96);
-    border: 1px solid #e1e5df;
+    border: 1px solid var(--pustara-border);
     border-radius: 10px;
-    box-shadow: 0 6px 24px rgba(31, 48, 38, .14);
+    box-shadow: 0 6px 24px rgba(20, 87, 131, .14);
     opacity: .94;
     transition: opacity .2s ease;
 }
@@ -507,16 +508,16 @@ onUnmounted(() => {
 
 .pagination-float .page-link {
     min-width: 40px;
-    color: #202a27 !important;
+    color: #34495A !important;
     background: #fff !important;
-    border-color: #e1e5df !important;
+    border-color: var(--pustara-border) !important;
     border-radius: 6px;
     text-align: center;
 }
 
 .pagination-float .page-link:not(.disabled):hover {
-    color: #174b3d !important;
-    background: #edf4ef !important;
+    color: #145783 !important;
+    background: #EAF4FA !important;
 }
 
 .pagination-float select.page-link {
@@ -526,8 +527,8 @@ onUnmounted(() => {
 .tooltip {
     position: absolute;
     color: #fff;
-    background-color: #202a27;
-    border: 1px solid #35423b;
+    background-color: #145783;
+    border: 1px solid #104765;
     border-radius: 6px;
     padding: 8px 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, .12);

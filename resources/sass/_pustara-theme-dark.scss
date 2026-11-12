@@ -1,0 +1,190 @@
+html[data-bs-theme="dark"] {
+    body {
+        color: var(--pustara-text);
+        background: var(--pustara-background);
+    }
+
+    .card,
+    .modal-content,
+    .dropdown-menu,
+    .list-group-item,
+    .accordion-item {
+        color: var(--pustara-text);
+        background-color: var(--pustara-surface);
+        border-color: var(--pustara-border);
+    }
+
+    .card-header,
+    .card-footer,
+    .modal-header,
+    .modal-footer,
+    .dropdown-header {
+        color: var(--pustara-text);
+        background-color: var(--pustara-surface);
+        border-color: var(--pustara-border);
+    }
+
+    .form-control,
+    .form-select,
+    .input-group-text {
+        color: var(--pustara-text);
+        background-color: var(--pustara-surface);
+        border-color: var(--pustara-border);
+    }
+
+    .form-control::placeholder {
+        color: var(--pustara-muted);
+    }
+
+    .table {
+        --bs-table-color: var(--pustara-text);
+        --bs-table-bg: var(--pustara-surface);
+        --bs-table-border-color: var(--pustara-border);
+        --bs-table-striped-bg: var(--pustara-surface-raised);
+        --bs-table-striped-color: var(--pustara-text);
+        --bs-table-hover-bg: var(--pustara-ice);
+        --bs-table-hover-color: var(--pustara-text);
+    }
+
+    .btn-primary {
+        --bs-btn-color: var(--pustara-button-text);
+        --bs-btn-bg: var(--pustara-button);
+        --bs-btn-border-color: var(--pustara-button);
+        --bs-btn-hover-color: var(--pustara-button-text);
+        --bs-btn-hover-bg: var(--pustara-button-hover);
+        --bs-btn-hover-border-color: var(--pustara-button-hover);
+        --bs-btn-active-color: var(--pustara-button-text);
+        --bs-btn-active-bg: var(--pustara-button-hover);
+        --bs-btn-active-border-color: var(--pustara-button-hover);
+    }
+
+    .btn-success {
+        --bs-btn-color: var(--pustara-button-text);
+        --bs-btn-bg: var(--pustara-turquoise);
+        --bs-btn-border-color: var(--pustara-turquoise);
+        --bs-btn-hover-color: var(--pustara-button-text);
+        --bs-btn-hover-bg: var(--pustara-turquoise-strong);
+        --bs-btn-hover-border-color: var(--pustara-turquoise-strong);
+    }
+
+    .btn-warning {
+        --bs-btn-color: var(--pustara-button-text);
+        --bs-btn-bg: var(--pustara-turquoise);
+        --bs-btn-border-color: var(--pustara-turquoise);
+        --bs-btn-hover-color: var(--pustara-button-text);
+        --bs-btn-hover-bg: var(--pustara-turquoise-strong);
+        --bs-btn-hover-border-color: var(--pustara-turquoise-strong);
+        --bs-btn-active-color: var(--pustara-button-text);
+        --bs-btn-active-bg: var(--pustara-turquoise-strong);
+        --bs-btn-active-border-color: var(--pustara-turquoise-strong);
+    }
+
+    .btn-warning.text-white {
+        color: var(--pustara-button-text) !important;
+    }
+
+    .btn-outline-primary {
+        --bs-btn-color: var(--pustara-primary);
+        --bs-btn-border-color: var(--pustara-primary);
+        --bs-btn-hover-color: var(--pustara-background);
+        --bs-btn-hover-bg: var(--pustara-turquoise);
+        --bs-btn-hover-border-color: var(--pustara-turquoise);
+        --bs-btn-active-color: var(--pustara-background);
+        --bs-btn-active-bg: var(--pustara-turquoise);
+        --bs-btn-active-border-color: var(--pustara-turquoise);
+    }
+
+    #app-usr .member-sidebar,
+    #app-usr .member-topbar {
+        color: var(--pustara-text);
+        background: var(--pustara-surface);
+        border-color: var(--pustara-border);
+    }
+
+    #app-usr .sidebar-link i {
+        color: var(--pustara-primary);
+        background: var(--pustara-surface-raised);
+    }
+
+    #app-usr .brand-copy strong,
+    #app-usr .topbar-context strong,
+    #app-usr .account-copy strong,
+    #app-usr .sidebar-group-label,
+    #app-usr .header-title,
+    #app-usr .user-dropdown-name {
+        color: var(--pustara-text);
+    }
+
+    #app-usr .topbar-kicker,
+    #app-usr .sidebar-group-label i,
+    #app-usr .theme-control,
+    #app-usr .sidebar-link,
+    #app-usr .sidebar-sublink,
+    #app-usr .sidebar-logout,
+    #app-usr .main-navbar .menu-link,
+    #app-usr .main-navbar .submenu-link {
+        color: var(--pustara-text);
+    }
+
+    #app-usr .sidebar-link:hover,
+    #app-usr .sidebar-sublink:hover,
+    #app-usr .sidebar-account:hover,
+    #app-usr .main-navbar .submenu-link:hover,
+    #app-usr .main-navbar .submenu-link.active,
+    #app-usr .sidebar-link.router-link-active,
+    #app-usr .sidebar-link.router-link-exact-active {
+        color: var(--pustara-primary);
+        background: var(--pustara-surface-raised);
+    }
+
+    #app-usr .sidebar-link.router-link-active i,
+    #app-usr .sidebar-link.router-link-exact-active i,
+    #app-usr .sidebar-link:hover i {
+        color: var(--pustara-turquoise);
+        background: var(--pustara-surface);
+    }
+
+    #app-usr .theme-control {
+        color: var(--pustara-text);
+        background: var(--pustara-surface-raised);
+        border-color: var(--pustara-border);
+    }
+
+    #app-usr .sidebar-bottom {
+        background: var(--pustara-surface);
+    }
+
+    #app-usr .sidebar-auth .sidebar-login {
+        color: var(--pustara-text);
+        background: var(--pustara-surface);
+        border-color: var(--pustara-border);
+    }
+
+    #app-usr .sidebar-auth .sidebar-login:hover {
+        color: var(--pustara-turquoise);
+        background: var(--pustara-surface-raised);
+        border-color: var(--pustara-turquoise);
+    }
+
+    #app-usr .sidebar-close:hover,
+    #app-usr .sidebar-toggle:hover,
+    #app-usr .mobile-search-trigger:hover {
+        color: var(--pustara-turquoise);
+        background: var(--pustara-surface-raised);
+    }
+
+    #app-usr .topbar-search,
+    #app-usr .main-navbar .form-control {
+        background: var(--pustara-background);
+        border-color: var(--pustara-border);
+    }
+
+    #app-usr .topbar-search input,
+    #app-usr .main-navbar .form-control {
+        color: var(--pustara-text);
+    }
+
+    #app-usr .topbar-search input::placeholder {
+        color: var(--pustara-muted);
+    }
+}

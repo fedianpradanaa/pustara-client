@@ -30,7 +30,9 @@ class MainController extends Controller
      */
     public function index()
     {
-        return view('main');
+        return view('main', [
+            'site' => $this->getSiteInfo(),
+        ]);
     }
 
     public function getInfo()
@@ -672,19 +674,167 @@ class MainController extends Controller
 
     public function getAppInfo()
     {
-        $results = DB::table('tclient as a')
+        return response()->json($this->getSiteInfo(), 200);
+    }
+
+    private function getSiteInfo(): array
+    {
+        $profile = DB::table('tclient as a')
+            ->leftJoin('tprovinsi as b', 'a.provinsi_id', '=', 'b.provinsi_id')
+            ->leftJoin('tkabupaten as c', 'a.kabupaten_id', '=', 'c.kabupaten_id')
+            ->leftJoin('tkecamatan as d', 'a.kecamatan_id', '=', 'd.kecamatan_id')
+            ->leftJoin('tkelurahan as e', 'a.kelurahan_id', '=', 'e.kelurahan_id')
             ->select([
                 'a.application_name',
+                'a.instansi_name',
+                'a.address',
+                'a.kodepos',
+                'a.administrator_phone',
+                'a.web_add',
+                'a.logo',
+                'a.logo_small',
+                'b.provinsi_name',
+                'c.kabupaten_name',
+                'd.kecamatan_name',
+                'e.kelurahan_name',
             ])
-            ->where('a.client_id', '=' , $this->client_id)
-            ->get();
+            ->where('a.client_id', $this->client_id)
+            ->first();
 
-        return response()->json($results, 200);
+        $parameters = DB::table('tparameter')
+            ->where('client_id', $this->client_id)
+            ->whereIn('name', [
+                'site_tagline',
+                'og_title',
+                'og_description',
+                'og_image',
+                'social_facebook',
+                'social_instagram',
+                'social_youtube',
+                'social_tiktok',
+                'social_whatsapp',
+            ])
+            ->pluck('value', 'name');
+
+        $appName = trim((string) ($profile->application_name ?? ''));
+        $tagline = trim((string) $parameters->get('site_tagline', ''));
+        $profileLogoUrl = $this->resolveBrandImage($profile->logo ?? '');
+        $profileSmallLogoUrl = $this->resolveBrandImage($profile->logo_small ?? '');
+        $logoUrl = $this->resolveTenantLogo('logo.png')
+            ?: $profileLogoUrl
+            ?: asset('storage/images/logo/logo.png');
+        $smallLogoUrl = $this->resolveTenantLogo('logo_small.png')
+            ?: $profileSmallLogoUrl
+            ?: $profileLogoUrl
+            ?: asset('storage/images/logo/logo_small.png');
+        $faviconUrl = $this->resolveTenantLogo('favicon.png')
+            ?: asset('storage/images/logo/favicon.png');
+        $ogImage = trim((string) $parameters->get('og_image', '')) ?: $logoUrl;
+
+        $address = trim((string) ($profile->address ?? ''));
+        $addressParts = $address === '' ? [] : [$address];
+        foreach ([
+            $profile->kelurahan_name ?? '',
+            $profile->kecamatan_name ?? '',
+            $profile->kabupaten_name ?? '',
+            $profile->provinsi_name ?? '',
+            $profile->kodepos ?? '',
+        ] as $locationPart) {
+            $locationPart = trim((string) $locationPart);
+            if ($locationPart !== '' && stripos($address, $locationPart) === false) {
+                $addressParts[] = $locationPart;
+                $address .= ' ' . $locationPart;
+            }
+        }
+
+        $phone = trim((string) ($profile->administrator_phone ?? ''));
+        if (in_array(strtolower($phone), ['', '-', 'n/a', 'null'], true)) {
+            $phone = '';
+        }
+        $socialPlatforms = [
+            'facebook' => ['Facebook', 'bi-facebook'],
+            'instagram' => ['Instagram', 'bi-instagram'],
+            'youtube' => ['YouTube', 'bi-youtube'],
+            'tiktok' => ['TikTok', 'bi-tiktok'],
+            'whatsapp' => ['WhatsApp', 'bi-whatsapp'],
+        ];
+        $socialLinks = [];
+
+        foreach ($socialPlatforms as $platform => [$label, $icon]) {
+            $url = trim((string) $parameters->get('social_' . $platform, ''));
+            if ($this->isHttpUrl($url)) {
+                $socialLinks[] = [
+                    'label' => $label,
+                    'icon' => $icon,
+                    'url' => $url,
+                ];
+            }
+        }
+
+        $website = trim((string) ($profile->web_add ?? ''));
+        if ($website !== '' && !preg_match('/^https?:\\/\\//i', $website)) {
+            $website = 'https://' . $website;
+        }
+
+        return [
+            'app_name' => $appName,
+            'tagline' => $tagline,
+            'logo_url' => $logoUrl,
+            'small_logo_url' => $smallLogoUrl,
+            'favicon_url' => $faviconUrl,
+            'og_title' => trim((string) $parameters->get('og_title', '')) ?: $appName,
+            'og_description' => trim((string) $parameters->get('og_description', '')) ?: $tagline,
+            'og_image' => $ogImage,
+            'institution_name' => trim((string) ($profile->instansi_name ?? '')),
+            'address' => implode(', ', $addressParts),
+            'phone' => $phone,
+            'phone_url' => preg_replace('/[^0-9+]/', '', $phone),
+            'website' => $this->isHttpUrl($website) ? $website : '',
+            'social_links' => $socialLinks,
+        ];
+    }
+
+    private function resolveBrandImage(?string $value): string
+    {
+        $path = trim((string) $value);
+        if ($path === '') {
+            return '';
+        }
+
+        if ($this->isHttpUrl($path)) {
+            return $path;
+        }
+
+        if (Str::startsWith($path, ['storage/', '/storage/'])) {
+            return url('/' . ltrim($path, '/'));
+        }
+
+        return asset('storage/images/logo/' . ltrim($path, '/'));
+    }
+
+    private function resolveTenantLogo(string $filename): string
+    {
+        $relativePath = 'storage/images/logo/' . hash('sha256', $this->client_id) . '/' . $filename;
+        $absolutePath = public_path($relativePath);
+        if (!is_file($absolutePath)) {
+            return '';
+        }
+
+        return asset($relativePath . '?v=' . filemtime($absolutePath));
+    }
+
+    private function isHttpUrl(string $value): bool
+    {
+        if (!filter_var($value, FILTER_VALIDATE_URL)) {
+            return false;
+        }
+
+        return in_array(parse_url($value, PHP_URL_SCHEME), ['http', 'https'], true);
     }
 
     public function getParam()
     {
-		$parameter = ['reg_member', 'additional_features'];
+		$parameter = ['reg_member', 'additional_features', 'verify_email_member', 'app_reg_member'];
         $results = DB::table('tparameter as a')
             ->select([
                 'a.name',
@@ -697,6 +847,8 @@ class MainController extends Controller
 			->map(function ($item) {
 				return $item->value;
 			});
+
+        $results->put('verify_email_member', $results->get('verify_email_member', '1'));
 
         return response()->json($results, 200);
     }

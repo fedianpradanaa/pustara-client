@@ -204,23 +204,30 @@ class ProfileMasterController extends Controller
         $request->validate([
             'logo' => 'nullable|image|mimes:png,webp|dimensions:max_width=1500,max_height=510|max:5120',
             'logo_small' => 'nullable|image|mimes:png,webp|dimensions:max_width=510,max_height=510|max:5120',
+            'favicon' => 'nullable|image|mimes:png,webp|dimensions:max_width=256,max_height=256|max:2048',
         ]);
 
-        if (!$request->hasFile('logo') && !$request->hasFile('logo_small')) {
-            return response()->json('Pilih minimal satu logo untuk diunggah.', 422);
+        if (!$request->hasFile('logo') && !$request->hasFile('logo_small') && !$request->hasFile('favicon')) {
+            return response()->json('Pilih minimal satu file logo atau favicon untuk diunggah.', 422);
         }
 
-        $logoDirectory = public_path('storage/images/logo');
+        if (!DB::table('tclient')->where('client_id', $this->client_id)->exists()) {
+            return response()->json('Profil perpustakaan untuk client ini tidak ditemukan.', 404);
+        }
+
+        $clientDirectory = hash('sha256', $this->client_id);
+        $logoDirectory = public_path('storage/images/logo/' . $clientDirectory);
         File::ensureDirectoryExists($logoDirectory);
 
         if ($request->hasFile('logo')) {
             $logo = $request->file('logo');
+            $logoPath = $logoDirectory . DIRECTORY_SEPARATOR . 'logo.png';
             if ($logo->getMimeType() === 'image/webp') {
                 $image = imagecreatefromwebp($logo->getPathname());
-                imagepng($image, $logoDirectory . DIRECTORY_SEPARATOR . 'logo.png');
+                imagepng($image, $logoPath);
                 imagedestroy($image);
             } else {
-                $logo->move($logoDirectory, 'logo.png');
+                File::put($logoPath, $logo->get());
             }
         }
 
@@ -232,7 +239,7 @@ class ProfileMasterController extends Controller
                 imagepng($image, $smallLogoPath);
                 imagedestroy($image);
             } else {
-                $smallLogo->move($logoDirectory, 'logo_small.png');
+                File::put($smallLogoPath, $smallLogo->get());
             }
 
             [$width, $height] = getimagesize($smallLogoPath);
@@ -241,12 +248,24 @@ class ProfileMasterController extends Controller
             imagesavealpha($resizedImage, true);
             $source = imagecreatefrompng($smallLogoPath);
             imagecopyresampled($resizedImage, $source, 0, 0, 0, 0, 200, 200, $width, $height);
-            imagepng($resizedImage, $logoDirectory . DIRECTORY_SEPARATOR . 'favicon.png');
+            imagepng($resizedImage, $smallLogoPath);
             imagedestroy($resizedImage);
             imagedestroy($source);
         }
 
-        return response()->json('Logo berhasil diperbarui.', 201);
+        if ($request->hasFile('favicon')) {
+            $favicon = $request->file('favicon');
+            $faviconPath = $logoDirectory . DIRECTORY_SEPARATOR . 'favicon.png';
+            if ($favicon->getMimeType() === 'image/webp') {
+                $image = imagecreatefromwebp($favicon->getPathname());
+                imagepng($image, $faviconPath);
+                imagedestroy($image);
+            } else {
+                File::put($faviconPath, $favicon->get());
+            }
+        }
+
+        return response()->json('Logo dan favicon berhasil diperbarui.', 201);
     }
 
     /**

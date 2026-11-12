@@ -370,7 +370,7 @@ export default {
                     {
                         name: 'Pengunjung',
                         data: [],
-						color: '#435ebe',
+						color: '#145783',
                     },
                 ],
                 xaxis: {
@@ -403,7 +403,7 @@ export default {
                     {
                         name: 'Pembaca',
                         data: [],
-						color: '#435ebe',
+						color: '#145783',
                     },
                 ],
                 xaxis: {

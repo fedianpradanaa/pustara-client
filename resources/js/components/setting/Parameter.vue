@@ -20,14 +20,56 @@
                                                 <option value="0">Tidak</option>
                                             </select>
                                         </template>
-                                        <template v-else-if="data.name=='app_reg_member'">
+                                        <template v-else-if="data.name=='verify_email_member'">
                                             <select class="form-control col-3" :name="data.name" :id="data.name" v-model="form.param[data.name]">
-                                                <option value="1">Manual</option>
-                                                <option value="0">Auto</option>
+                                                <option value="1">Perlu verifikasi email</option>
+                                                <option value="0">Tidak perlu verifikasi email</option>
                                             </select>
                                         </template>
-                                        <template v-else>
+                                        <template v-else-if="data.name=='app_reg_member'">
+                                            <select class="form-control col-3" :name="data.name" :id="data.name" v-model="form.param[data.name]">
+                                                <option value="1">Perlu persetujuan petugas</option>
+                                                <option value="0">Langsung aktif</option>
+                                            </select>
+                                        </template>
+                                        <template v-else-if="data.name=='og_description'">
+                                            <textarea
+                                                :name="data.name"
+                                                :id="data.name"
+                                                class="form-control"
+                                                rows="3"
+                                                maxlength="255"
+                                                :placeholder="data.description"
+                                                v-model="form.param[data.name]"
+                                            ></textarea>
+                                        </template>
+                                        <template v-else-if="data.name=='og_image' || data.name.startsWith('social_')">
+                                            <input
+                                                type="url"
+                                                :name="data.name"
+                                                :id="data.name"
+                                                class="form-control"
+                                                maxlength="255"
+                                                :placeholder="data.description"
+                                                v-model="form.param[data.name]"
+                                            />
+                                        </template>
+                                        <template v-else-if="data.name=='site_tagline' || data.name=='og_title'">
+                                            <input
+                                                type="text"
+                                                :name="data.name"
+                                                :id="data.name"
+                                                class="form-control"
+                                                maxlength="255"
+                                                :placeholder="data.description"
+                                                v-model="form.param[data.name]"
+                                            />
+                                        </template>
+                                        <template v-else-if="data.name=='maks_rent_book' || data.name=='rent_book'">
                                             <input type="number" :name="data.name" :id="data.name" class="form-control" :placeholder="data.description" v-model="form.param[data.name]"/>
+                                        </template>
+                                        <template v-else>
+                                            <input type="text" :name="data.name" :id="data.name" class="form-control" :placeholder="data.description" v-model="form.param[data.name]"/>
                                         </template>
                                     </div>
                                 </div>

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class BookController extends Controller
@@ -122,7 +123,13 @@ class BookController extends Controller
         // }
         // $logs->write(__FUNCTION__, "STOP\r\n");    
 
-        if($cek_stock->remaining > 0){
+        if($cek_stock && $cek_stock->remaining > 0){
+            Log::channel('activity')->info('book.read.started', [
+                'user_id' => $user->id,
+                'client_id' => $this->client_id,
+                'book_id' => $request->pdfToken,
+            ]);
+
             return response()->json([
                 'code' => '1',
                 'message' => 'Ok',
@@ -218,6 +225,13 @@ class BookController extends Controller
         // $logs->write(__FUNCTION__, "STOP\r\n");
 
         if($ttrx){
+            Log::channel('activity')->info('book.read.finished', [
+                'user_id' => $user->id,
+                'client_id' => $this->client_id,
+                'book_id' => $request->token,
+                'flag_end' => $request->active,
+            ]);
+
             return response()->json([
                 'code' => '1',
                 'message' => 'Ok!',

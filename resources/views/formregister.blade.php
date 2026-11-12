@@ -7,8 +7,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-        <link rel="shortcut icon" href="{{ asset('storage/images/logo/favicon.png?' . rand(10000, 99999)) }}" type="image/x-icon" />
-        <link rel="shortcut icon" href="{{ asset('storage/images/logo/favicon.png?' . rand(10000, 99999)) }}" type="image/png" />
+        <link rel="icon" href="{{ $clientFaviconUrl }}" type="image/png" />
 
         <script type="text/javascript">
             if (window.top !== window.self) {
@@ -16,7 +15,7 @@
             }
         </script>
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ $clientAppName }}</title>
 
         @vite(['resources/sass/app.scss', 'resources/sass/themes/dark/app-dark.scss', 'resources/sass/pages/auth.scss', 'resources/js/form.js'])
     </head>

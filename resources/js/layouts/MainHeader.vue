@@ -2,10 +2,10 @@
     <aside id="member-sidebar" class="member-sidebar offcanvas offcanvas-xl offcanvas-start" tabindex="-1" aria-labelledby="member-sidebar-title">
         <div class="sidebar-brand">
             <router-link to="/" class="brand-link">
-                <img :src="'/storage/images/logo/logo.png?' + Math.floor(Math.random() * (999 - 100 + 1)) + 100" alt="" class="brand-logo" data-bs-dismiss="offcanvas">
+                <img v-if="logoUrl" :src="logoUrl" :alt="appname" class="brand-logo" data-bs-dismiss="offcanvas">
                 <span class="brand-copy" data-bs-dismiss="offcanvas">
                     <strong id="member-sidebar-title">{{ appname }}</strong>
-                    <small>Perpustakaan Digital</small>
+                    <small v-if="tagline">{{ tagline }}</small>
                 </span>
             </router-link>
             <button type="button" class="sidebar-close d-xl-none" data-bs-dismiss="offcanvas" aria-label="Tutup navigasi">
@@ -24,20 +24,31 @@
 
             <div class="sidebar-group">
                 <span class="nav-caption">Bacaan & wawasan</span>
-                <span class="sidebar-group-label"><i class="bi bi-journal-richtext" aria-hidden="true"></i> Artikel</span>
-                <router-link :to="{ name: 'artikel', params: { idart: 'TU' } }" class="sidebar-sublink"><span data-bs-dismiss="offcanvas">Tajuk Utama</span></router-link>
-                <router-link :to="{ name: 'artikel', params: { idart: 'WA' } }" class="sidebar-sublink"><span data-bs-dismiss="offcanvas">Wawasan</span></router-link>
-                <router-link :to="{ name: 'artikel', params: { idart: 'RB' } }" class="sidebar-sublink"><span data-bs-dismiss="offcanvas">Review Buku</span></router-link>
-                <router-link :to="{ name: 'artikel', params: { idart: 'LP' } }" class="sidebar-sublink"><span data-bs-dismiss="offcanvas">Layar Penulis</span></router-link>
-                <router-link :to="{ name: 'artikel', params: { idart: 'TF' } }" class="sidebar-sublink"><span data-bs-dismiss="offcanvas">Titik Fokus</span></router-link>
-                <router-link :to="{ name: 'artikel', params: { idart: 'HU' } }" class="sidebar-sublink"><span data-bs-dismiss="offcanvas">Humoria</span></router-link>
+                <router-link :to="{ name: 'artikel', params: { idart: 'TU' } }" class="sidebar-link sidebar-reading-link">
+                    <i class="bi bi-newspaper" aria-hidden="true" data-bs-dismiss="offcanvas"></i><span data-bs-dismiss="offcanvas">Tajuk Utama</span>
+                </router-link>
+                <router-link :to="{ name: 'artikel', params: { idart: 'WA' } }" class="sidebar-link sidebar-reading-link">
+                    <i class="bi bi-lightbulb" aria-hidden="true" data-bs-dismiss="offcanvas"></i><span data-bs-dismiss="offcanvas">Wawasan</span>
+                </router-link>
+                <router-link :to="{ name: 'artikel', params: { idart: 'RB' } }" class="sidebar-link sidebar-reading-link">
+                    <i class="bi bi-bookmark-star" aria-hidden="true" data-bs-dismiss="offcanvas"></i><span data-bs-dismiss="offcanvas">Review Buku</span>
+                </router-link>
+                <router-link :to="{ name: 'artikel', params: { idart: 'LP' } }" class="sidebar-link sidebar-reading-link">
+                    <i class="bi bi-person-lines-fill" aria-hidden="true" data-bs-dismiss="offcanvas"></i><span data-bs-dismiss="offcanvas">Layar Penulis</span>
+                </router-link>
+                <router-link :to="{ name: 'artikel', params: { idart: 'TF' } }" class="sidebar-link sidebar-reading-link">
+                    <i class="bi bi-bullseye" aria-hidden="true" data-bs-dismiss="offcanvas"></i><span data-bs-dismiss="offcanvas">Titik Fokus</span>
+                </router-link>
+                <router-link :to="{ name: 'artikel', params: { idart: 'HU' } }" class="sidebar-link sidebar-reading-link">
+                    <i class="bi bi-emoji-smile" aria-hidden="true" data-bs-dismiss="offcanvas"></i><span data-bs-dismiss="offcanvas">Humoria</span>
+                </router-link>
             </div>
 
             <template v-if="isAuthenticated">
                 <div class="sidebar-group">
                     <span class="nav-caption">Aktivitas</span>
                     <router-link v-if="additional_features==2 || additional_features==3" to="/quiz" class="sidebar-link">
-                        <i class="bi bi-patch-question" aria-hidden="true" data-bs-dismiss="offcanvas"></i><span data-bs-dismiss="offcanvas">Quiz</span>
+                        <i class="bi bi-patch-question" aria-hidden="true" data-bs-dismiss="offcanvas"></i><span data-bs-dismiss="offcanvas">Kuis</span>
                     </router-link>
                     <router-link v-if="additional_features==1 || additional_features==3" to="/list-games" class="sidebar-link">
                         <i class="bi bi-controller" aria-hidden="true" data-bs-dismiss="offcanvas"></i><span data-bs-dismiss="offcanvas">Permainan</span>
@@ -51,7 +62,7 @@
 
         <div class="sidebar-bottom">
             <div class="theme-control">
-                <span><i class="bi bi-circle-half" aria-hidden="true"></i> Tampilan</span>
+                <span><i class="bi bi-circle-half" aria-hidden="true"></i> Tema tampilan</span>
                 <div class="form-check form-switch mb-0">
                     <input class="form-check-input me-0" type="checkbox" id="toggle-dark" aria-label="Ganti tema" />
                 </div>
@@ -80,11 +91,11 @@
             <button class="sidebar-toggle d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#member-sidebar" aria-controls="member-sidebar" aria-label="Buka navigasi">
                 <i class="bi bi-list" aria-hidden="true"></i>
             </button>
-            <router-link to="/" class="mobile-brand d-xl-none" aria-label="Beranda">
-                <img :src="'/storage/images/logo/logo_small.png?' + Math.floor(Math.random() * (999 - 100 + 1)) + 100" alt="">
+            <router-link v-if="smallLogoUrl" to="/" class="mobile-brand d-xl-none" aria-label="Beranda">
+                <img v-if="smallLogoUrl" :src="smallLogoUrl" :alt="appname">
             </router-link>
             <div class="topbar-context">
-                <span class="topbar-kicker">PERPUSTAKAAN DIGITAL</span>
+                <span v-if="tagline" class="topbar-kicker">{{ tagline }}</span>
                 <strong>{{ appname }}</strong>
             </div>
         </div>
@@ -124,6 +135,18 @@ export default {
             required: true
         },
         appname: {
+            type: String,
+            required: true
+        },
+        tagline: {
+            type: String,
+            required: true
+        },
+        logoUrl: {
+            type: String,
+            required: true
+        },
+        smallLogoUrl: {
             type: String,
             required: true
         },
@@ -183,34 +206,34 @@ export default {
 }
 .reg {
   color: white;
-  background-color: #435ebe;
+  background-color: #145783;
 }
 
 .log {
-  color: rgb(104, 85, 224);
+  color: #145783;
   background-color: rgba(255, 255, 255, 1);
-  border: 1px solid #435ebe;
+  border: 1px solid #145783;
 }
 
 .log:hover {
   color: white;
-  box-shadow: 0 0 20px rgba(104, 85, 224, 0.6);
-  background-color: #435ebe;
+  box-shadow: 0 0 20px rgba(20, 87, 131, 0.2);
+  background-color: #145783;
 }
 .reg:hover {
   color: #ffffff;
-  box-shadow: 0 0 20px #dec7a3;
-  background-color: #fab040;
+  box-shadow: 0 0 20px rgba(32, 183, 165, .22);
+  background-color: #104765;
 }
 .header-title {
     font-size: 23px;
     margin: 0px 0px 0px;
     font-family: 'Libre Franklin';
     font-weight: 800;
-    color: #202a27;
+    color: #34495A;
 }
 .svg-color {
-    color: #64716c;
+    color: #617484;
 }
 
 .header {
@@ -250,13 +273,13 @@ export default {
 }
 
 .user-dropdown {
-    color: #202a27;
+    color: #34495A;
     text-decoration: none;
 }
 
 .user-dropdown-name {
     margin-bottom: .1rem;
-    color: #202a27;
+    color: #34495A;
     font-weight: 800;
 }
 
@@ -269,7 +292,7 @@ export default {
     min-width: 88px;
     margin: 0 0 0 .45rem;
     padding: .55rem 1rem;
-    border: 1px solid #236b58;
+    border: 1px solid #145783;
     border-radius: 7px;
     box-shadow: none;
     font-size: .9rem;
@@ -279,12 +302,12 @@ export default {
 .reg,
 .reg:hover {
     color: #fff;
-    background: #236b58;
+    background: #145783;
 }
 
 .log,
 .log:hover {
-    color: #236b58;
+    color: #145783;
     background: #fff;
 }
 
@@ -321,7 +344,7 @@ export default {
     align-items: center;
     height: 50px;
     padding: 0 .8rem;
-    color: #46544d;
+    color: #34495A;
     border-bottom: 2px solid transparent;
     text-decoration: none;
     font-size: .92rem;
@@ -331,8 +354,8 @@ export default {
 
 .main-navbar .menu-link:hover,
 .main-navbar .menu-link.active {
-    color: #236b58;
-    border-bottom-color: #236b58;
+    color: #145783;
+    border-bottom-color: #20B7A5;
 }
 
 .main-navbar .submenu {
@@ -348,7 +371,7 @@ export default {
 .main-navbar .submenu-link {
     display: block;
     padding: .65rem .75rem;
-    color: #46544d;
+    color: #34495A;
     border-radius: 6px;
     text-decoration: none;
     font-weight: 600;
@@ -356,8 +379,8 @@ export default {
 
 .main-navbar .submenu-link:hover,
 .main-navbar .submenu-link.active {
-    color: #174b3d;
-    background: #edf4ef;
+    color: #104765;
+    background: #EAF4FA;
 }
 
 .main-navbar .form-group {
@@ -374,14 +397,14 @@ export default {
     width: clamp(190px, 18vw, 250px);
     min-height: 38px;
     padding-right: 2.5rem;
-    border: 1px solid #e4e8e2;
+    border: 1px solid #dbe7ee;
     border-radius: 7px !important;
-    background: #f7f7f3;
+    background: #F7FAFC;
 }
 
 .main-navbar .form-control-icon {
     right: .4rem;
-    color: #64716c;
+    color: #617484;
 }
 
 .main-navbar .theme-toogle {
@@ -394,18 +417,18 @@ export default {
 }
 
 .burger-btn {
-    color: #202a27;
+    color: #34495A;
 }
 
 :global(html[data-bs-theme="dark"] .layout-horizontal .header) {
-    background: #202824 !important;
-    border-bottom-color: #35423b;
+    background: #182b38 !important;
+    border-bottom-color: #345061;
 }
 
 :global(html[data-bs-theme="dark"] .layout-horizontal .header-top),
 :global(html[data-bs-theme="dark"] .layout-horizontal .main-navbar) {
-    background: #202824 !important;
-    border-color: #35423b;
+    background: #182b38 !important;
+    border-color: #345061;
 }
 
 :global(html[data-bs-theme="dark"] .layout-horizontal .header-title),
@@ -413,34 +436,34 @@ export default {
 :global(html[data-bs-theme="dark"] .layout-horizontal .user-dropdown-name),
 :global(html[data-bs-theme="dark"] .layout-horizontal .burger-btn),
 :global(html[data-bs-theme="dark"] .layout-horizontal .main-navbar .menu-link) {
-    color: #e9eee9;
+    color: #dceaf1;
 }
 
 :global(html[data-bs-theme="dark"] .layout-horizontal .main-navbar .menu-link:hover),
 :global(html[data-bs-theme="dark"] .layout-horizontal .main-navbar .menu-link.active) {
-    color: #a0dbc1;
-    border-bottom-color: #83c8aa;
+    color: #80c4df;
+    border-bottom-color: #20B7A5;
 }
 
 :global(html[data-bs-theme="dark"] .layout-horizontal .main-navbar .submenu) {
-    background: #202824;
-    border-color: #35423b;
+    background: #182b38;
+    border-color: #345061;
 }
 
 :global(html[data-bs-theme="dark"] .layout-horizontal .main-navbar .submenu-link) {
-    color: #e9eee9;
+    color: #dceaf1;
 }
 
 :global(html[data-bs-theme="dark"] .layout-horizontal .main-navbar .submenu-link:hover),
 :global(html[data-bs-theme="dark"] .layout-horizontal .main-navbar .submenu-link.active) {
-    color: #e9eee9;
-    background: #293a32;
+    color: #dceaf1;
+    background: #203b4d;
 }
 
 :global(html[data-bs-theme="dark"] .layout-horizontal .main-navbar .form-control) {
-    color: #e9eee9;
-    background: #171d1a;
-    border-color: #35423b;
+    color: #dceaf1;
+    background: #101d27;
+    border-color: #345061;
 }
 
 @media (max-width: 1199px) {
@@ -476,11 +499,11 @@ export default {
 }
 
 .member-sidebar {
-    --sidebar-ink: #22322c;
-    --sidebar-muted: #75817a;
-    --sidebar-line: #e6e9e3;
-    --sidebar-accent: #236b58;
-    --sidebar-soft: #edf4ef;
+    --sidebar-ink: #34495A;
+    --sidebar-muted: #617484;
+    --sidebar-line: #dbe7ee;
+    --sidebar-accent: #145783;
+    --sidebar-soft: #EAF4FA;
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -489,9 +512,12 @@ export default {
     left: 0;
     width: 256px;
     height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
     padding: 1.25rem 1rem 1rem;
     color: var(--sidebar-ink);
-    background: #fffefa;
+    background: #fff;
     border-right: 1px solid var(--sidebar-line);
 }
 
@@ -503,6 +529,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex: 0 0 auto;
     min-height: 62px;
     padding: 0 .3rem 1.15rem;
     border-bottom: 1px solid var(--sidebar-line);
@@ -558,16 +585,18 @@ export default {
 }
 
 .sidebar-navigation {
-    flex: 1 1 auto;
+    flex: 1 1 0;
+    min-height: 0;
     overflow-y: auto;
     padding: 1.25rem .1rem 1rem;
     overscroll-behavior: contain;
+    scrollbar-gutter: stable;
 }
 
 .nav-caption {
     display: block;
     margin: 0 .65rem .55rem;
-    color: #89938d;
+    color: #617484;
     font-size: .67rem;
     font-weight: 800;
     letter-spacing: .12em;
@@ -581,7 +610,7 @@ export default {
     min-height: 44px;
     gap: .75rem;
     padding: .65rem .75rem;
-    color: #46564e;
+    color: #34495A;
     border-radius: 8px;
     font-size: .9rem;
     font-weight: 700;
@@ -592,7 +621,7 @@ export default {
 .sidebar-link i,
 .sidebar-group-label i {
     width: 20px;
-    color: #748179;
+    color: #617484;
     font-size: 1.05rem;
     text-align: center;
 }
@@ -600,19 +629,19 @@ export default {
 .sidebar-link:hover,
 .sidebar-sublink:hover {
     color: var(--sidebar-accent);
-    background: #f3f6f2;
+    background: #EAF4FA;
 }
 
 .sidebar-link.router-link-active,
 .sidebar-link.router-link-exact-active {
-    color: #185541;
+    color: #145783;
     background: var(--sidebar-soft);
 }
 
 :global(html[data-bs-theme="dark"] .member-sidebar .sidebar-link.router-link-active),
 :global(html[data-bs-theme="dark"] .member-sidebar .sidebar-link.router-link-exact-active) {
-    color: #e9eee9;
-    background: #293a32;
+    color: #dceaf1;
+    background: #203b4d;
 }
 
 .sidebar-link.router-link-active i,
@@ -622,7 +651,7 @@ export default {
 
 :global(html[data-bs-theme="dark"] .member-sidebar .sidebar-link.router-link-active i),
 :global(html[data-bs-theme="dark"] .member-sidebar .sidebar-link.router-link-exact-active i) {
-    color: #a0dbc1;
+    color: #58d7c6;
 }
 
 .sidebar-link:focus-visible,
@@ -631,7 +660,7 @@ export default {
 .sidebar-logout:focus-visible,
 .sidebar-toggle:focus-visible,
 .topbar-search button:focus-visible {
-    outline: 3px solid rgba(35, 107, 88, .28);
+    outline: 3px solid rgba(32, 183, 165, .35);
     outline-offset: 2px;
 }
 
@@ -665,7 +694,11 @@ export default {
 
 .sidebar-bottom {
     flex: 0 0 auto;
-    padding: .8rem .15rem 0;
+    position: sticky;
+    z-index: 2;
+    bottom: 0;
+    padding: .7rem .15rem max(.7rem, env(safe-area-inset-bottom));
+    background: var(--pustara-cloud, #F7FAFC);
     border-top: 1px solid var(--sidebar-line);
 }
 
@@ -767,19 +800,33 @@ export default {
 
 .sidebar-auth a {
     display: grid;
-    min-height: 40px;
+    min-height: 42px;
     place-items: center;
     border: 1px solid var(--sidebar-accent);
-    border-radius: 7px;
+    border-radius: 12px;
     color: var(--sidebar-accent);
     font-size: .85rem;
     font-weight: 800;
     text-decoration: none;
+    transition: color .18s ease, background-color .18s ease, border-color .18s ease, transform .18s ease;
+}
+
+.sidebar-auth .sidebar-login:hover {
+    color: var(--sidebar-accent);
+    background: var(--sidebar-soft);
+    transform: translateY(-1px);
 }
 
 .sidebar-auth .sidebar-register {
     color: #fff;
     background: var(--sidebar-accent);
+}
+
+.sidebar-auth .sidebar-register:hover {
+    color: #fff;
+    background: var(--pustara-button-hover, #104765);
+    border-color: var(--pustara-button-hover, #104765);
+    transform: translateY(-1px);
 }
 
 .member-topbar {
@@ -901,83 +948,83 @@ export default {
 }
 
 .topbar-signin:hover {
-    color: #174b3d;
+    color: #104765;
 }
 
 :global(html[data-bs-theme="dark"] .member-sidebar),
 :global(html[data-bs-theme="dark"] .member-topbar) {
-    --sidebar-ink: #e9eee9;
-    --sidebar-muted: #aab6af;
-    --sidebar-line: #35423b;
-    --sidebar-accent: #83c8aa;
-    --sidebar-soft: #293a32;
-    color: #e9eee9;
-    background: #202824;
-    border-color: #35423b;
+    --sidebar-ink: #dceaf1;
+    --sidebar-muted: #a9bfcc;
+    --sidebar-line: #345061;
+    --sidebar-accent: #58d7c6;
+    --sidebar-soft: #203b4d;
+    color: #dceaf1;
+    background: #182b38;
+    border-color: #345061;
 }
 
 :global(html[data-bs-theme="dark"] .brand-copy strong),
 :global(html[data-bs-theme="dark"] .topbar-context strong),
 :global(html[data-bs-theme="dark"] .account-copy strong),
 :global(html[data-bs-theme="dark"] .sidebar-group-label) {
-    color: #e9eee9;
+    color: #dceaf1;
 }
 
 :global(html[data-bs-theme="dark"] .topbar-kicker),
 :global(html[data-bs-theme="dark"] .sidebar-group-label i) {
-    color: #aab6af;
+    color: #a9bfcc;
 }
 
 :global(html[data-bs-theme="dark"] .sidebar-link),
 :global(html[data-bs-theme="dark"] .sidebar-sublink),
 :global(html[data-bs-theme="dark"] .theme-control),
 :global(html[data-bs-theme="dark"] .sidebar-logout) {
-    color: #c3cec6;
+    color: #c4d6e0;
 }
 
 :global(html[data-bs-theme="dark"] .sidebar-link:hover),
 :global(html[data-bs-theme="dark"] .sidebar-sublink:hover),
 :global(html[data-bs-theme="dark"] .sidebar-account:hover) {
-    color: #e9eee9;
-    background: #293a32;
+    color: #dceaf1;
+    background: #203b4d;
 }
 
 :global(html[data-bs-theme="dark"] .topbar-search) {
-    color: #aab6af;
-    background: #171d1a;
-    border-color: #35423b;
+    color: #a9bfcc;
+    background: #101d27;
+    border-color: #345061;
 }
 
 :global(html[data-bs-theme="dark"] .topbar-search input) {
-    color: #e9eee9;
+    color: #dceaf1;
 }
 
 :global(html[data-bs-theme="dark"] .topbar-search input::placeholder) {
-    color: #aab6af;
+    color: #a9bfcc;
     opacity: 1;
 }
 
 :global(html[data-bs-theme="dark"] .topbar-search button),
 :global(html[data-bs-theme="dark"] .mobile-search-trigger),
 :global(html[data-bs-theme="dark"] .sidebar-toggle) {
-    color: #c3cec6;
+    color: #c4d6e0;
 }
 
 :global(html[data-bs-theme="dark"] .topbar-signin:hover) {
-    color: #a0dbc1;
+    color: #80c4df;
 }
 
 :global(html[data-bs-theme="dark"] .sidebar-auth .sidebar-register) {
     color: #fff;
-    background: #236b58;
-    border-color: #236b58;
+    background: #145783;
+    border-color: #145783;
 }
 
 @media (max-width: 1199.98px) {
     .member-sidebar {
         height: 100dvh;
         padding-top: max(1rem, env(safe-area-inset-top));
-        padding-bottom: max(1rem, env(safe-area-inset-bottom));
+        padding-bottom: 0;
         border-right: 0;
         box-shadow: 12px 0 34px rgba(20, 35, 28, .12);
     }

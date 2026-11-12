@@ -73,6 +73,14 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'activity' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/user-activity.log'),
+            'level' => env('LOG_ACTIVITY_LEVEL', 'info'),
+            'days' => env('LOG_ACTIVITY_DAYS', 30),
+            'replace_placeholders' => true,
+        ],
+
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),

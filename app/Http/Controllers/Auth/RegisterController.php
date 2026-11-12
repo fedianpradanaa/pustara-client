@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Logs;
 use Carbon\Carbon;
 use App\Models\User;
-use App\NetworkHelper;
 use App\Models\Parameter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -17,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Validation\ValidationException;
 
 class RegisterController extends Controller
 {
@@ -64,6 +64,10 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'gender' => ['nullable', 'in:L,P'],
+            'birthday' => ['nullable', 'date'],
+            'nik' => ['nullable', 'string', 'max:25'],
         ]);
     }
 
@@ -81,82 +85,106 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'role' => $data['role'],
             'flag_approve' => $data['flag_approve'],
-            'client_id' => $this->client_id
+            'client_id' => $this->client_id,
+            'email_verified_at' => $data['email_verified_at'] ?? null,
         ]);
     }
 
     public function mregist(Request $request)
     {
-        $this->validator($request->all())->validate();
-
-        // Begin transaction
-        \DB::beginTransaction();
-        // $logs = new Logs( Arr::last(explode("\\", get_class())) );
-        // $logs->write(__FUNCTION__, "START");
-        // DB::enableQueryLog();
-
-        $registrasi = Parameter::where('client_id', $this->client_id)
+        $registrationEnabled = Parameter::where('client_id', $this->client_id)
             ->where('name', 'reg_member')
-            ->first();
+            ->value('value');
 
-        if(!$registrasi->value){
-            return response()->json('Pendaftaran ditutup, silahkan hubungi petugas perpustakaan.', 500);
+        if ((int) $registrationEnabled !== 1) {
+            Log::channel('activity')->notice('member.registration.rejected', [
+                'client_id' => $this->client_id,
+                'reason' => 'registration_disabled',
+            ]);
+            return response()->json('Pendaftaran ditutup, silahkan hubungi petugas perpustakaan.', 403);
         }
 
         try {
-            $flag_approve = Parameter::where('client_id', $this->client_id)
+            $validated = $this->validator($request->all())->validate();
+        } catch (ValidationException $e) {
+            Log::channel('activity')->notice('member.registration.rejected', [
+                'client_id' => $this->client_id,
+                'reason' => 'invalid_data',
+                'fields' => array_keys($e->errors()),
+            ]);
+            throw $e;
+        }
+
+        $approvalRequired = (int) (Parameter::where('client_id', $this->client_id)
             ->where('name', 'app_reg_member')
-            ->first();
+            ->value('value') ?? 0) === 1;
+        $verificationRequired = (int) (Parameter::where('client_id', $this->client_id)
+            ->where('name', 'verify_email_member')
+            ->value('value') ?? 1) === 1;
 
-            $request['flag_approve'] = 'Y';
-            if($flag_approve->value){
-                $request['flag_approve'] = 'N';
-            }else{
-                $request['flag_approve'] = 'Y';
-            }
+        $user = null;
+        try {
+            DB::transaction(function () use ($request, $validated, $approvalRequired, $verificationRequired, &$user) {
+                $user = $this->create([
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'password' => $validated['password'],
+                    'role' => 'member',
+                    'flag_approve' => $approvalRequired ? 'N' : 'Y',
+                    'email_verified_at' => $verificationRequired ? null : Carbon::now('Asia/Jakarta'),
+                ]);
 
-            $user = $this->create($request->all());
+                $attributesCreated = DB::table('tattr_member')->insert([
+                    'id' => $user->id,
+                    'client_id' => $this->client_id,
+                    'nik' => $request->nik,
+                    'phone' => $request->phone,
+                    'birthday' => $request->birthday,
+                    'gender' => $request->gender,
+                    'created_at' => Carbon::now('Asia/Jakarta'),
+                ]);
 
-            $attr = DB::table('tattr_member')
-                    ->insert([
-                        'id'            => $user->id,
-                        'client_id'     => $this->client_id,
-                        'nik'           => $request->nik,
-                        'phone'         => $request->phone,
-                        'birthday'      => $request->birthday,
-                        'gender'        => $request->gender,
-                        'created_at'     => Carbon::now("Asia/Jakarta")
-                    ]);
-
-            // $queries = DB::getQueryLog();
-            // for($q = 0; $q < count($queries); $q++) {
-            //     $sql = Str::replaceArray('?', $queries[$q]['bindings'], str_replace('?', "'?'", $queries[$q]['query']));
-            //     $logs->write('BINDING', '[' . implode(', ', $queries[$q]['bindings']) . ']');
-            //     $logs->write('SQL', $sql);
-            // }
-
-            // $logs->write(__FUNCTION__, "STOP\r\n");
-            \DB::commit();
-
-            if (NetworkHelper::hasInternetConnection()) {
-				event(new Registered($user));
-
-            	$user->sendEmailVerificationNotification();
-				$message = 'Pendaftaran berhasil! Silahkan konfirmasi email anda.';
-				$statusCode = 201;
-			} else {
-				Log::warning('Email verification could not be sent for user ' . $user->email . ' because there is no internet connection.');
-				$message = 'Pendaftaran berhasil!.';
-				$statusCode = 201;
-			}
-
-            return response()->json($message, $statusCode);
-        } catch (\Exception $e) {
-            // $logs->write('error', $e);
-            // $logs->write(__FUNCTION__, "STOP\r\n");
-            \DB::rollBack();
-
+                if (!$attributesCreated) {
+                    throw new \RuntimeException('Member attributes could not be saved.');
+                }
+            });
+        } catch (\Throwable $e) {
+            Log::channel('activity')->error('member.registration.failed', [
+                'client_id' => $this->client_id,
+                'exception' => get_class($e),
+            ]);
             return response()->json('Pendaftaran gagal! Silahkan coba lagi.', 500);
         }
+
+        Log::channel('activity')->info('member.registration.succeeded', [
+            'user_id' => $user->id,
+            'client_id' => $this->client_id,
+            'email_verification_required' => $verificationRequired,
+            'approval_required' => $approvalRequired,
+        ]);
+
+        $message = $approvalRequired
+            ? 'Pendaftaran berhasil! Akun anda menunggu persetujuan petugas.'
+            : 'Pendaftaran berhasil! Silahkan masuk.';
+        if ($verificationRequired) {
+            try {
+                event(new Registered($user));
+                $user->sendEmailVerificationNotification();
+                $message = $approvalRequired
+                    ? 'Pendaftaran berhasil! Silahkan konfirmasi email. Akun juga menunggu persetujuan petugas.'
+                    : 'Pendaftaran berhasil! Silahkan konfirmasi email anda sebelum masuk.';
+            } catch (\Throwable $e) {
+                Log::channel('activity')->warning('member.registration.verification_email_failed', [
+                    'user_id' => $user->id,
+                    'client_id' => $this->client_id,
+                    'exception' => get_class($e),
+                ]);
+                $message = $approvalRequired
+                    ? 'Pendaftaran berhasil, tetapi email verifikasi belum dapat dikirim. Akun menunggu persetujuan petugas dan verifikasi email.'
+                    : 'Pendaftaran berhasil, tetapi email verifikasi belum dapat dikirim. Silahkan masuk dan minta kirim ulang email verifikasi.';
+            }
+        }
+
+        return response()->json($message, 201);
     }
 }

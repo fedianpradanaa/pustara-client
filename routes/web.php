@@ -29,9 +29,7 @@ Auth::routes([
 ]);
 
 Route::middleware('destroy.session')->group(function() {
-	Route::get('/', function () {
-		return view('main');
-	});
+	Route::get('/', [App\Http\Controllers\MainController::class, 'index']);
 
     Route::post('/mregist', [App\Http\Controllers\Auth\RegisterController::class, 'mregist'])->name('mregist');
     Route::get('/getInfo', [App\Http\Controllers\MainController::class, 'getInfo'])->name('getInfo');

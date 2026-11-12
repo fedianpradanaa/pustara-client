@@ -43,7 +43,7 @@
                     <div class="text-center text-md fs-10">
                         <p class="text-gray-600" v-if="register">
                             Belum punya akun?
-                            <router-link :to="{ name: 'mregister' }" class="font-bold">Daftar</router-link>
+                            <router-link :to="{ name: 'mregister', query: $route.query }" class="font-bold register-reader-link">Daftar sebagai pembaca</router-link>
                         </p>
 						<p class="text-gray-600">
 							<a class="font-bold" href="/password/reset">Lupa Kata Sandi?</a>
@@ -86,7 +86,15 @@ export default {
                     from: 'member'
                 })
                 loader.hide()
-                window.location.href = '/'
+                const redirect = this.$route.query.redirect;
+                let destination = '/';
+                if (typeof redirect === 'string' && redirect.startsWith('/')) {
+                    const target = new URL(redirect, window.location.origin);
+                    if (target.origin === window.location.origin) {
+                        destination = target.pathname + target.search + target.hash;
+                    }
+                }
+                window.location.assign(destination);
             } catch (error) {
                 loader.hide();
                 if (error.response && error.response.status === 422) {
@@ -187,5 +195,24 @@ export default {
 
 .member-login-page .text-center {
     margin-top: 1.25rem;
+}
+
+.register-reader-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    margin-left: .35rem;
+    padding: .25rem .75rem;
+    color: var(--member-accent-dark, #145783);
+    background: var(--member-soft, #EAF4FA);
+    border: 1px solid var(--member-line, #dbe7ee);
+    border-radius: 999px;
+    text-decoration: none;
+}
+
+.register-reader-link:hover {
+    color: var(--member-accent-dark, #145783);
+    background: var(--member-panel, #E8F7F4);
+    border-color: var(--member-accent, #20B7A5);
 }
 </style>

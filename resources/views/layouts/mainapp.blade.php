@@ -6,25 +6,29 @@
 
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}" />
-        <meta property="og:site_name" content="{{ config('app.name') }}">
-        <meta property="og:title" content="{{ config('app.name') }}" />
-        <meta property="og:description" content="Aplikasi Perpustakaan Digital Berbasis Website" />
-        <meta property="og:image" itemprop="image" content="{{ asset('storage/images/logo/favicon.png') }}" />
-        <meta property="og:image:secure_url" content="{{ asset('storage/images/logo/favicon.png') }}" />
-        <meta property="og:image:type" content="image/png" />
-        <meta property="og:image:width" content="200">
-        <meta property="og:image:height" content="200">
+        <meta name="description" content="{{ $site['og_description'] }}">
+        <meta property="og:site_name" content="{{ $site['app_name'] }}">
+        <meta property="og:title" content="{{ $site['og_title'] }}" />
+        <meta property="og:description" content="{{ $site['og_description'] }}" />
+        @if ($site['og_image'] !== '')
+            <meta property="og:image" itemprop="image" content="{{ $site['og_image'] }}" />
+        @endif
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="{{ url('/') }}" />
+        <meta property="og:url" content="{{ url()->current() }}" />
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $site['og_title'] }}">
+        <meta name="twitter:description" content="{{ $site['og_description'] }}">
+        @if ($site['og_image'] !== '')
+            <meta name="twitter:image" content="{{ $site['og_image'] }}">
+        @endif
         <link rel="manifest" href="/manifest.json">
-        <link rel="icon" type="image/png" sizes="192x192" href="/storage/images/logo/favicon.png">
-        <link rel="apple-touch-icon" href="/storage/images/logo/favicon.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="{{ $site['favicon_url'] }}">
+        <link rel="apple-touch-icon" href="{{ $site['favicon_url'] }}">
         <meta name="theme-color" content="#ffffff">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ $site['app_name'] }}</title>
 
-        <!-- Favicon -->
-        <link rel="shortcut icon" href="{{ asset('storage/images/logo/favicon.png?' . rand(10000, 99999)) }}" type="image/png" />
+        <link rel="shortcut icon" href="{{ $site['favicon_url'] }}" type="image/png" />
 
         <script type="text/javascript">
             if (window.top !== window.self) {

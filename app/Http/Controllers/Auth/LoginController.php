@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -52,28 +54,42 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-		
-		// Debugging: Log the user's role
-		\Log::info('User role: ' . $user->role);
+        Log::channel('activity')->info('member.login.succeeded', [
+            'user_id' => $user->id,
+            'client_id' => $this->client_id,
+            'role' => $user->role,
+        ]);
+
         if ($user && $user->role != 'member') {
-			\Log::info('admin');
             return redirect('/admin');
         }
 
-		\Log::info('member');
         return redirect($this->redirectTo);
     }
 
     public function login(Request $request)
     {
-        $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        try {
+            $this->validate($request, [
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
+        } catch (ValidationException $e) {
+            Log::channel('activity')->notice('member.login.failed', [
+                'client_id' => $this->client_id,
+                'reason' => 'invalid_request',
+            ]);
+            throw $e;
+        }
 
         $user = User::where('email', $request->email)->where('client_id', $this->client_id)->first();
 
 		if (!$user) {
+            Log::channel('activity')->notice('member.login.failed', [
+                'client_id' => $this->client_id,
+                'reason' => 'invalid_credentials',
+            ]);
+
 			if($request->has('from') && $request->input('from') == 'member'){
 				return response()->json([
 					'message' => 'Gagal Login.',
@@ -90,6 +106,11 @@ class LoginController extends Controller
 		}
 
         if ($user && $user->flag_approve === 'N') {
+            Log::channel('activity')->notice('member.login.blocked', [
+                'user_id' => $user->id,
+                'client_id' => $this->client_id,
+                'reason' => 'approval_required',
+            ]);
             return response()->json(['message' => 'Akun anda belum di approve, silahkan hubungi petugas perpustakaan.'], 403);
         }
 
@@ -98,6 +119,12 @@ class LoginController extends Controller
 		}
 
         if ($user && $user->role === 'member') {
+            Log::channel('activity')->notice('member.login.failed', [
+                'user_id' => $user->id,
+                'client_id' => $this->client_id,
+                'reason' => 'invalid_credentials',
+            ]);
+
             return response()->json([
                 'message' => 'Gagal Login.',
                 'errors' => [
@@ -107,6 +134,12 @@ class LoginController extends Controller
                 ]
             ], 422);
         }
+
+        Log::channel('activity')->notice('member.login.failed', [
+            'user_id' => $user->id,
+            'client_id' => $this->client_id,
+            'reason' => 'invalid_credentials',
+        ]);
 
         return redirect()->back()->withErrors(['email' => 'Email atau password salah.'])
             ->withInput(['email' => $request->email]);

@@ -49,6 +49,34 @@ class ParameterController extends Controller
 
         $results = [];
         if($user && $user->role == 'admin'){
+            if ($this->client_id !== '') {
+                $clientParameters = [
+                    'verify_email_member' => ['Verifikasi email anggota', '1'],
+                    'site_tagline' => ['Tagline perpustakaan', ''],
+                    'og_title' => ['Judul Open Graph', ''],
+                    'og_description' => ['Deskripsi Open Graph', ''],
+                    'og_image' => ['Gambar Open Graph (URL publik)', ''],
+                    'social_facebook' => ['URL Facebook', ''],
+                    'social_instagram' => ['URL Instagram', ''],
+                    'social_youtube' => ['URL YouTube', ''],
+                    'social_tiktok' => ['URL TikTok', ''],
+                    'social_whatsapp' => ['URL WhatsApp', ''],
+                ];
+
+                foreach ($clientParameters as $name => [$description, $value]) {
+                    Parameter::firstOrCreate(
+                        [
+                            'client_id' => $this->client_id,
+                            'name' => $name,
+                        ],
+                        [
+                            'description' => $description,
+                            'value' => $value,
+                        ]
+                    );
+                }
+            }
+
             $results = DB::table('tparameter as a')
                 ->select([
                     'a.name',
@@ -84,28 +112,40 @@ class ParameterController extends Controller
         $result['message']  = '';
         $error              = false;
 
+        $validatedData = $request->validate([
+            'app_reg_member' => 'required|integer',
+            'maks_rent_book' => 'required|integer',
+            'reg_member' => 'required|integer',
+            'verify_email_member' => 'required|integer|in:0,1',
+            'rent_book' => 'required|integer',
+            'site_tagline' => 'nullable|string|max:255',
+            'og_title' => 'nullable|string|max:255',
+            'og_description' => 'nullable|string|max:255',
+            'og_image' => 'nullable|url|max:255',
+            'social_facebook' => 'nullable|url|max:255',
+            'social_instagram' => 'nullable|url|max:255',
+            'social_youtube' => 'nullable|url|max:255',
+            'social_tiktok' => 'nullable|url|max:255',
+            'social_whatsapp' => 'nullable|url|max:255',
+        ]);
+
         try {
             DB::enableQueryLog();
             DB::beginTransaction();
 
-            $validatedData = $request->validate([
-                'app_reg_member' => 'required|integer',
-                'maks_rent_book' => 'required|integer',
-                'reg_member' => 'required|integer',
-                'rent_book' => 'required|integer'
-            ]);
+            foreach ($validatedData as $key => $value) {
+                $parameter = Parameter::where('name', $key)
+                    ->where('client_id', '=', $this->client_id);
 
-            foreach ($request->all() as $key => $value) {
-                $updated = Parameter::where('name', $key)
-                    ->where('client_id', '=', $this->client_id)
-                    ->update([
-                        'value' => ($value!='') ? $value : 0,
+                if (!$parameter->exists()) {
+                    $error = true;
+                    continue;
+                }
+
+                $parameter->update([
+                        'value' => $value ?? '',
                         'updated_at' => Carbon::now('Asia/Jakarta')
                     ]);
-
-                if (!$updated) {
-                    $error = true;
-                }
             }
 
             if($error){
@@ -126,8 +166,8 @@ class ParameterController extends Controller
             }
         } catch (Exception $e) {
             DB::rollBack();
-            $logs->write("ERROR", $th->getMessage());
-            $result['message'] = "Failed updated.<br>" . $th->getMessage();
+            $logs->write("ERROR", $e->getMessage());
+            $result['message'] = "Failed updated.<br>" . $e->getMessage();
         }
 
         return response()->json($result['message'], $result['status']);

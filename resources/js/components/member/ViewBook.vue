@@ -18,13 +18,16 @@
                         <p class="text-subtitle text-muted">{{ detail.writer }}</p>
                         <h1 class="mt-1">{{ detail.title }}</h1>
                         <div class="buttons detail-actions">
-                            <button class="btn btn-primary btn-md me-2" @click="bacaBuku"><i class="bi bi-book-fill"></i> Baca</button>
+                            <button class="btn btn-primary btn-md me-2 btn-read-book" @click="bacaBuku">
+                                <i class="bi bi-book-fill" aria-hidden="true"></i>
+                                {{ isAuthenticated ? 'Baca Buku' : 'Masuk untuk membaca' }}
+                            </button>
                             <template v-if="isAuthenticated">
                                 <template v-if="detail.rent=='Y'">
-                                    <button class="btn btn-warning text-white btn-md me-2" @click="kembaliBuku"><i class="bi bi-bookmarks"></i> Kembalikan</button>
+                                    <button class="btn btn-warning btn-md me-2" @click="kembaliBuku"><i class="bi bi-bookmarks"></i> Kembalikan</button>
                                 </template>
                                 <template v-else>
-                                    <button class="btn btn-warning text-white btn-md me-2" @click="pinjamBuku"><i class="bi bi-bookmarks"></i> Pinjam</button>
+                                    <button class="btn btn-warning btn-md me-2" @click="pinjamBuku"><i class="bi bi-bookmarks"></i> Pinjam</button>
                                 </template>
                             </template>
                         </div>
@@ -183,6 +186,10 @@ export default {
         isAuthenticated: {
             type: Boolean,
             required: true
+        },
+        register: {
+            type: Boolean,
+            required: true
         }
     },
 
@@ -244,10 +251,27 @@ export default {
             this.isExpanded = !this.isExpanded;
         },
 
-        bacaBuku(){
+        async bacaBuku(){
             if(!this.isAuthenticated){
-                this.$router.push('/mlogin');
-            }else{
+                const result = await this.$swal({
+                    title: 'Masuk untuk membaca',
+                    text: 'Silahkan masuk terlebih dahulu untuk membaca buku ini.',
+                    icon: 'info',
+                    showCloseButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: 'Masuk',
+                    cancelButtonText: this.register ? 'Daftar sebagai pembaca' : 'Nanti saja',
+                    reverseButtons: true,
+                });
+
+                const redirect = this.$route.fullPath;
+                if (result.isConfirmed) {
+                    this.$router.push({ name: 'mlogin', query: { redirect } });
+                } else if (result.dismiss === 'cancel' && this.register) {
+                    this.$router.push({ name: 'mregister', query: { redirect } });
+                }
+                return;
+            } else{
                 let loader = this.$loading.show();
                 window.axios
                 .get('/ReadCheck', {
@@ -549,10 +573,37 @@ export default {
     .detail-actions {
         display: flex;
         flex-wrap: wrap;
+        align-items: center;
         gap: .55rem;
         margin-top: 1.25rem;
-        font-size: clamp(1.5rem, 3vw, 2.4rem);
-        line-height: 1.18;
+    }
+
+    .detail-actions .btn {
+        min-height: 48px;
+        padding: .7rem 1.15rem;
+        font-weight: 800;
+    }
+
+    .detail-actions .btn-read-book {
+        min-width: min(100%, 220px);
+        box-shadow: 0 8px 18px rgba(32, 183, 165, .22);
+    }
+
+    .detail-actions .btn-read-book:hover,
+    .detail-actions .btn-read-book:focus-visible {
+        box-shadow: 0 11px 22px rgba(32, 183, 165, .3);
+    }
+
+    @media (max-width: 575px) {
+        .detail-actions {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .detail-actions .btn {
+            width: 100%;
+            margin-right: 0 !important;
+        }
     }
 
     .book-detail-page .nav-tabs {

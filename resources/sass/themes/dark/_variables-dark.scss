@@ -15,7 +15,7 @@ $theme-colors-light: (
 $alert-colors: (
     primary: (
         text-color: #fff,
-        background-color: #435ebe
+        background-color: #145783
     ),
     secondary: (
         text-color: #383d41,
@@ -74,8 +74,8 @@ $danger-border-subtle-dark:         $red-700 !default;
 $light-border-subtle-dark:          $gray-700 !default;
 $dark-border-subtle-dark:           $gray-800 !default;
 
-$body-color-dark:                   $gray-500 !default;
-$body-bg-dark:                      $gray-900 !default;
+$body-color-dark:                   #d8e6ee !default;
+$body-bg-dark:                      #12212c !default;
 $body-emphasis-color-dark:          $gray-100 !default;
 $body-secondary-color-dark:         rgba($body-color-dark, .75) !default;
 $body-secondary-bg-dark:            $gray-800 !default;
@@ -84,9 +84,9 @@ $body-tertiary-bg-dark:             mix($gray-800, $gray-900, 50%) !default;
 $emphasis-color-dark:               $white !default;
 $border-color-dark:                 $gray-700 !default;
 $border-color-translucent-dark:     rgba($white, .15) !default;
-$headings-color-dark:               #fff !default;
-$link-color-dark:                   $blue-300 !default;
-$link-hover-color-dark:             $blue-200 !default;
+$headings-color-dark:               #f2f8fb !default;
+$link-color-dark:                   #80c4d5 !default;
+$link-hover-color-dark:             #a6d9e5 !default;
 $code-color-dark:                   $pink-300 !default;
 
 
@@ -110,9 +110,9 @@ $accordion-button-active-icon-dark:  url("data:image/svg+xml,<svg xmlns='http://
 // scss-docs-end sass-dark-mode-vars
 
 
-$sidebar-bg:                #1e1e2d;
-$sidebar-link-color:        #9899ac;
-$sidebar-link-hover-bg:         #282839;
+$sidebar-bg:                #172b39;
+$sidebar-link-color:        #d8e6ee;
+$sidebar-link-hover-bg:         #203b4d;
 $sidebar-link-hover-color:      #fff;
 $sidebar-submenu-color:         $sidebar-link-color;
 $sidebar-submenu-hover-color:   $white;
@@ -272,7 +272,7 @@ $list-group-bg:                     #151521;
 $list-group-hover-bg:               #101113;
 $list-group-border-color:           rgba($black, .125);
 $list-group-active-color:           $white;
-$list-group-active-bg:              #435ebe;
+$list-group-active-bg:              #145783;
 $list-group-active-border-color:    $list-group-active-bg;
 $list-group-disabled-color:         $black;
 $list-group-action-color:           $gray-700;

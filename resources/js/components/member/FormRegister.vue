@@ -9,16 +9,34 @@
                 <h1 class="auth-title">Daftar Member</h1>
                 <p class="auth-subtitle mb-4">Masukkan data untuk jadi member perpustakaan</p>
             </div>
+            <div v-if="!register" class="registration-closed" role="status">
+                <i class="bi bi-info-circle" aria-hidden="true"></i>
+                <p>Pendaftaran pembaca sedang ditutup. Silahkan hubungi petugas perpustakaan.</p>
+                <router-link :to="{ name: 'mlogin' }" class="btn btn-primary">Masuk</router-link>
+            </div>
+            <template v-else>
+            <div class="registration-verification-note" role="note">
+                <i class="bi bi-envelope-check" aria-hidden="true"></i>
+                <span v-if="emailVerificationRequired">
+                    Setelah mendaftar, konfirmasi email untuk mulai membaca.
+                    <template v-if="approvalRequired"> Akun juga menunggu persetujuan petugas.</template>
+                </span>
+                <span v-else>
+                    Email tidak perlu diverifikasi.
+                    {{ approvalRequired ? 'Akun menunggu persetujuan petugas.' : 'Akun aktif setelah pendaftaran.' }}
+                </span>
+            </div>
             <form class="form register-form" @submit.prevent="handleRegister">
                 <div class="row">
                     <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="name-column">Nama Lengkap</label>
                             <div class="form-group position-relative has-icon-left mb-4">
-                                <input type="text" class="form-control form-control-md" placeholder="Nama Lengkap" v-model="name" required/>
+                                <input type="text" class="form-control form-control-md" :class="{'is-invalid': errors.name}" placeholder="Nama Lengkap" v-model="name" required/>
                                 <div class="form-control-icon">
                                     <i class="bi bi-person"></i>
                                 </div>
+                                <div v-if="errors.name" class="invalid-feedback">{{ errors.name[0] }}</div>
                             </div>
                         </div>
                     </div>
@@ -26,7 +44,7 @@
                         <div class="form-group">
                             <label for="email-column">Email</label>
                             <div class="form-group position-relative has-icon-left mb-4">
-                                <input type="text" class="form-control form-control-md" :class="{'is-invalid': errors.email}" placeholder="Email" v-model="email" required/>
+                                <input type="email" class="form-control form-control-md" :class="{'is-invalid': errors.email}" placeholder="Email" v-model="email" required/>
                                 <div class="form-control-icon">
                                     <i class="bi bi-envelope"></i>
                                 </div>
@@ -38,31 +56,34 @@
                         <div class="form-group">
                             <label for="no-hp-column">No. HP</label>
                             <div class="form-group position-relative has-icon-left mb-4">
-                                <input type="text" id="phoneNumberInput" class="form-control form-control-md" placeholder="No. Handphone" maxlength="15" required v-model="phone" @input="filterInput($event, 'phone')" />
+                                <input type="text" id="phoneNumberInput" class="form-control form-control-md" :class="{'is-invalid': errors.phone}" placeholder="No. Handphone" maxlength="15" required v-model="phone" @input="filterInput($event, 'phone')" />
                                 <div class="form-control-icon">
                                     <i class="bi bi-phone"></i>
                                 </div>
+                                <div v-if="errors.phone" class="invalid-feedback">{{ errors.phone[0] }}</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="jenis-kelamin-floating">Jenis Kelamin</label>
-                            <select class="form-select" id="gender" v-model="gender" required>
+                            <select class="form-select" :class="{'is-invalid': errors.gender}" id="gender" v-model="gender" required>
                                 <option value="">--</option>
                                 <option value="L">Laki - Laki</option>
                                 <option value="P">Perempuan</option>
                             </select>
+                            <div v-if="errors.gender" class="invalid-feedback">{{ errors.gender[0] }}</div>
                         </div>
                     </div>
                     <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="tanggal-lahir">Tanggal Lahir</label>
                             <div class="form-group position-relative has-icon-left mb-4">
-                                <Flatpickr v-model="birthday" class="form-control flatpickr-range" :config="configdate" placeholder="Select date.." required></Flatpickr>
+                                <Flatpickr v-model="birthday" class="form-control flatpickr-range" :class="{'is-invalid': errors.birthday}" :config="configdate" placeholder="Pilih tanggal" required></Flatpickr>
                                 <div class="form-control-icon">
                                     <i class="bi bi-calendar3"></i>
                                 </div>
+                                <span v-if="errors.birthday" class="text-danger">{{ errors.birthday[0] }}</span>
                                 <span v-if="errors.isBirthdayValid" class="text-danger">{{ errors.isBirthdayValid[0] }}</span>
                             </div>
                         </div>
@@ -71,10 +92,11 @@
                         <div class="form-group">
                             <label for="nik">Nomor Identitas</label>
                             <div class="form-group position-relative has-icon-left mb-4">
-                                <input type="text" id="nikInput" class="form-control form-control-md" placeholder="Nomor Induk Kependudukan" maxlength="20" v-model="nik" @input="filterInput($event, 'nik')" />
+                                <input type="text" id="nikInput" class="form-control form-control-md" :class="{'is-invalid': errors.nik}" placeholder="Nomor Induk Kependudukan" maxlength="20" v-model="nik" @input="filterInput($event, 'nik')" />
                                 <div class="form-control-icon">
                                     <i class="bi bi-credit-card"></i>
                                 </div>
+                                <div v-if="errors.nik" class="invalid-feedback">{{ errors.nik[0] }}</div>
                             </div>
                         </div>
                     </div>
@@ -82,7 +104,7 @@
                         <div class="form-group">
                             <label for="password-column">Kata Sandi</label>
                             <div class="form-group position-relative has-icon-left mb-4">
-                                <input type="password" class="form-control form-control-md" :class="{'is-invalid': errors.password}" placeholder="Kata Sandi" v-model="password" required/>
+                                <input type="password" class="form-control form-control-md" :class="{'is-invalid': errors.password}" placeholder="Kata Sandi" v-model="password" minlength="8" required/>
                                 <div class="form-control-icon">
                                     <i class="bi bi-shield-lock"></i>
                                 </div>
@@ -118,12 +140,27 @@
                     </div>
                 </div>
             </form>
+            </template>
         </div>
     </div>
 </template>
 
 <script>
 export default {
+    props: {
+        register: {
+            type: Boolean,
+            required: true
+        },
+        emailVerificationRequired: {
+            type: Boolean,
+            required: true
+        },
+        approvalRequired: {
+            type: Boolean,
+            required: true
+        }
+    },
     data() {
         return {
             name: '',
@@ -211,11 +248,28 @@ export default {
                     showCloseButton: false,
                     showCancelButton: false
                 }).then((result) => {
-                    window.location = '/mlogin'
+                    const query = this.$route.query.redirect
+                        ? { redirect: this.$route.query.redirect }
+                        : {};
+                    window.location.href = this.$router.resolve({ name: 'mlogin', query }).href;
                 });
             })
             .catch(error => {
-                let err = (error.response.data.message ? error.response.data.message : (error.response.data) ? error.response.data : error.message);
+                const responseData = error.response ? error.response.data : null;
+                if (error.response && error.response.status === 422 && responseData.errors) {
+                    this.errors = responseData.errors;
+                    if (this.errors.password_confirmation) {
+                        this.errors.passwordConfirm = this.errors.password_confirmation;
+                    }
+                }
+                const validationMessages = responseData && responseData.errors
+                    ? Object.values(responseData.errors).flat()
+                    : [];
+                const err = responseData && responseData.message
+                    ? (responseData.errors
+                        ? (validationMessages[0] || responseData.message)
+                        : responseData.message)
+                    : (responseData || error.message || 'Pendaftaran gagal. Silahkan coba lagi.');
                 loader.hide();
                 this.$swal({
                     title: "Pendaftaran",
@@ -277,6 +331,32 @@ export default {
 
 .register-intro .auth-subtitle {
     margin: 0 !important;
+}
+
+.registration-verification-note,
+.registration-closed {
+    display: flex;
+    align-items: flex-start;
+    gap: .7rem;
+    padding: 1rem clamp(1rem, 4vw, 2rem);
+    color: var(--member-accent-dark, #145783);
+    background: var(--member-soft, #EAF4FA);
+    border: 1px solid var(--member-line, #dbe7ee);
+}
+
+.registration-verification-note i,
+.registration-closed > i {
+    flex: 0 0 auto;
+    color: var(--member-accent, #145783);
+}
+
+.registration-closed {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.registration-closed p {
+    margin: 0;
 }
 
 .register-form {

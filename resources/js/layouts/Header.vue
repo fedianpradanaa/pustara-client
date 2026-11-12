@@ -19,7 +19,7 @@
                             </div>
                             <div class="user-img d-flex align-items-center">
                                 <div class="avatar avatar-md">
-                                    <img :src="'/storage/images/logo/logo_small.png?' + Math.floor(Math.random() * (999 - 100 + 1)) + 100" />
+                                    <img v-if="smallLogoUrl" :src="smallLogoUrl" :alt="appName" />
                                 </div>
                             </div>
                         </div>
@@ -48,6 +48,13 @@
 
 <script>
 export default {
+    data() {
+        return {
+            appName: '',
+            smallLogoUrl: '',
+        }
+    },
+
 	props: {
         user: {
             type: Object,
@@ -58,7 +65,15 @@ export default {
     name: 'headerItems',
 
     mounted() {
-        // this.userinfo()
+        window.axios
+            .get('/getAppInfo')
+            .then((response) => {
+                this.appName = response.data.app_name
+                this.smallLogoUrl = response.data.small_logo_url
+            })
+            .catch((e) => {
+                console.error(e)
+            })
     },
 
     methods: {
