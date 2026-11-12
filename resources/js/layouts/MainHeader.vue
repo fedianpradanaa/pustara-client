@@ -3,10 +3,6 @@
         <div class="sidebar-brand">
             <router-link to="/" class="brand-link">
                 <img v-if="logoUrl" :src="logoUrl" :alt="appname" class="brand-logo" data-bs-dismiss="offcanvas">
-                <span class="brand-copy" data-bs-dismiss="offcanvas">
-                    <strong id="member-sidebar-title">{{ appname }}</strong>
-                    <small v-if="tagline">{{ tagline }}</small>
-                </span>
             </router-link>
             <button type="button" class="sidebar-close d-xl-none" data-bs-dismiss="offcanvas" aria-label="Tutup navigasi">
                 <i class="bi bi-x-lg" aria-hidden="true"></i>
@@ -545,8 +541,8 @@ export default {
 }
 
 .brand-logo {
-    width: 42px;
-    height: 42px;
+    width: 130px;
+    height: auto;
     object-fit: contain;
 }
 

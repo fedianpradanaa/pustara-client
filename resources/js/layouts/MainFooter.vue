@@ -22,7 +22,7 @@
                 </a>
                 <a v-if="siteInfo.website" :href="siteInfo.website" target="_blank" rel="noopener noreferrer">
                     <i class="bi bi-globe2" aria-hidden="true"></i>
-                    <span>{{ siteInfo.website }}</span>
+                    <span>{{ siteInfo.website }}.pustara.id</span>
                 </a>
             </section>
 
@@ -94,14 +94,17 @@ export default {
 
 .site-footer__brand {
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
-    gap: .9rem;
+    gap: .75rem;
 }
 
 .site-footer__logo {
-    width: 48px;
-    max-height: 54px;
+    width: 180px;
+    height: 60px;
     object-fit: contain;
+    object-position: left center;
+    flex-shrink: 0;
 }
 
 .site-footer__brand strong {
