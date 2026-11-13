@@ -11,20 +11,18 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-lg-0"></ul>
                 <div class="dropdown">
-                    <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                        <div class="user-menu d-flex">
-                            <div class="user-name text-end me-3">
-                                <h6 class="mb-0 text-gray-600">{{ user.name }}</h6>
-                                <p class="mb-0 text-sm text-gray-600">{{ user.email }}</p>
-                            </div>
-                            <div class="user-img d-flex align-items-center">
-                                <div class="avatar avatar-md">
-                                    <img v-if="smallLogoUrl" :src="smallLogoUrl" :alt="appName" />
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton" style="min-width: 11rem">
+                    <button id="admin-account-menu" type="button" class="admin-account" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Buka menu akun">
+                        <span class="admin-account-name text-end">
+                            <span class="admin-account-title">{{ user.name }}</span>
+                            <span class="admin-account-email">{{ user.email }}</span>
+                        </span>
+                        <span class="admin-account-avatar">
+                            <img v-if="smallLogoUrl" :src="smallLogoUrl" :alt="appName || 'Logo perpustakaan'" />
+                            <i v-else class="bi bi-person-fill" aria-hidden="true"></i>
+                        </span>
+                        <i class="bi bi-chevron-down admin-account-chevron" aria-hidden="true"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="admin-account-menu" style="min-width: 11rem">
                         <li>
                             <h6 class="dropdown-header">{{ user.name }}</h6>
                         </li>

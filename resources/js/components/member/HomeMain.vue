@@ -30,45 +30,44 @@
     </div>
 
     <div class="page-content member-home-content">
-        <section class="editorial-spotlight">
-            <div class="spotlight-lead">
-                <div class="spotlight-header">
-                    <span class="editorial-kicker">Buku populer</span>
-                    <h2>Sorotan koleksi</h2>
+        <section v-if="buku_populer.length" class="home-popular" aria-labelledby="home-popular-title">
+            <header class="home-popular__heading">
+                <div>
+                    <span class="home-popular__eyebrow">Buku populer</span>
+                    <h2 id="home-popular-title">Sorotan koleksi</h2>
                 </div>
+            </header>
 
-                <div v-if="buku_populer && buku_populer.length" class="lead-book-card">
-                    <router-link :to="{ name: 'detail-buku', params: { idb: buku_populer[0].isbn } }" class="lead-book-link">
-                        <div class="lead-book-cover">
-                            <img :src="buku_populer[0].image.replace('&amp;', '&')" :alt="buku_populer[0].title">
-                        </div>
-                        <div class="lead-book-copy">
-                            <span class="lead-book-badge"><i class="bi bi-stars" aria-hidden="true"></i> Favorit pembaca</span>
-                            <h3>{{ buku_populer[0].title }}</h3>
-                            <p>{{ buku_populer[0].writer }}</p>
-                            <span class="lead-book-action">Jelajahi buku <i class="bi bi-arrow-up-right" aria-hidden="true"></i></span>
-                        </div>
-                    </router-link>
-                </div>
-            </div>
+            <div class="home-popular__layout">
+                <router-link :to="{ name: 'detail-buku', params: { idb: buku_populer[0].isbn } }" class="home-popular__featured">
+                    <div class="home-popular__featured-cover">
+                        <img :src="buku_populer[0].image.replace('&amp;', '&')" :alt="buku_populer[0].title">
+                    </div>
+                    <div class="home-popular__featured-copy">
+                        <span class="home-popular__label">Pilihan pembaca</span>
+                        <h3>{{ buku_populer[0].title }}</h3>
+                        <p>{{ buku_populer[0].writer }}</p>
+                        <span class="home-popular__action">Jelajahi buku <i class="bi bi-arrow-up-right" aria-hidden="true"></i></span>
+                    </div>
+                </router-link>
 
-            <div class="spotlight-stack">
-                <div class="stack-header">
-                    <span class="editorial-kicker">Buku populer lainnya</span>
-                    <router-link to="/koleksi-buku" class="menu-link text-link">Lihat semua</router-link>
-                </div>
-
-                <div v-if="buku_populer.length > 1" class="mini-book-list">
-                    <router-link v-for="(buku, i) in buku_populer.slice(1, 4)" :key="i" :to="{ name: 'detail-buku', params: { idb: buku.isbn } }" class="mini-book-item">
-                        <span class="mini-book-rank" aria-hidden="true">{{ i + 2 }}</span>
-                        <div class="mini-book-cover">
-                            <img :src="buku.image.replace('&amp;', '&')" :alt="buku.title">
-                        </div>
-                        <div class="mini-book-copy">
-                            <strong>{{ buku.title }}</strong>
-                            <span>{{ buku.writer }}</span>
-                        </div>
-                    </router-link>
+                <div v-if="buku_populer.length > 1" class="home-popular__more">
+                    <div class="home-popular__more-heading">
+                        <h3>Buku populer lainnya</h3>
+                        <router-link to="/koleksi-buku" class="home-popular__all">Lihat semua</router-link>
+                    </div>
+                    <div class="home-popular__list">
+                        <router-link v-for="(buku, i) in buku_populer.slice(1, 4)" :key="i" :to="{ name: 'detail-buku', params: { idb: buku.isbn } }" class="home-popular__item">
+                            <span class="home-popular__rank" aria-hidden="true">{{ i + 2 }}</span>
+                            <div class="home-popular__item-cover">
+                                <img :src="buku.image.replace('&amp;', '&')" :alt="buku.title">
+                            </div>
+                            <div class="home-popular__item-copy">
+                                <strong>{{ buku.title }}</strong>
+                                <span>{{ buku.writer }}</span>
+                            </div>
+                        </router-link>
+                    </div>
                 </div>
             </div>
         </section>
@@ -77,9 +76,9 @@
             <div class="section-header editorial-header">
                 <div>
                     <span class="editorial-kicker">Katalog pilihan</span>
-                    <h2>KOLEKSI BUKU</h2>
+                    <h2>Koleksi Buku</h2>
                 </div>
-                <router-link to="/koleksi-buku" class="btn btn-primary btn-sm">Lihat Semua</router-link>
+                <router-link to="/koleksi-buku" class="btn btn-primary btn-md home-popular__button home-view-all">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></router-link>
             </div>
             <div class="book-carousel-shell">
                 <swiper
@@ -225,8 +224,8 @@
                                 <h2 class="fw-bold display-6">Kuis</h2>
                             </div>
                             <div class="d-flex justify-content-center mt-2 mb-3">
-                                <button class="swiper-button-prev-quiz btn rounded-pill me-2" aria-label="Kuis sebelumnya"><i class="bi bi-caret-left-fill" aria-hidden="true"></i></button>
-                                <button class="swiper-button-next-quiz btn rounded-pill" aria-label="Kuis berikutnya"><i class="bi bi-caret-right-fill" aria-hidden="true"></i></button>
+                                <button class="swiper-button-prev-quiz btn me-2" type="button" aria-label="Kuis sebelumnya"><i class="bi bi-caret-left-fill" aria-hidden="true"></i></button>
+                                <button class="swiper-button-next-quiz btn" type="button" aria-label="Kuis berikutnya"><i class="bi bi-caret-right-fill" aria-hidden="true"></i></button>
                             </div>
                         </div>
                         <div class="col-md-10">
@@ -386,8 +385,8 @@
 								<div class="video-carousel-controls">
 									<span>Jelajahi video lainnya</span>
 									<div>
-										<button class="video-carousel-control" type="button" data-bs-target="#videoCarousel" data-bs-slide="prev" aria-label="Video sebelumnya"><i class="bi bi-arrow-left"></i></button>
-										<button class="video-carousel-control" type="button" data-bs-target="#videoCarousel" data-bs-slide="next" aria-label="Video berikutnya"><i class="bi bi-arrow-right"></i></button>
+										<button class="video-carousel-control video-carousel-control--previous" type="button" data-bs-target="#videoCarousel" data-bs-slide="prev" aria-label="Video sebelumnya"><i class="bi bi-arrow-left"></i></button>
+										<button class="video-carousel-control video-carousel-control--next" type="button" data-bs-target="#videoCarousel" data-bs-slide="next" aria-label="Video berikutnya"><i class="bi bi-arrow-right"></i></button>
 									</div>
 								</div>
 							</div>
@@ -402,7 +401,7 @@
                     <span class="editorial-kicker">Pilihan redaksi</span>
                     <h2>TAJUK UTAMA</h2>
                 </div>
-                <router-link :to="{ name: 'artikel', params: { idart: 'TU' } }" class="btn btn-primary btn-sm">Lihat Semua</router-link>
+                <router-link :to="{ name: 'artikel', params: { idart: 'TU' } }" class="btn btn-primary btn-sm home-view-all">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></router-link>
             </div>
             <div class="headline-layout">
                 <router-link v-if="mainNews" :to="{ name: 'detail-artikel', params: { idart: 'TU', detail: mainNews.id } }" class="headline-feature">
@@ -477,7 +476,7 @@
                     <span class="editorial-kicker">Baca lebih jauh</span>
                     <h2>WAWASAN</h2>
                 </div>
-                <router-link :to="{ name: 'artikel', params: { idart: 'WA' } }" class="btn btn-primary btn-sm">Lihat Semua</router-link>
+                <router-link :to="{ name: 'artikel', params: { idart: 'WA' } }" class="btn btn-primary btn-sm home-view-all">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></router-link>
             </div>
             <swiper
                 :modules="modules"
@@ -514,7 +513,7 @@
                     <span class="editorial-kicker">Catatan pembaca</span>
                     <h2>REVIEW BUKU</h2>
                 </div>
-                <router-link :to="{ name: 'artikel', params: { idart: 'RB' } }" class="btn btn-primary btn-sm">Lihat Semua</router-link>
+                <router-link :to="{ name: 'artikel', params: { idart: 'RB' } }" class="btn btn-primary btn-sm home-view-all">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></router-link>
             </div>
             <swiper
                 :modules="modules"
@@ -551,7 +550,7 @@
                     <span class="editorial-kicker">Kenali para penulis</span>
                     <h2>LAYAR PENULIS</h2>
                 </div>
-                <router-link :to="{ name: 'artikel', params: { idart: 'LP' } }" class="btn btn-primary btn-sm">Lihat Semua</router-link>
+                <router-link :to="{ name: 'artikel', params: { idart: 'LP' } }" class="btn btn-primary btn-sm home-view-all">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></router-link>
             </div>
             <swiper
                 :modules="modules"
@@ -3855,6 +3854,537 @@ export default {
 
         .lead-book-copy {
             padding: .9rem 1rem 1rem;
+        }
+    }
+
+    .home-popular {
+        margin: clamp(2rem, 4vw, 3.5rem) 0;
+        color: var(--member-ink, #202a27);
+    }
+
+    .home-popular__heading {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+        padding-bottom: .85rem;
+        border-bottom: 1px solid var(--member-line, #e4e8e2);
+    }
+
+    .home-popular__eyebrow,
+    .home-popular__label {
+        color: var(--member-accent, #236b58);
+        font-size: .72rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .home-popular__heading h2 {
+        margin: .25rem 0 0;
+        color: var(--member-ink, #202a27);
+        font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+        font-weight: 700;
+        letter-spacing: -.025em;
+        line-height: 1.2;
+    }
+
+    .home-popular__layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(270px, .85fr);
+        gap: clamp(1.25rem, 3vw, 2.5rem);
+    }
+
+    .home-popular__featured {
+        display: grid;
+        min-width: 0;
+        grid-template-columns: minmax(145px, 220px) minmax(0, 1fr);
+        align-items: center;
+        color: inherit;
+        background: var(--member-surface, #fff);
+        border: 1px solid var(--member-line, #e4e8e2);
+        border-radius: .375rem;
+        text-decoration: none;
+        transition: border-color .2s ease;
+    }
+
+    .home-popular__featured:hover {
+        border-color: var(--member-accent, #236b58);
+    }
+
+    .home-popular__featured-cover {
+        display: grid;
+        min-height: 270px;
+        padding: 1.25rem;
+        background: var(--member-paper, #f5f6f1);
+        place-items: center;
+    }
+
+    .home-popular__featured-cover img {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        height: 220px;
+        object-fit: contain;
+    }
+
+    .home-popular__featured-copy {
+        min-width: 0;
+        padding: clamp(1rem, 2.5vw, 2rem);
+    }
+
+    .home-popular__featured-copy h3 {
+        margin: .65rem 0 .45rem;
+        color: var(--member-ink, #202a27);
+        font-size: clamp(1.1rem, 2vw, 1.6rem);
+        font-weight: 700;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
+    }
+
+    .home-popular__featured-copy p {
+        margin: 0;
+        color: var(--member-muted, #64716c);
+        font-size: .9rem;
+    }
+
+    .home-popular__action {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        margin-top: 1.15rem;
+        color: var(--member-accent, #236b58);
+        font-size: .85rem;
+        font-weight: 600;
+    }
+
+    .home-popular__more {
+        min-width: 0;
+    }
+
+    .home-popular__more-heading {
+        display: flex;
+        min-height: 42px;
+        align-items: center;
+        justify-content: space-between;
+        gap: .75rem;
+        margin-bottom: .35rem;
+        border-bottom: 1px solid var(--member-line, #e4e8e2);
+    }
+
+    .home-popular__more-heading h3 {
+        margin: 0;
+        color: var(--member-ink, #202a27);
+        font-size: .95rem;
+        font-weight: 700;
+    }
+
+    .home-popular__all {
+        flex: 0 0 auto;
+        color: var(--member-accent, #236b58);
+        font-size: .8rem;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .home-popular__all:hover {
+        color: var(--member-accent-dark, #174b3d);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    .home-popular__item {
+        display: grid;
+        min-height: 78px;
+        grid-template-columns: 24px 48px minmax(0, 1fr);
+        align-items: center;
+        gap: .75rem;
+        padding: .55rem 0;
+        color: inherit;
+        border-bottom: 1px solid var(--member-line, #e4e8e2);
+        text-decoration: none;
+    }
+
+    .home-popular__rank {
+        color: var(--member-muted, #64716c);
+        font-size: .8rem;
+        font-variant-numeric: tabular-nums;
+        text-align: center;
+    }
+
+    .home-popular__item-cover {
+        display: grid;
+        width: 48px;
+        height: 62px;
+        background: var(--member-paper, #f5f6f1);
+        place-items: center;
+    }
+
+    .home-popular__item-cover img {
+        max-width: 100%;
+        max-height: 58px;
+        object-fit: contain;
+    }
+
+    .home-popular__item-copy {
+        display: grid;
+        min-width: 0;
+        gap: .2rem;
+    }
+
+    .home-popular__item-copy strong {
+        display: -webkit-box;
+        overflow: hidden;
+        color: var(--member-ink, #202a27);
+        font-size: .86rem;
+        font-weight: 600;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+
+    .home-popular__item-copy span {
+        overflow: hidden;
+        color: var(--member-muted, #64716c);
+        font-size: .78rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .home-popular__item:hover strong {
+        color: var(--member-accent, #236b58);
+    }
+
+    .home-popular__button {
+        min-width: 170px;
+        min-height: 46px;
+        padding: .55rem 1rem;
+        box-shadow: none;
+        font-weight: 600;
+    }
+
+    .book-collection-section .section-header .home-popular__button {
+        border-radius: var(--bs-border-radius, .375rem);
+        font-weight: 600;
+    }
+
+    .book-collection-section .section-header {
+        padding: 0 0 .85rem;
+        background: transparent;
+        border: 0;
+        border-bottom: 1px solid var(--member-line, #e4e8e2);
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .book-collection-section .section-header h2 {
+        margin-top: .25rem;
+        font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+        font-weight: 700;
+        letter-spacing: -.025em;
+        line-height: 1.2;
+        text-transform: none;
+    }
+
+    .book-collection-section .section-header .home-popular__button {
+        flex: 0 0 auto;
+    }
+
+    .book-collection-section .book-carousel-shell {
+        width: 100%;
+        min-width: 0;
+        padding: .65rem 0 .25rem;
+    }
+
+    .book-collection-section .book-carousel {
+        padding-bottom: 1.25rem;
+    }
+
+    .book-collection-section .book-carousel :deep(.swiper-scrollbar) {
+        bottom: .25rem;
+        display: block !important;
+        height: 4px;
+        opacity: 1;
+        background: var(--member-line, #e4e8e2);
+    }
+
+    .book-collection-section .book-carousel :deep(.swiper-scrollbar-drag) {
+        background: var(--member-accent, #236b58);
+    }
+
+    .book-collection-section .book-carousel-slide {
+        display: flex;
+        box-sizing: border-box;
+        min-width: 0;
+        align-items: stretch;
+        padding: 0 .45rem;
+    }
+
+    .book-collection-section .catalog-book-link {
+        display: flex;
+        width: 100%;
+        min-width: 0;
+        height: 100%;
+    }
+
+    .book-collection-section .catalog-book-card {
+        width: 100%;
+        min-width: 0;
+        min-height: 0;
+        border-radius: .375rem;
+        box-shadow: none;
+    }
+
+    .book-collection-section .catalog-book-art {
+        min-height: 0;
+        padding: .85rem;
+        background: var(--member-paper, #f5f6f1);
+        aspect-ratio: 3 / 4;
+    }
+
+    .book-collection-section .catalog-book-art img {
+        filter: none;
+    }
+
+    .book-collection-section .catalog-book-action {
+        display: none;
+    }
+
+    .book-collection-section .catalog-book-copy {
+        min-width: 0;
+        padding: .8rem .85rem .95rem;
+    }
+
+    .book-collection-section .catalog-book-copy h3 {
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    .book-collection-section .catalog-book-link:hover .catalog-book-card,
+    .book-collection-section .catalog-book-link:focus-visible .catalog-book-card {
+        border-color: var(--member-accent, #236b58);
+        box-shadow: 0 5px 16px rgba(32, 42, 39, .07);
+        transform: none;
+    }
+
+    .book-collection-section .catalog-book-link:focus-visible {
+        border-radius: .375rem;
+        outline: 2px solid var(--member-accent, #236b58);
+        outline-offset: 3px;
+    }
+
+    .member-home-content .btn {
+        min-width: 170px;
+        min-height: 46px;
+        padding: .55rem 1rem;
+        color: #fff;
+        border-radius: var(--bs-border-radius, .375rem);
+        box-shadow: none;
+        font-size: .9rem;
+        font-weight: 600;
+        --bs-btn-color: #fff;
+        --bs-btn-hover-color: #fff;
+        --bs-btn-active-color: #fff;
+        --bs-btn-disabled-color: #fff;
+    }
+
+    .member-home-content .btn:hover:not(:disabled) {
+        box-shadow: none;
+        transform: translateY(-1px);
+    }
+
+    .member-home-content .btn:active:not(:disabled) {
+        box-shadow: none;
+        transform: none;
+    }
+
+    .member-home-content .swiper-button-prev-quiz,
+    .member-home-content .swiper-button-next-quiz {
+        width: 42px;
+        min-width: 42px;
+        height: 42px;
+        min-height: 42px;
+        padding: 0;
+        color: #fff;
+        background: var(--member-button);
+        border: 1px solid var(--member-button);
+        border-radius: var(--bs-border-radius, .375rem);
+    }
+
+    .member-home-content .swiper-button-prev-quiz {
+        background: #145783;
+        border-color: #145783;
+    }
+
+    .member-home-content .quote-nav-button,
+    .member-home-content .video-carousel-control {
+        width: 42px;
+        min-width: 42px;
+        height: 42px;
+        min-height: 42px;
+        padding: 0;
+        color: #fff;
+        background: var(--member-button);
+        border: 1px solid var(--member-button);
+        border-radius: var(--bs-border-radius, .375rem);
+        box-shadow: none;
+    }
+
+    .member-home-content .quote-nav-button.swiper-button-prev-frasa,
+    .member-home-content .video-carousel-control--previous {
+        background: #145783;
+        border-color: #145783;
+    }
+
+    .member-home-content .swiper-button-prev-quiz:hover,
+    .member-home-content .swiper-button-next-quiz:hover,
+    .member-home-content .quote-nav-button:hover,
+    .member-home-content .video-carousel-control:hover {
+        color: #fff;
+        background: var(--member-button-hover);
+        border-color: var(--member-button-hover);
+    }
+
+    .member-home-content .swiper-button-prev-quiz:hover,
+    .member-home-content .quote-nav-button.swiper-button-prev-frasa:hover,
+    .member-home-content .video-carousel-control--previous:hover {
+        background: #104765;
+        border-color: #104765;
+    }
+
+    .home-view-all i {
+        display: none;
+    }
+
+    .member-home-content .quote-nav-button:focus-visible,
+    .member-home-content .video-carousel-control:focus-visible,
+    .member-home-content .swiper-button-prev-quiz:focus-visible,
+    .member-home-content .swiper-button-next-quiz:focus-visible,
+    .member-home-content .btn:focus-visible {
+        outline: 2px solid var(--member-accent, #236b58);
+        outline-offset: 3px;
+    }
+
+    .focus-story-heading h2 {
+        font-size: clamp(1.25rem, 2.2vw, 1.7rem);
+        font-weight: 700;
+    }
+
+    .focus-story-copy strong {
+        font-size: clamp(1.15rem, 2.1vw, 1.75rem);
+        line-height: 1.25;
+    }
+
+    @media (max-width: 767px) {
+        .home-popular__layout {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.5rem;
+        }
+
+        .home-popular__featured {
+            grid-template-columns: minmax(100px, 30%) minmax(0, 1fr);
+        }
+
+        .home-popular__featured-cover {
+            min-height: 220px;
+            padding: .75rem;
+        }
+
+        .home-popular__featured-cover img {
+            height: 190px;
+        }
+
+        .home-popular__featured-copy {
+            padding: 1rem;
+        }
+
+        .home-popular__more-heading {
+            margin-bottom: .25rem;
+        }
+    }
+
+    @media (max-width: 575px) {
+        .home-popular__heading {
+            margin-bottom: 1rem;
+        }
+
+        .home-popular__featured {
+            grid-template-columns: minmax(88px, 32%) minmax(0, 1fr);
+        }
+
+        .home-popular__featured-cover {
+            min-height: 185px;
+            padding: .6rem;
+        }
+
+        .home-popular__featured-cover img {
+            height: 165px;
+        }
+
+        .home-popular__featured-copy {
+            padding: .8rem;
+        }
+
+        .home-popular__action {
+            margin-top: .75rem;
+        }
+
+        .book-collection-section .section-header {
+            align-items: flex-start;
+        }
+    }
+
+    @media (max-width: 575px) {
+        .editorial-header,
+        .headline-section-heading,
+        .editorial-section-heading,
+        .review-section-heading,
+        .author-section-heading,
+        .book-collection-section .section-header {
+            flex-wrap: nowrap;
+            align-items: flex-start;
+            gap: .5rem;
+        }
+
+        .editorial-header > div,
+        .headline-section-heading > div,
+        .editorial-section-heading > div,
+        .review-section-heading > div,
+        .author-section-heading > div,
+        .book-collection-section .section-header > div {
+            min-width: 0;
+            flex: 1 1 auto;
+        }
+
+        :global(#app-usr .member-home-content .home-view-all) {
+            display: inline-flex;
+            min-width: 0;
+            min-height: 34px;
+            flex: 0 0 auto;
+            align-items: center;
+            gap: .3rem;
+            padding: .2rem 0 .2rem .35rem;
+            color: var(--member-accent);
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            font-size: .76rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .home-view-all i {
+            display: inline-block;
+        }
+
+        :global(#app-usr .member-home-content .home-view-all:hover) {
+            color: var(--member-accent-dark);
+            background: transparent;
+            transform: none;
         }
     }
 </style>

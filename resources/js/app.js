@@ -5,6 +5,7 @@
  */
 
 import './bootstrap'
+import '../css/admin-theme.css'
 import { createApp } from 'vue'
 import featherIcons from 'feather-icons'
 import PerfectScrollbar from 'perfect-scrollbar'
@@ -30,7 +31,7 @@ const gloading = {
     enforceFocus: false,
     canCancel: false,
     loader: 'spinner',
-    color: '#8080ff',
+    color: '#145783',
     backgroundColor: '#111111',
     width: 110,
     height: 110,

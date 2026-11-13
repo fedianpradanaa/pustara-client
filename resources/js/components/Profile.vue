@@ -17,17 +17,7 @@
                             <h3 class="mt-3">{{ user.name }}</h3>
                             <p class="text-small">{{ user.email }}</p>
 
-                            <div class="user-dropdown d-flex align-items-center dropend">
-                                <button type="button" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#QrCodeModal">
-                                    QR Code Perpustakaan Online
-                                </button>
-								<button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#QrCodeModalOfflineServer">
-									QR Code Perpustakaan Offline
-								</button>
-                                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#QrCodeModalOffline">
-                                    QR Code Pengunjung Fisik
-                                </button>
-                            </div>
+                            <profile-qr-codes :library-name="form.field.info.application_name" />
                         </div>
                     </div>
                 </div>
@@ -169,129 +159,10 @@
         </div>
     </section>
 
-    <!-- Modal for QRcode Preview -->
-    <div class="modal fade text-left" id="QrCodeModal" tabindex="-1" role="dialog" aria-labelledby="QrCodeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-full" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel20">QR Code Pengunjung</h4>
-                </div>
-                <div class="modal-body" id="modalBodyContent">
-                    <div class="qr-code-body">
-                        <div class="container-offline">
-                            <div class="texth">
-                                {{ form.field.info.application_name }}
-                                <br>Scan untuk mengunjungi aplikasi
-                            </div>
-                            <div class="qr-code">
-                                <img src="/storage/images/logo/qrcode.png" style="max-width: 200px; max-height: 200px;"/>
-                            </div>
-                            <div class="textb">
-                                {{ form.field.info.instansi_name }}
-                                <br>{{ form.field.info.app_url }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary ms-1" @click="printModalContent()">
-                        <i class="bx bx-check d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Cetak</span>
-                    </button>
-                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                        <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Tutup</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal for QRcode Preview -->
-
-    <!-- Modal for QRcode Preview Offline -->
-    <div class="modal fade text-left" id="QrCodeModalOffline" tabindex="-1" role="dialog" aria-labelledby="QrCodeModalOfflineLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-full" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel20">QR Code Pengunjung Offline</h4>
-                </div>
-                <div class="modal-body" id="modalBodyContent">
-                    <div class="qr-code-body">
-                        <div class="container-offline">
-                            <div class="texth">
-                                {{ form.field.info.application_name }}
-                                <br>Scan untuk kunjungan di lokasi
-                            </div>
-                            <div class="qr-code">
-                                <img src="/storage/images/logo/qrcode_offline.png" style="max-width: 200px; max-height: 200px;"/>
-                            </div>
-                            <div class="textb">
-                                {{ form.field.info.instansi_name }}
-                                <br>{{ form.field.info.app_url }}/offline-visitor
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary ms-1" @click="printModalContent()">
-                        <i class="bx bx-check d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Cetak</span>
-                    </button>
-                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                        <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Tutup</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal for QRcode Preview Offline -->
-
-    <!-- Modal for QRcode Preview Offline Server -->
-    <div class="modal fade text-left" id="QrCodeModalOfflineServer" tabindex="-1" role="dialog" aria-labelledby="QrCodeModalOfflineServerLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-full" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel20">QR Code Perpustakaan Offline</h4>
-                </div>
-                <div class="modal-body" id="modalBodyContent">
-                    <div class="qr-code-body">
-                        <div class="container-offline">
-                            <div class="texth">
-                                {{ form.field.info.application_name }}
-                                <br>Scan untuk mengunjungi aplikasi secara offline
-                            </div>
-                            <div class="qr-code">
-                                <img src="/storage/images/logo/qrcode_apps_offline.png" style="max-width: 200px; max-height: 200px;"/>
-                            </div>
-                            <div class="textb">
-                                {{ form.field.info.instansi_name }}
-                                <br>{{ form.field.info.app_url_offline }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary ms-1" @click="printModalContent()">
-                        <i class="bx bx-check d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Cetak</span>
-                    </button>
-                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                        <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Tutup</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal for QRcode Preview Offline Server -->
-
-    <div id="printableArea" style="display: none;">
-        <div id="printableContent"></div>
-    </div>
 </template>
 
 <script>
+import ProfileQrCodes from './ProfileQrCodes.vue'
 import * as FilePond from 'filepond'
 import 'filepond/dist/filepond.min.css'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
@@ -304,6 +175,7 @@ FilePond.registerPlugin(FilePondPluginImagePreview);
 FilePond.registerPlugin(FilePondPluginImageValidateSize);
 
 export default {
+    components: { ProfileQrCodes },
     data() {
         return {
             menu: {
@@ -568,104 +440,6 @@ export default {
                 });
         },
 
-        printModalContent() {
-            var modalBody = document.getElementById("modalBodyContent").innerHTML;
-            document.getElementById("printableContent").innerHTML = modalBody;
-
-            var printWindow = window.open('', '', 'height=600,width=800');
-            printWindow.document.write('<html><head>');
-
-            printWindow.document.write(`
-                <style>
-                    @media print {
-                        body {
-                            -webkit-print-color-adjust: exact !important;
-                            print-color-adjust: exact !important;
-                        }
-
-                        @page {
-                            margin: 0;
-                        }
-
-                        .qr-code-body {
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                        }
-
-                        .container-offline {
-                            width: 450px;
-                            height: 550px;
-                            background-color: #fff;
-                            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-                            position: relative;
-                        }
-
-                        .qr-code {
-                            width: 200px;
-                            height: 200px;
-                            background-color: #fff;
-                            border-radius: 10px;
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                        }
-
-                        .texth {
-                            position: absolute;
-                            top: 20%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            color: #fff;
-                            font-size: 20px;
-                            font-weight: bold;
-                            width: calc(100% - 20px);
-                            text-align: center;
-                            padding: 0 10px;
-                            word-wrap: break-word;
-                        }
-
-                        .textb {
-                            position: absolute;
-                            bottom: 10%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            color: #ffc107;
-                            font-size: 20px;
-                            font-weight: bold;
-                            width: calc(100% - 20px);
-                            text-align: center;
-                            padding: 0 10px;
-                            word-wrap: break-word;
-                        }
-
-                        .container-offline::before {
-                            content: "";
-                            position: absolute;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            width: 100%;
-                            height: 50%;
-                            background-color: #ffc107;
-                            clip-path: polygon(0 0, 100% 0, 100% 50%, 0 100%);
-                        }
-                    }
-                </style>
-            `);
-            printWindow.document.write('</head><body>');
-            printWindow.document.write(document.getElementById("printableContent").innerHTML);
-            printWindow.document.write('</body></html>');
-
-            printWindow.document.close();
-
-            printWindow.onload = function() {
-                printWindow.print();
-                printWindow.close();
-            };
-        },
-
         getChangeRequest() {
             this.change_request = 'N';
             let loader = this.$loading.show()
@@ -735,70 +509,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.qr-code-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.container-offline {
-    width: 450px;
-    height: 550px;
-    background-color: #fff;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-    position: relative;
-}
-
-.qr-code {
-    width: 200px;
-    height: 200px;
-    background-color: #fff;
-    border-radius: 10px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.texth {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #fff;
-    font-size: 20px;
-    font-weight: bold;
-    width: calc(100% - 20px);
-    text-align: center;
-    padding: 0 10px;
-    word-wrap: break-word;
-}
-
-.textb {
-    position: absolute;
-    bottom: 5%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #ffc107;
-    font-size: 20px;
-    font-weight: bold;
-    width: calc(100% - 20px);
-    text-align: center;
-    padding: 0 10px;
-    word-wrap: break-word;
-}
-
-.container-offline::before {
-    content: "";
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 50%;
-    background-color: #ffc107;
-    clip-path: polygon(0 0, 100% 0, 100% 50%, 0 100%);
-}
-</style>

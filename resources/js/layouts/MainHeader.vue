@@ -815,13 +815,14 @@ export default {
 
 .sidebar-auth .sidebar-register {
     color: #fff;
-    background: var(--sidebar-accent);
+    background: var(--member-button);
+    border-color: var(--member-button);
 }
 
 .sidebar-auth .sidebar-register:hover {
     color: #fff;
-    background: var(--pustara-button-hover, #104765);
-    border-color: var(--pustara-button-hover, #104765);
+    background: var(--member-button-hover);
+    border-color: var(--member-button-hover);
     transform: translateY(-1px);
 }
 
@@ -1012,8 +1013,8 @@ export default {
 
 :global(html[data-bs-theme="dark"] .sidebar-auth .sidebar-register) {
     color: #fff;
-    background: #145783;
-    border-color: #145783;
+    background: var(--member-button);
+    border-color: var(--member-button);
 }
 
 @media (max-width: 1199.98px) {

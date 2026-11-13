@@ -7,6 +7,16 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## QR Code Profil Admin
+
+Pada halaman profil admin, pilih QR perpustakaan online, perpustakaan offline, atau pengunjung fisik untuk melihat dan mengunduh PDF A5. QR online menggunakan origin browser; QR pengunjung fisik menambahkan `/offline-visitor`. QR offline menggunakan `http://127.0.0.1:8082`: alamat ini menunjuk ke perangkat yang memindai, sehingga layanan offline harus berjalan pada perangkat tersebut.
+
+Setelah memasang dependensi npm, jalankan `npm run dev` untuk pengembangan atau `npm run build` untuk membangun aset.
+
+## Tema Panel Admin
+
+Palet panel admin dikelola di `resources/css/admin-theme.css` melalui variabel `--admin-*` dan dibatasi pada layout admin. Mode gelap tetap tersedia; warna dokumen PDF menggunakan palet cetak yang cerah.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

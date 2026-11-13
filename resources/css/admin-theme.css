@@ -1,0 +1,374 @@
+/* The admin palette is scoped to the admin Blade layout, including teleported dialogs. */
+body.admin-theme {
+    --admin-primary: #145783;
+    --admin-primary-hover: #104765;
+    --admin-accent: #20b7a5;
+    --admin-accent-hover: #15988a;
+    --admin-ice: #eaf4fa;
+    --admin-mint: #e8f7f4;
+    --admin-cloud: #f7fafc;
+    --admin-text: #34495a;
+    --admin-muted: #617484;
+    --admin-surface: #fff;
+    --admin-border: #d3e4eb;
+    --admin-on-primary: #fff;
+    --admin-on-accent: #103b38;
+    --admin-nav: #fff;
+    --admin-nav-text: #145783;
+    --admin-chart-mid: #3d8baa;
+    --admin-print-primary: #145783;
+    --admin-print-accent: #20b7a5;
+    --admin-print-ice: #eaf4fa;
+    --admin-print-mint: #e8f7f4;
+    --admin-print-text: #34495a;
+    --admin-print-muted: #617484;
+    --admin-print-border: #d3e4eb;
+    --bs-body-bg: var(--admin-cloud);
+    --bs-body-color: var(--admin-text);
+    --bs-primary: var(--admin-primary);
+    --bs-primary-rgb: 20, 87, 131;
+    --bs-link-color: var(--admin-primary);
+    --bs-link-hover-color: var(--admin-primary-hover);
+    --bs-border-color: var(--admin-border);
+    color: var(--admin-text);
+    background-color: var(--admin-cloud);
+}
+
+html[data-bs-theme="dark"] body.admin-theme {
+    --admin-primary: #a6d9e9;
+    --admin-primary-hover: #c9eaf4;
+    --admin-accent: #58d7c6;
+    --admin-accent-hover: #80e5d7;
+    --admin-ice: #203b4d;
+    --admin-mint: #203d3d;
+    --admin-cloud: #101d27;
+    --admin-text: #dceaf1;
+    --admin-muted: #a9bfcc;
+    --admin-surface: #182b38;
+    --admin-border: #345061;
+    --admin-on-primary: #103044;
+    --admin-nav: #182b38;
+    --admin-nav-text: #dceaf1;
+    --admin-chart-mid: #7ab8ce;
+    --bs-primary-rgb: 166, 217, 233;
+}
+
+body.admin-theme h1,
+body.admin-theme h2,
+body.admin-theme h3,
+body.admin-theme h4,
+body.admin-theme h5,
+body.admin-theme h6,
+body.admin-theme .page-heading h1,
+body.admin-theme .page-heading h2,
+body.admin-theme .page-heading h3,
+body.admin-theme .page-title h1,
+body.admin-theme .page-title h2,
+body.admin-theme .page-title h3 {
+    color: var(--admin-primary);
+}
+
+body.admin-theme .text-muted {
+    color: var(--admin-muted) !important;
+}
+
+body.admin-theme .alert h1,
+body.admin-theme .alert h2,
+body.admin-theme .alert h3,
+body.admin-theme .alert h4,
+body.admin-theme .alert h5,
+body.admin-theme .alert h6 {
+    color: inherit;
+}
+
+body.admin-theme .navbar-fixed .navbar-top {
+    background-color: var(--admin-nav);
+    border-bottom: 1px solid var(--admin-border);
+}
+
+body.admin-theme .navbar-top .burger-btn {
+    color: var(--admin-nav-text);
+}
+
+body.admin-theme .admin-account {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    max-width: 100%;
+    padding: .35rem .65rem;
+    color: var(--admin-nav-text);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: .8rem;
+    cursor: pointer;
+    transition: background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+body.admin-theme .admin-account:hover,
+body.admin-theme .admin-account[aria-expanded="true"] {
+    background-color: var(--admin-mint);
+    border-color: var(--admin-border);
+}
+
+body.admin-theme .admin-account:focus-visible {
+    outline: 2px solid var(--admin-accent);
+    outline-offset: 2px;
+}
+
+body.admin-theme .admin-account-name {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    max-width: 220px;
+}
+
+body.admin-theme .admin-account-title,
+body.admin-theme .admin-account-email {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+body.admin-theme .admin-account-title {
+    color: var(--admin-primary);
+    font-weight: 700;
+}
+
+body.admin-theme .admin-account-email {
+    color: var(--admin-muted);
+    font-size: .8rem;
+}
+
+body.admin-theme .admin-account-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    color: #145783;
+    background: #fff;
+    border: 1px solid var(--admin-border);
+    border-radius: 50%;
+}
+
+body.admin-theme .admin-account-avatar img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+body.admin-theme .admin-account-chevron {
+    color: var(--admin-primary);
+    font-size: .8rem;
+    transition: transform .18s ease;
+}
+
+body.admin-theme .admin-account[aria-expanded="true"] .admin-account-chevron {
+    transform: rotate(180deg);
+}
+
+@media (max-width: 575.98px) {
+    body.admin-theme .admin-account-name {
+        max-width: 120px;
+    }
+
+    body.admin-theme .admin-account-email {
+        display: none;
+    }
+}
+
+body.admin-theme .sidebar-wrapper {
+    color: var(--admin-text);
+    background-color: var(--admin-surface);
+    border-right: 1px solid var(--admin-border);
+}
+
+body.admin-theme .sidebar-wrapper .menu .sidebar-link,
+body.admin-theme .sidebar-wrapper .menu .submenu a,
+body.admin-theme .sidebar-wrapper .theme-toggle {
+    color: var(--admin-text);
+}
+
+body.admin-theme .sidebar-wrapper .menu .sidebar-link i,
+body.admin-theme .sidebar-wrapper .menu .sidebar-link svg {
+    color: var(--admin-primary);
+}
+
+body.admin-theme .sidebar-wrapper .menu .sidebar-link:hover,
+body.admin-theme .sidebar-wrapper .menu .submenu a:hover {
+    color: var(--admin-primary);
+    background-color: var(--admin-ice);
+}
+
+body.admin-theme .sidebar-wrapper .menu .sidebar-item.active > .sidebar-link {
+    background-color: var(--admin-primary);
+    box-shadow: inset 4px 0 0 var(--admin-accent);
+}
+
+body.admin-theme .sidebar-wrapper .menu .sidebar-item.active > .sidebar-link span,
+body.admin-theme .sidebar-wrapper .menu .sidebar-item.active > .sidebar-link i,
+body.admin-theme .sidebar-wrapper .menu .sidebar-item.active > .sidebar-link svg {
+    color: var(--admin-on-primary);
+}
+
+body.admin-theme .sidebar-wrapper .menu .submenu .submenu-item.active > a {
+    color: var(--admin-primary);
+    background-color: var(--admin-mint);
+}
+
+body.admin-theme .card,
+body.admin-theme .modal-content,
+body.admin-theme .dropdown-menu,
+body.admin-theme .list-group-item {
+    color: var(--admin-text);
+    background-color: var(--admin-surface);
+    border-color: var(--admin-border);
+}
+
+body.admin-theme .card-header {
+    color: var(--admin-text);
+    background-color: var(--admin-ice);
+    border-color: var(--admin-border);
+}
+
+body.admin-theme .card-footer,
+body.admin-theme .modal-header,
+body.admin-theme .modal-footer {
+    color: var(--admin-text);
+    background-color: var(--admin-surface);
+    border-color: var(--admin-border);
+}
+
+body.admin-theme .dropdown-item {
+    color: var(--admin-text);
+}
+
+body.admin-theme .dropdown-item:hover,
+body.admin-theme .dropdown-item:focus {
+    color: var(--admin-primary);
+    background-color: var(--admin-ice);
+}
+
+body.admin-theme .btn.btn-primary {
+    --bs-btn-color: var(--admin-on-primary);
+    --bs-btn-bg: var(--admin-primary);
+    --bs-btn-border-color: var(--admin-primary);
+    --bs-btn-hover-color: var(--admin-on-primary);
+    --bs-btn-hover-bg: var(--admin-primary-hover);
+    --bs-btn-hover-border-color: var(--admin-primary-hover);
+    --bs-btn-active-color: var(--admin-on-primary);
+    --bs-btn-active-bg: var(--admin-primary-hover);
+    --bs-btn-active-border-color: var(--admin-primary-hover);
+    --bs-btn-disabled-color: var(--admin-on-primary);
+    --bs-btn-disabled-bg: var(--admin-primary);
+    --bs-btn-disabled-border-color: var(--admin-primary);
+    color: var(--bs-btn-color);
+}
+
+body.admin-theme .btn.btn-secondary,
+body.admin-theme .btn.btn-success {
+    --bs-btn-color: var(--admin-on-accent);
+    --bs-btn-bg: var(--admin-accent);
+    --bs-btn-border-color: var(--admin-accent);
+    --bs-btn-hover-color: var(--admin-on-accent);
+    --bs-btn-hover-bg: var(--admin-accent-hover);
+    --bs-btn-hover-border-color: var(--admin-accent-hover);
+    --bs-btn-active-color: var(--admin-on-accent);
+    --bs-btn-active-bg: var(--admin-accent-hover);
+    --bs-btn-active-border-color: var(--admin-accent-hover);
+    --bs-btn-disabled-color: var(--admin-on-accent);
+    --bs-btn-disabled-bg: var(--admin-accent);
+    --bs-btn-disabled-border-color: var(--admin-accent);
+    color: var(--bs-btn-color);
+}
+
+body.admin-theme .btn.btn-light-primary,
+body.admin-theme .btn.btn-light-secondary {
+    color: var(--admin-primary);
+    background-color: var(--admin-ice);
+    border-color: var(--admin-border);
+}
+
+body.admin-theme .btn.btn-light-primary:hover,
+body.admin-theme .btn.btn-light-secondary:hover {
+    color: var(--admin-primary);
+    background-color: var(--admin-mint);
+}
+
+body.admin-theme .form-control,
+body.admin-theme .form-select,
+body.admin-theme .input-group-text {
+    color: var(--admin-text);
+    background-color: var(--admin-surface);
+    border-color: var(--admin-border);
+}
+
+body.admin-theme .form-control:focus,
+body.admin-theme .form-select:focus {
+    color: var(--admin-text);
+    background-color: var(--admin-surface);
+    border-color: var(--admin-accent);
+    box-shadow: 0 0 0 .22rem rgba(32, 183, 165, .18);
+}
+
+body.admin-theme .form-check-input:checked {
+    background-color: var(--admin-primary);
+    border-color: var(--admin-primary);
+}
+
+body.admin-theme .table {
+    --bs-table-color: var(--admin-text);
+    --bs-table-bg: var(--admin-surface);
+    --bs-table-border-color: var(--admin-border);
+    --bs-table-striped-bg: var(--admin-ice);
+    --bs-table-striped-color: var(--admin-text);
+    --bs-table-hover-bg: var(--admin-mint);
+    --bs-table-hover-color: var(--admin-text);
+}
+
+body.admin-theme .page-link {
+    color: var(--admin-primary);
+    background-color: var(--admin-surface);
+    border-color: var(--admin-border);
+}
+
+body.admin-theme .page-item.active .page-link {
+    color: var(--admin-on-primary) !important;
+    background-color: var(--admin-primary);
+    border-color: var(--admin-primary);
+}
+
+body.admin-theme .stats-icon.purple {
+    background-color: var(--admin-ice);
+}
+
+body.admin-theme .stats-icon.red {
+    background-color: var(--admin-mint);
+}
+
+body.admin-theme .stats-icon.blue {
+    background-color: var(--admin-primary);
+}
+
+body.admin-theme .stats-icon.green {
+    background-color: var(--admin-accent);
+}
+
+body.admin-theme .stats-icon i {
+    color: var(--admin-primary);
+}
+
+body.admin-theme .stats-icon.blue i {
+    color: var(--admin-on-primary);
+}
+
+body.admin-theme .stats-icon.green i {
+    color: var(--admin-on-accent);
+}
+
+body.admin-theme .nav-tabs .nav-link.active {
+    color: var(--admin-primary);
+    border-color: var(--admin-border) var(--admin-border) var(--admin-surface);
+    background-color: var(--admin-surface);
+}

@@ -26,6 +26,35 @@
             <footer class="bottom-mobile">
                 <footerItems :site-info="siteInfo"></footerItems>
             </footer>
+
+            <nav class="mobile-app-nav" aria-label="Navigasi bawah">
+                <router-link to="/" class="mobile-app-nav__item" active-class="is-active" exact-active-class="is-active">
+                    <i class="bi bi-house-door" aria-hidden="true"></i>
+                    <span>Beranda</span>
+                </router-link>
+                <router-link to="/koleksi-buku" class="mobile-app-nav__item" active-class="is-active">
+                    <i class="bi bi-bookshelf" aria-hidden="true"></i>
+                    <span>Koleksi</span>
+                </router-link>
+                <button
+                    type="button"
+                    class="mobile-app-nav__item"
+                    data-bs-toggle="modal"
+                    data-bs-target="#search-modal"
+                    aria-label="Cari buku"
+                >
+                    <i class="bi bi-search" aria-hidden="true"></i>
+                    <span>Cari</span>
+                </button>
+                <router-link v-if="isAuthenticated" to="/history-pinjaman" class="mobile-app-nav__item" active-class="is-active">
+                    <i class="bi bi-journal-check" aria-hidden="true"></i>
+                    <span>Pinjaman</span>
+                </router-link>
+                <router-link :to="isAuthenticated ? '/profile' : '/mlogin'" class="mobile-app-nav__item" active-class="is-active">
+                    <i :class="isAuthenticated ? 'bi bi-person' : 'bi bi-box-arrow-in-right'" aria-hidden="true"></i>
+                    <span>{{ isAuthenticated ? 'Profil' : 'Masuk' }}</span>
+                </router-link>
+            </nav>
         </div>
 
         <!-- search modal -->
@@ -214,8 +243,8 @@ export default {
         --member-line: var(--pustara-border);
         --member-accent: var(--pustara-primary);
         --member-accent-dark: var(--pustara-primary-hover);
-        --member-button: var(--pustara-button);
-        --member-button-hover: var(--pustara-button-hover);
+        --member-button: #20b7a5;
+        --member-button-hover: #128d82;
         --member-button-text: var(--pustara-button-text);
         --member-soft: var(--pustara-ice);
         --member-panel: var(--pustara-mint);
@@ -252,8 +281,8 @@ export default {
         --member-line: var(--pustara-border);
         --member-accent: var(--pustara-turquoise);
         --member-accent-dark: var(--pustara-turquoise-strong);
-        --member-button: var(--pustara-button);
-        --member-button-hover: var(--pustara-button-hover);
+        --member-button: #20b7a5;
+        --member-button-hover: #128d82;
         --member-button-text: var(--pustara-button-text);
         --member-soft: var(--pustara-surface-raised);
         --member-panel: var(--pustara-surface-raised);
@@ -555,18 +584,54 @@ export default {
         --bs-btn-active-border-color: var(--member-button-hover);
         --bs-btn-disabled-bg: var(--member-button);
         --bs-btn-disabled-border-color: var(--member-button);
-        --bs-btn-color: var(--member-button-text);
-        --bs-btn-hover-color: var(--member-button-text);
-        --bs-btn-active-color: var(--member-button-text);
-        --bs-btn-disabled-color: var(--member-button-text);
-        color: var(--member-button-text);
-        font-weight: 700;
+        --bs-btn-color: #fff;
+        --bs-btn-hover-color: #fff;
+        --bs-btn-active-color: #fff;
+        --bs-btn-disabled-color: #fff;
+        color: #fff;
+        font-weight: 800;
+    }
+
+    #app-usr :deep(.btn-success) {
+        --bs-btn-bg: var(--member-button);
+        --bs-btn-border-color: var(--member-button);
+        --bs-btn-hover-bg: var(--member-button-hover);
+        --bs-btn-hover-border-color: var(--member-button-hover);
+        --bs-btn-active-bg: var(--member-button-hover);
+        --bs-btn-active-border-color: var(--member-button-hover);
+        --bs-btn-disabled-bg: var(--member-button);
+        --bs-btn-disabled-border-color: var(--member-button);
+        --bs-btn-color: #fff;
+        --bs-btn-hover-color: #fff;
+        --bs-btn-active-color: #fff;
+        --bs-btn-disabled-color: #fff;
+        color: #fff;
+        font-weight: 800;
+    }
+
+    #app-usr :deep(.btn) {
+        border-radius: .375rem !important;
+        font-family: 'Nunito', sans-serif;
+        font-size: .85rem;
+        font-weight: 800;
     }
 
     #app-usr :deep(.btn-secondary),
     #app-usr :deep(.btn-light-secondary) {
-        border-radius: 7px;
-        font-weight: 700;
+        border-radius: .375rem;
+        font-weight: 800;
+    }
+
+    #app-usr :deep(.sidebar-auth .sidebar-register) {
+        color: #fff;
+        background: var(--member-button);
+        border-color: var(--member-button);
+    }
+
+    #app-usr :deep(.sidebar-auth .sidebar-register:hover) {
+        color: #fff;
+        background: var(--member-button-hover);
+        border-color: var(--member-button-hover);
     }
 
     #app-usr :deep(.form-control),
@@ -889,6 +954,56 @@ export default {
         background-color: var(--member-button-hover);
     }
 
+    .mobile-app-nav {
+        display: none;
+    }
+
+    .mobile-app-nav__item {
+        display: flex;
+        flex: 1 1 0;
+        min-width: 0;
+        min-height: 54px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: .2rem;
+        padding: .35rem .15rem;
+        color: var(--member-muted);
+        background: transparent;
+        border: 0;
+        border-radius: .6rem;
+        font-family: inherit;
+        font-size: .65rem;
+        font-weight: 700;
+        line-height: 1.1;
+        text-decoration: none;
+        transition: color .18s ease, background-color .18s ease;
+    }
+
+    .mobile-app-nav__item i {
+        font-size: 1.15rem;
+        line-height: 1;
+    }
+
+    .mobile-app-nav__item.is-active {
+        color: var(--member-accent);
+        background: var(--member-soft);
+    }
+
+    .mobile-app-nav__item:focus-visible {
+        outline: 2px solid var(--member-accent);
+        outline-offset: 1px;
+    }
+
+    .mobile-app-nav__item:hover {
+        color: var(--member-accent);
+    }
+
+    :global(html[data-bs-theme="dark"] #app-usr .mobile-app-nav) {
+        background: rgba(24, 43, 56, .96);
+        border-color: var(--member-line);
+    }
+
     @media (max-width: 1199.98px) {
         #app-usr :deep(.content-wrapper) {
             min-height: 0;
@@ -934,6 +1049,36 @@ export default {
 
         #app-usr :deep(.page-heading form.form) {
             padding: 1rem;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .mobile-app-nav {
+            position: fixed;
+            z-index: 1030;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            align-items: stretch;
+            gap: .2rem;
+            padding: .35rem .45rem calc(.35rem + env(safe-area-inset-bottom));
+            background: rgba(255, 255, 255, .96);
+            border-top: 1px solid var(--member-line);
+            box-shadow: 0 -8px 24px rgba(20, 40, 31, .08);
+            backdrop-filter: blur(16px);
+        }
+
+        #app-usr :deep(.content-wrapper) {
+            padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+        }
+
+        #app-usr :deep(.bottom-mobile) {
+            padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+        }
+
+        #app-usr .floating-btn {
+            bottom: calc(5.5rem + env(safe-area-inset-bottom));
         }
     }
 

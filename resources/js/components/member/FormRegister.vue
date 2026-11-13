@@ -1,6 +1,6 @@
 <template>
     <div class="page-heading member-auth member-register-page">
-        <div class="row register-layout">
+        <div class="register-layout">
             <div class="register-intro">
                 <router-link to="/" class="register-home-link">
                     <i class="bi bi-arrow-left" aria-hidden="true"></i>
@@ -288,17 +288,23 @@ export default {
 
 <style scoped>
 .member-register-page {
-    padding: clamp(.5rem, 2vw, 1.5rem) 0 2rem;
+    padding: clamp(.5rem, 2vw, 1.5rem) 0 2.5rem;
 }
 
 .register-layout {
-    max-width: 920px;
+    display: block;
+    max-width: 880px;
     margin: 0 auto;
+    overflow: hidden;
+    background: var(--member-surface, #fff);
+    border: 1px solid var(--member-line, #e4e8e2);
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(20, 45, 37, .08);
 }
 
 .register-intro {
     padding: clamp(1.25rem, 4vw, 2rem) clamp(1.25rem, 4vw, 2rem) 1rem;
-    border-top: 4px solid var(--member-accent, #236b58);
+    border-top: 4px solid #0b8178;
     background: var(--member-soft, #edf4ef);
 }
 
@@ -339,15 +345,16 @@ export default {
     align-items: flex-start;
     gap: .7rem;
     padding: 1rem clamp(1rem, 4vw, 2rem);
-    color: var(--member-accent-dark, #145783);
+    color: var(--member-ink, #34495a);
     background: var(--member-soft, #EAF4FA);
-    border: 1px solid var(--member-line, #dbe7ee);
+    border-top: 1px solid var(--member-line, #dbe7ee);
+    border-bottom: 1px solid var(--member-line, #dbe7ee);
 }
 
 .registration-verification-note i,
 .registration-closed > i {
     flex: 0 0 auto;
-    color: var(--member-accent, #145783);
+    color: #0b8178;
 }
 
 .registration-closed {
@@ -362,8 +369,13 @@ export default {
 .register-form {
     padding: clamp(1rem, 4vw, 2rem);
     background: var(--member-surface, #fff);
-    border: 1px solid var(--member-line, #e4e8e2);
-    border-top: 0;
+    border: 0;
+}
+
+:global(#app-usr .member-register-page .register-layout .register-form) {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 .register-form > .row {
@@ -394,7 +406,10 @@ export default {
 .register-form button[type="submit"] {
     min-width: 170px;
     min-height: 46px;
+    padding: .6rem 1rem;
+    border-radius: .375rem;
     box-shadow: none !important;
+    font-weight: 600;
 }
 
 .register-form .col-12.d-flex {
@@ -405,6 +420,7 @@ export default {
     .register-layout {
         margin-right: 0;
         margin-left: 0;
+        border-radius: 12px;
     }
 
     .register-form {

@@ -350,6 +350,7 @@ export default {
 		},
 
         __Chart() {
+            const primary = getComputedStyle(document.body).getPropertyValue('--admin-primary').trim()
             let optionsVisitMonthly = {
                 annotations: {
                     position: 'back',
@@ -370,7 +371,7 @@ export default {
                     {
                         name: 'Pengunjung',
                         data: [],
-						color: '#145783',
+						color: primary,
                     },
                 ],
                 xaxis: {
@@ -403,7 +404,7 @@ export default {
                     {
                         name: 'Pembaca',
                         data: [],
-						color: '#145783',
+						color: primary,
                     },
                 ],
                 xaxis: {
@@ -417,6 +418,7 @@ export default {
 			}
 
             let optionsGrowthMember = {
+                colors: [primary],
                 series: [
                     {
                         name: 'Member',
@@ -452,7 +454,12 @@ export default {
         },
 
         __DailyChart() {
+            const palette = getComputedStyle(document.body)
+            const primary = palette.getPropertyValue('--admin-primary').trim()
+            const accent = palette.getPropertyValue('--admin-accent').trim()
+            const middle = palette.getPropertyValue('--admin-chart-mid').trim()
             let optionsReadDaily = {
+                colors: [primary],
                 series: [
                     {
                         name: 'Pembaca',
@@ -467,7 +474,6 @@ export default {
 					id: 'ReadDaily',
                     type: 'bar',
                     height: 350,
-                    colors: ['#ff4560'],
                 },
                 plotOptions: {
                     bar: {
@@ -479,17 +485,17 @@ export default {
                                 {
                                     from: 0,
                                     to: 20,
-                                    color: '#00e396',
+                                    color: accent,
                                 },
                                 {
                                     from: 21,
                                     to: 50,
-                                    color: '#f5aa19',
+                                    color: middle,
                                 },
                                 {
                                     from: 51,
                                     to: 100,
-                                    color: '#ff4560',
+                                    color: primary,
                                 },
                             ],
                         },
@@ -517,6 +523,7 @@ export default {
 			}
 
             let optioVisitoradDaily = {
+                colors: [primary],
                 series: [
                     {
                         name: 'Pengunjung',
@@ -531,7 +538,6 @@ export default {
 					id: 'VisitDaily',
                     type: 'bar',
                     height: 350,
-                    colors: ['#ff4560'],
                 },
                 plotOptions: {
                     bar: {
@@ -543,17 +549,17 @@ export default {
                                 {
                                     from: 0,
                                     to: 20,
-                                    color: '#00e396',
+                                    color: accent,
                                 },
                                 {
                                     from: 21,
                                     to: 50,
-                                    color: '#f5aa19',
+                                    color: middle,
                                 },
                                 {
                                     from: 50,
                                     to: 100,
-                                    color: '#ff4560',
+                                    color: primary,
                                 },
                             ],
                         },
