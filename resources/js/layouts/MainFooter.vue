@@ -22,7 +22,7 @@
                 </a>
                 <a v-if="siteInfo.website" :href="siteInfo.website" target="_blank" rel="noopener noreferrer">
                     <i class="bi bi-globe2" aria-hidden="true"></i>
-                    <span>{{ siteInfo.website }}.pustara.id</span>
+                    <span>{{ siteInfo.website }}.pustakanusantara.id</span>
                 </a>
             </section>
 
