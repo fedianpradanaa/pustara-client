@@ -56,6 +56,7 @@ class ParameterController extends Controller
                     'og_title' => ['Judul Open Graph', ''],
                     'og_description' => ['Deskripsi Open Graph', ''],
                     'og_image' => ['Gambar Open Graph (URL publik)', ''],
+                    'og_social_image' => ['Gambar Social Sharing (1200x630px, URL publik)', ''],
                     'social_facebook' => ['URL Facebook', ''],
                     'social_instagram' => ['URL Instagram', ''],
                     'social_youtube' => ['URL YouTube', ''],

@@ -708,6 +708,7 @@ class MainController extends Controller
                 'og_title',
                 'og_description',
                 'og_image',
+                'og_social_image',
                 'social_facebook',
                 'social_instagram',
                 'social_youtube',
@@ -729,7 +730,11 @@ class MainController extends Controller
             ?: asset('storage/images/logo/logo_small.png');
         $faviconUrl = $this->resolveTenantLogo('favicon.png')
             ?: asset('storage/images/logo/favicon.png');
-        $ogImage = trim((string) $parameters->get('og_image', '')) ?: $logoUrl;
+        
+        // Resolve social sharing image separately from logo
+        $ogSocialImage = trim((string) $parameters->get('og_social_image', ''));
+        $ogImage = $ogSocialImage 
+            ?: (trim((string) $parameters->get('og_image', '')) ?: asset('storage/images/logo/og-image-default.jpg'));
 
         $address = trim((string) ($profile->address ?? ''));
         $addressParts = $address === '' ? [] : [$address];

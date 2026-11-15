@@ -12,6 +12,9 @@
         <meta property="og:description" content="{{ $site['og_description'] }}" />
         @if ($site['og_image'] !== '')
             <meta property="og:image" itemprop="image" content="{{ $site['og_image'] }}" />
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="630" />
+            <meta property="og:image:type" content="image/jpeg" />
         @endif
         <meta property="og:type" content="website" />
         <meta property="og:url" content="{{ url()->current() }}" />
