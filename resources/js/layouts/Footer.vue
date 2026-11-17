@@ -1,7 +1,7 @@
 <template>
     <div class="footer clearfix mb-0 text-muted">
         <div class="float-start">
-            <p>&copy; 2026 Pustara. All rights reserved.</p>
+            <p>&copy; 2026 Pustaka Nusantara. All rights reserved.</p>
         </div>
         <div class="float-end">
             <!-- <p>Under <a href="#">Development</a></p> -->
