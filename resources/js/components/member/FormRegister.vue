@@ -49,6 +49,10 @@
                                     <i class="bi bi-envelope"></i>
                                 </div>
                                 <div v-if="errors.email" class="invalid-feedback">{{ errors.email[0] }}</div>
+                                <small v-if="emailVerificationRequired" class="email-note">
+                                    <i class="bi bi-info-circle" aria-hidden="true"></i>
+                                    Gunakan <strong>email yang valid dan aktif</strong>. Kami akan mengirim tautan verifikasi ke email ini, dan akun baru dapat digunakan setelah email dikonfirmasi. Periksa juga folder Spam jika email belum masuk.
+                                </small>
                             </div>
                         </div>
                     </div>
@@ -287,6 +291,23 @@ export default {
 </script>
 
 <style scoped>
+.email-note {
+    display: block;
+    margin-top: .4rem;
+    padding: .5rem .75rem;
+    border-left: 3px solid #435ebe;
+    border-radius: 4px;
+    background: #eef1fb;
+    color: #4b5563;
+    font-size: .8rem;
+    line-height: 1.45;
+}
+
+.email-note i {
+    color: #435ebe;
+    margin-right: .25rem;
+}
+
 .member-register-page {
     padding: clamp(.5rem, 2vw, 1.5rem) 0 2.5rem;
 }
