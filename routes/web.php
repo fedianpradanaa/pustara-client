@@ -10,7 +10,7 @@ Route::get('/form-register', function () {
 });
 
 Route::get('/email/verify', function () {
-    return view('auth.verify-email');
+    return view('auth.verify');
 })->middleware('auth')->name('verification.notice');
 
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])

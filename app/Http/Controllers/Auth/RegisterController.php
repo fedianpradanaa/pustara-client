@@ -68,6 +68,24 @@ class RegisterController extends Controller
             'gender' => ['nullable', 'in:L,P'],
             'birthday' => ['nullable', 'date'],
             'nik' => ['nullable', 'string', 'max:25'],
+        ], [
+            'required' => ':attribute wajib diisi.',
+            'string' => ':attribute tidak valid.',
+            'email' => 'Format :attribute tidak valid.',
+            'unique' => ':attribute sudah terdaftar.',
+            'max' => ':attribute maksimal :max karakter.',
+            'min' => ':attribute minimal :min karakter.',
+            'confirmed' => 'Konfirmasi :attribute tidak sesuai.',
+            'in' => ':attribute tidak valid.',
+            'date' => ':attribute bukan tanggal yang valid.',
+        ], [
+            'name' => 'Nama',
+            'email' => 'Email',
+            'password' => 'Kata sandi',
+            'phone' => 'Nomor HP',
+            'gender' => 'Jenis kelamin',
+            'birthday' => 'Tanggal lahir',
+            'nik' => 'NIK',
         ]);
     }
 
@@ -169,7 +187,6 @@ class RegisterController extends Controller
         if ($verificationRequired) {
             try {
                 event(new Registered($user));
-                $user->sendEmailVerificationNotification();
                 $message = $approvalRequired
                     ? 'Pendaftaran berhasil! Silahkan konfirmasi email. Akun juga menunggu persetujuan petugas.'
                     : 'Pendaftaran berhasil! Silahkan konfirmasi email anda sebelum masuk.';
