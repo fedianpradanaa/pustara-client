@@ -124,6 +124,7 @@ class ProfileMasterController extends Controller
                 'pos_sign_name'         => ($request->pos_sign_name == 'null') ? null : $request->pos_sign_name,
                 'administrator_name'    => ($request->administrator_name == 'null') ? null : $request->administrator_name,
                 'administrator_phone'   => ($request->administrator_phone == 'null') ? null : $request->administrator_phone,
+                'email'                 => in_array($request->email, ['null', ''], true) ? null : $request->email,
                 'logo'                  => ($request->logo == 'null') ? null : $request->logo,
                 'logo_small'            => ($request->logo_small == 'null') ? null : $request->logo_small,
                 'company_id'            => ($request->company_id == 'null') ? null : $request->company_id,

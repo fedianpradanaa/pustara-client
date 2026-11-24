@@ -37,6 +37,7 @@ class UpdateProfileMasterRequest extends FormRequest
             'pos_sign_name' => 'required|string|max:50',
             'administrator_name' => 'required|string|max:50',
             'administrator_phone' => 'required|string|max:20',
+            'email' => 'nullable|email|max:100',
             'updated_at' => 'nullable',
             'country_id' => 'string|max:25'
         ];
@@ -63,6 +64,7 @@ class UpdateProfileMasterRequest extends FormRequest
             'pos_sign_name' => 'Jabatan Penandatangan MOU',
             'administrator_name' => 'Nama Pengelola (Admin)',
             'administrator_phone' => 'Nomor HP Pengelola (Admin)',
+            'email' => 'E-Mail',
             'country_id' => 'Negara'
         ];
     }

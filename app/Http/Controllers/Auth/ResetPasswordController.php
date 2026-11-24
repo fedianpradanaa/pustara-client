@@ -18,7 +18,9 @@ class ResetPasswordController extends Controller
     |
     */
 
-    use ResetsPasswords;
+    use ResetsPasswords {
+        resetPassword as protected traitResetPassword;
+    }
 
     /**
      * Where to redirect users after resetting their password.
@@ -26,4 +28,14 @@ class ResetPasswordController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
+
+    // Reset lewat tautan email membuktikan email aktif, jadi sekalian terverifikasi
+    protected function resetPassword($user, $password)
+    {
+        if (! $user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+        }
+
+        $this->traitResetPassword($user, $password);
+    }
 }

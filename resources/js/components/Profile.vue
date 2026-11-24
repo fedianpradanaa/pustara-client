@@ -98,10 +98,11 @@
                                         <label for="phone" class="form-label">Nama Pengelola (Admin) <small class="text-danger">*</small></label>
                                         <input type="text" name="phone" id="phone" class="form-control" v-model="form.field.info.administrator_name" placeholder="Nama Pengelola" />
                                     </div>
-                                    <!-- <div class="form-group">
-                                        <label for="email" class="form-label">E-Mail Pengelola (Admin) </label>
-                                        <input type="text" name="email" id="email" class="form-control" v-model="user.email" placeholder="E-Mail Pengelola" readonly/>
-                                    </div> -->
+                                    <div class="form-group">
+                                        <label for="client-email" class="form-label">E-Mail</label>
+                                        <input type="email" name="email" id="client-email" class="form-control" :class="{'is-invalid': errors.email}" v-model="form.field.info.email" placeholder="E-Mail" />
+                                        <div v-if="errors.email" class="invalid-feedback">{{ errors.email[0] }}</div>
+                                    </div>
                                     <div class="form-group">
                                         <label for="password-column">Kata Sandi</label>
                                         <div class="form-group position-relative has-icon-left mb-4">
