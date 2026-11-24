@@ -163,7 +163,26 @@ class ProfileMasterController extends Controller
                 // $logs->write("INFO data", print_r($existingDataArray, true));
 
                 if (!empty($differences)) {
-                    $created = DB::table($this->db_platform.'tclient_temp')->insert($insertedData);
+                    $tempTable = DB::table($this->db_platform.'tclient_temp');
+                    $pending = (clone $tempTable)
+                        ->where('client_id', $this->client_id)
+                        ->where('flag_appr', 'N')
+                        ->exists();
+
+                    if ($pending) {
+                        // Pengajuan sebelumnya masih menunggu: timpa datanya
+                        $updateData = $insertedData;
+                        unset($updateData['client_id'], $updateData['created_at'], $updateData['flag_appr']);
+
+                        (clone $tempTable)
+                            ->where('client_id', $this->client_id)
+                            ->where('flag_appr', 'N')
+                            ->update($updateData);
+                        $created = true;
+                    } else {
+                        // Pengajuan sebelumnya sudah Y/R atau belum ada: buat baru
+                        $created = $tempTable->insert($insertedData);
+                    }
 
                     if ($created) {
                         $logs->write("INFO", "Request update Successfully");
@@ -287,6 +306,7 @@ class ProfileMasterController extends Controller
                         ->select(
                             DB::raw("case when a.flag_appr = 'N' then 'Y' else 'N' end as change_request")
                         )
+                        ->where('client_id', $this->client_id)
                         ->where('flag_appr', 'N')
                         ->orderBy('created_at', 'DESC')
                         ->first();
