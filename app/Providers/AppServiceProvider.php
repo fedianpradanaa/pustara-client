@@ -92,6 +92,7 @@ class AppServiceProvider extends ServiceProvider
             'auth.login',
             'auth.passwords.email',
             'auth.passwords.reset',
+            'auth.passwords.success',
             'offlinevisitor',
         ], function ($view) {
             $profile = DB::table('tclient')

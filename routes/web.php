@@ -21,6 +21,14 @@ Route::post('/email/resend', [VerificationController::class, 'resend'])
     ->middleware(['auth', 'throttle:6,1'])
     ->name('verification.resend');
 
+Route::get('/password/success', function () {
+    if (! session('login_url')) {
+        return redirect('/mlogin');
+    }
+
+    return view('auth.passwords.success', ['loginUrl' => session('login_url')]);
+})->name('password.success');
+
 Auth::routes([
     'register' => true,
     'verify' => true,
